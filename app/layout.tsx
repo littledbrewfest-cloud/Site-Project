@@ -10,19 +10,20 @@ const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 export const metadata: Metadata = {
   metadataBase: getMetadataBase(),
   title: {
-    default: "NovaBlog AI — Autonomous Insights & Trend Analysis",
+    default: "NovaBlog AI — Autonomous Intelligence & Daily Insights",
     template: "%s | NovaBlog AI",
   },
   description:
-    "An automated, intelligent publication delivering daily in-depth articles across technology, finance, health, science, and lifestyle.",
+    "An autonomous next-generation media publication delivering daily deep-dive articles across technology, finance, health, science, and global trends.",
   keywords: [
     "AI Blog",
-    "Autonomous Content",
+    "Autonomous News",
     "Technology News",
     "Personal Finance",
     "Health and Wellness",
     "Science",
-    "Productivity",
+    "PlayStation 5",
+    "Artificial Intelligence",
   ],
   authors: [{ name: "NovaBlog AI Engine" }],
   creator: "NovaBlog AI",
@@ -31,7 +32,7 @@ export const metadata: Metadata = {
     locale: "en_US",
     url: "/",
     siteName: "NovaBlog AI",
-    title: "NovaBlog AI — Autonomous Insights & Trend Analysis",
+    title: "NovaBlog AI — Autonomous Intelligence & Daily Insights",
     description:
       "Automated intelligent blogging covering cutting-edge technology, finance, health, and global trends.",
     images: [
@@ -45,7 +46,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "NovaBlog AI — Autonomous Insights & Trend Analysis",
+    title: "NovaBlog AI — Autonomous Intelligence & Daily Insights",
     description:
       "Automated intelligent blogging covering cutting-edge technology, finance, health, and global trends.",
   },
@@ -62,8 +63,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="scroll-smooth">
-      <body className={`${inter.className} min-h-screen flex flex-col bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 antialiased selection:bg-blue-500 selection:text-white`}>
+    <html lang="en" className="scroll-smooth antialiased">
+      <body className={`${inter.className} min-h-screen flex flex-col bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 bg-mesh-pattern`}>
         <Navbar />
         <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
           {children}

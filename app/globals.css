@@ -3,40 +3,109 @@
 @tailwind utilities;
 
 @layer base {
+  :root {
+    --background: 248 250 252;
+    --foreground: 15 23 42;
+  }
+
   body {
-    @apply bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-slate-100;
+    @apply bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-slate-100 antialiased selection:bg-blue-600 selection:text-white;
+    font-feature-settings: "cv02", "cv03", "cv04", "cv11";
   }
 }
 
-/* Custom styling for markdown prose */
+/* Custom modern scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-slate-300 dark:bg-slate-700 rounded-full;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  @apply bg-slate-400 dark:bg-slate-600;
+}
+
+/* Glassmorphism utility classes */
+.glass-panel {
+  @apply bg-white/80 dark:bg-slate-900/80 backdrop-blur-md border border-slate-200/80 dark:border-slate-800/80;
+}
+
+.glass-card {
+  @apply bg-white/70 dark:bg-slate-900/70 backdrop-blur-sm border border-slate-200/70 dark:border-slate-800/70 hover:border-blue-500/40 dark:hover:border-blue-500/40 transition-all duration-300;
+}
+
+/* Subtle background mesh */
+.bg-mesh-pattern {
+  background-image: radial-gradient(rgba(59, 130, 246, 0.08) 1px, transparent 1px),
+    radial-gradient(rgba(99, 102, 241, 0.05) 1px, transparent 1px);
+  background-size: 32px 32px;
+  background-position: 0 0, 16px 16px;
+}
+
+/* Rich Prose Markdown Styles */
+.prose {
+  @apply max-w-none text-slate-800 dark:text-slate-200;
+}
+
 .prose h1, .prose h2, .prose h3, .prose h4 {
-  @apply tracking-tight font-bold text-slate-900 dark:text-white;
+  @apply tracking-tight font-extrabold text-slate-950 dark:text-white scroll-mt-24;
+}
+
+.prose h1 {
+  @apply text-3xl sm:text-4xl mt-8 mb-4;
+}
+
+.prose h2 {
+  @apply text-2xl sm:text-3xl mt-10 mb-4 pb-2 border-b border-slate-200 dark:border-slate-800;
+}
+
+.prose h3 {
+  @apply text-xl sm:text-2xl mt-8 mb-3 text-slate-900 dark:text-slate-100;
 }
 
 .prose p {
-  @apply leading-relaxed text-slate-700 dark:text-slate-300;
+  @apply leading-relaxed text-base sm:text-lg text-slate-700 dark:text-slate-300 mb-6;
 }
 
 .prose blockquote {
-  @apply border-l-4 border-blue-500 bg-blue-50/50 dark:bg-blue-950/20 py-2 px-4 italic text-slate-700 dark:text-slate-300 rounded-r-lg;
+  @apply relative border-l-4 border-blue-600 bg-gradient-to-r from-blue-50/70 to-transparent dark:from-blue-950/30 dark:to-transparent py-3 px-5 my-6 italic text-slate-800 dark:text-slate-200 rounded-r-2xl shadow-sm;
 }
 
 .prose code {
-  @apply bg-slate-100 dark:bg-slate-800 text-blue-600 dark:text-blue-400 px-1.5 py-0.5 rounded text-sm font-mono;
+  @apply bg-slate-100 dark:bg-slate-800/80 text-blue-600 dark:text-blue-400 px-2 py-0.5 rounded-md text-sm font-mono font-medium border border-slate-200/50 dark:border-slate-700/50;
 }
 
 .prose pre {
-  @apply bg-slate-900 text-slate-100 p-4 rounded-xl overflow-x-auto shadow-inner;
+  @apply bg-slate-950 text-slate-100 p-5 rounded-2xl overflow-x-auto shadow-xl border border-slate-800 my-6 font-mono text-sm leading-relaxed;
 }
 
 .prose pre code {
-  @apply bg-transparent text-inherit p-0;
+  @apply bg-transparent text-inherit p-0 border-none;
 }
 
 .prose ul {
-  @apply list-disc list-inside space-y-1 text-slate-700 dark:text-slate-300;
+  @apply list-disc list-inside space-y-2 text-slate-700 dark:text-slate-300 mb-6 pl-2;
 }
 
 .prose ol {
-  @apply list-decimal list-inside space-y-1 text-slate-700 dark:text-slate-300;
+  @apply list-decimal list-inside space-y-2 text-slate-700 dark:text-slate-300 mb-6 pl-2;
+}
+
+.prose hr {
+  @apply border-slate-200 dark:border-slate-800 my-10;
+}
+
+.prose strong {
+  @apply font-bold text-slate-950 dark:text-white;
+}
+
+.prose a {
+  @apply text-blue-600 dark:text-blue-400 font-semibold underline decoration-blue-400/40 hover:decoration-blue-500 underline-offset-4 transition-colors;
 }
