@@ -6,6 +6,106 @@ const prisma = new PrismaClient();
 
 const SAMPLE_POSTS = [
   {
+    title: "ARC Raiders on PS5: Everything You Need to Know About Gameplay, Release Date, and Mechanics",
+    slug: "arc-raiders-ps5-gameplay-release-date-guide",
+    category: "Technology",
+    tags: "ARC Raiders, PS5, Gaming, Extraction Shooter, Embark Studios, PlayStation 5, Unreal Engine 5",
+    excerpt: "Get the complete breakdown of ARC Raiders on PS5: gameplay loop, PvPvE extraction mechanics, Unreal Engine 5 visuals, DualSense haptics, and launch expectations.",
+    coverImageUrl: "https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&w=1200&q=80",
+    status: "published",
+    content: `# ARC Raiders on PS5: Everything You Need to Know About Gameplay, Release Date, and Mechanics
+
+The gaming world is buzzing with anticipation for **ARC Raiders**, the highly anticipated third-person extraction shooter developed by **Embark Studios**—the visionary team behind *THE FINALS* and former Battlefield veterans. Designed from the ground up for current-generation platforms including the **PlayStation 5 (PS5)**, ARC Raiders combines relentless survival gameplay, sci-fi world-building, and high-stakes PvPvE combat.
+
+Whether you are an extraction shooter enthusiast or an eager PS5 player looking for the next big sci-fi adrenaline rush, here is everything you need to know about ARC Raiders on PlayStation 5.
+
+---
+
+## 1. What is ARC Raiders? The Core Premise
+
+ARC Raiders takes place in a desolate, retro-futuristic Earth devastated by a mysterious, mechanized threat from space known simply as **ARC**. Humans have retreated to an underground colony called **Speranza**, where supplies, clean water, tech components, and medicines are scarce.
+
+As a **Raider**, your mission is to surface from the underground into the dangerous wasteland, scavenge valuable supplies, complete contracts, and successfully extract back to base. However, the surface is unforgiving:
+- **Lethal ARC Drones & Titans**: Robotic sentinels, tracking probes, and towering combat machines patrol the land.
+- **Rival Raiders (PvPvE)**: Other player squads are on the surface with the same objective—and not everyone is friendly.
+
+---
+
+## 2. Shift from Co-Op to a PvPvE Extraction Shooter
+
+Originally announced as a free-to-play cooperative PvE shooter, Embark Studios made a major pivot during development to reimagine ARC Raiders as a **premium PvPvE extraction survival shooter**.
+
+### Why This Shift Matters for Players
+The inclusion of rival players elevates the stakes dramatically. Every expedition to the surface presents a dilemma:
+1. **Cooperate or Betray?** Will you team up with strangers to bring down a colossal ARC Titan, or wait in the shadows to eliminate them when they try to extract with their loot?
+2. **True Risk vs. Reward**: If you die on the surface before reaching an extraction point, you risk losing valuable gear and scavenged resources.
+3. **Dynamic Engagements**: No two surface raids are identical. The unpredictability of player encounters combined with AI robot patrols creates unscripted tension.
+
+---
+
+## 3. PS5 Specific Features & Hardware Optimization
+
+On the PlayStation 5, ARC Raiders takes full advantage of the console's advanced architecture:
+
+### 🎮 DualSense Wireless Controller Integration
+- **Haptic Feedback**: Feel the heavy mechanical footsteps of approaching ARC machines, the rumbling reverberation of explosions, and surface environmental textures (mud, metal, gravel).
+- **Adaptive Triggers**: Each weapon class—from scavenged energy rifles to heavy artillery—delivers distinct trigger tension and recoil sensations.
+
+### ⚡ 3D Tempest Audio
+Audio cues are crucial for survival in extraction shooters. With PS5's Tempest 3D AudioTech:
+- Pinpoint enemy footsteps moving across rooftops or through ruined corridors.
+- Detect the directional hum of patrolling ARC surveillance drones before they spot your squad.
+
+### 🖼️ Unreal Engine 5 Visual Fidelity
+Powered by Unreal Engine 5, ARC Raiders delivers breathtaking atmospheric lighting, dynamic weather systems, volumetric dust storms, and destructible environments that make the wasteland feel hauntingly alive.
+
+---
+
+## 4. Key Gameplay Mechanics You Need to Master
+
+To survive and thrive in ARC Raiders on PS5, players will need to master several core systems:
+
+\`\`\`
+Core Game Loop:
+[ Underground Hub: Speranza ] ➡️ [ Scavenge Wasteland Surface ] ➡️ [ Fight ARC & Rival Squads ] ➡️ [ Extract Successfully ]
+\`\`\`
+
+1. **Loadout Preparation**: Customize your weapons, gadgets (ziplines, jump pads, smoke grenades), and medical supplies before departing Speranza.
+2. **Gadget-Driven Mobility**: Verticality is a major combat element. Use grapple lines and physics-driven gadgets to flank enemies or escape massive ARC attacks.
+3. **Sound and Stealth Management**: Firing unsuppressed weapons or triggering robot alarms alerts every nearby Raider and ARC patrol to your exact location.
+4. **Extraction Points**: Extraction zones are hot spots. Activating the extraction beacon signals surrounding players, turning the final minutes of your run into a fierce fight for survival.
+
+---
+
+## 5. Release Date, Price, and Platforms
+
+- **Release Window**: Scheduled for **2025** on PlayStation 5, Xbox Series X|S, and PC.
+- **Business Model**: Premium Release priced at **$39.99 USD** (avoiding aggressive pay-to-win microtransactions in favor of rewarding progression).
+- **Crossplay & Matchmaking**: Expected full crossplay support across PS5, PC, and Xbox.
+
+---
+
+## 6. Pro Tips for PS5 Players Preparing for Launch
+
+> **Pro Tip 1: Prioritize Survival Over Greed**
+> If your backpack is full of rare crafting materials, don't hunt down that extra Titan. Head straight for extraction. A safe extraction with modest loot beats losing everything.
+
+> **Pro Tip 2: Use Gadgets Creatively**
+> Use explosive mines to cover your extraction perimeter, or throw lure grenades to redirect aggressive ARC machines toward rival squads.
+
+> **Pro Tip 3: Communicate with Your Squad**
+> Clear voice comms and pinging enemy positions gives your team an enormous tactical edge in multi-team firefights.
+
+---
+
+## Conclusion
+
+**ARC Raiders on PS5** is shaping up to be one of the most exciting extraction shooters in recent memory. With its jaw-dropping visual presentation, tactical PvPvE combat, and rich atmosphere, it promises to deliver hours of heart-pounding sci-fi survival gameplay.
+
+Stay tuned as more playtests and official gameplay deep dives are released by Embark Studios!
+`,
+  },
+  {
     title: "The Rise of Agentic AI: How Autonomous Agents Are Transforming Software Development",
     slug: "rise-of-agentic-ai-autonomous-agents",
     category: "Technology",

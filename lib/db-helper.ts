@@ -219,7 +219,15 @@ export async function getSafePublishedPosts() {
       orderBy: { createdAt: "desc" },
     });
 
-    if (posts && posts.length > 0) return posts;
+    const dbSlugs = new Set((posts || []).map((p) => p.slug.toLowerCase()));
+    const missingFallbacks = SAMPLE_FALLBACK_POSTS.filter(
+      (fb) => !dbSlugs.has(fb.slug.toLowerCase())
+    );
+
+    const allPosts = [...(posts || []), ...missingFallbacks];
+    allPosts.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+
+    if (allPosts.length > 0) return allPosts;
   } catch (err) {
     console.warn("Database query failed, using fallback articles:", err);
   }
