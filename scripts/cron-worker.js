@@ -1,23 +1,23 @@
 /**
- * Standalone Cron Worker for Local Development or VPS Hosting
+ * Standalone Cron Worker for 4 Articles/Day Automation
  * Run with: npm run cron
  */
 require("dotenv").config();
 const cron = require("node-cron");
 
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
-const CRON_SECRET = process.env.CRON_SECRET || "";
-// Default schedule: Every day at 06:00 and 18:00 (or customized via CRON_SCHEDULE env var)
-const SCHEDULE = process.env.CRON_SCHEDULE || "0 6,18 * * *";
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://thearc-raiders.com";
+const CRON_SECRET = process.env.CRON_SECRET || "cron_secret_key_987654321";
+// Schedule: 4 times a day (every 6 hours: 00:00, 06:00, 12:00, 18:00 UTC)
+const SCHEDULE = process.env.CRON_SCHEDULE || "0 */6 * * *";
 
 console.log("==========================================");
-console.log("🤖 Auto-Blogging Cron Worker Initialized");
+console.log("🤖 The ARC Raiders Hub - 4x Daily Auto-Blogger");
 console.log(`🌐 Target Endpoint: ${SITE_URL}/api/cron/generate`);
-console.log(`⏰ Cron Schedule:   ${SCHEDULE}`);
+console.log(`⏰ Cron Schedule:   ${SCHEDULE} (4 Posts Every 24 Hours)`);
 console.log("==========================================");
 
 async function triggerPostGeneration() {
-  console.log(`\n[${new Date().toISOString()}] 🚀 Triggering scheduled post generation...`);
+  console.log(`\n[${new Date().toISOString()}] 🚀 Triggering scheduled keyword article generation...`);
 
   try {
     const headers = {
@@ -37,7 +37,7 @@ async function triggerPostGeneration() {
     const data = await response.json();
 
     if (response.ok && data.success) {
-      console.log(`✅ [${new Date().toISOString()}] Post generated successfully!`);
+      console.log(`✅ [${new Date().toISOString()}] Keyword Article Published Successfully!`);
       console.log(`   Title: "${data.post?.title}"`);
       console.log(`   Slug:  ${data.post?.slug}`);
       console.log(`   Category: ${data.post?.category}`);
@@ -49,10 +49,10 @@ async function triggerPostGeneration() {
   }
 }
 
-// Schedule task
+// Schedule task for 4x daily
 cron.schedule(SCHEDULE, () => {
   triggerPostGeneration();
 });
 
-console.log("⏳ Worker is running in the background and waiting for scheduled intervals.");
+console.log("⏳ Worker is active: Publishing 4 comprehensive gaming guides every day.");
 console.log("💡 You can press Ctrl+C to terminate this worker.");

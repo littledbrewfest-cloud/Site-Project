@@ -1,9 +1,9 @@
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import { Post } from "@prisma/client";
 import prisma from "./prisma";
-import { getActiveCategories } from "./settings";
 import { getTopicImage } from "./unsplash";
 import { createUniqueSlug } from "./slugify";
+import { getNextKeywordToPublish } from "./keyword-queue";
 
 export interface GeneratedArticle {
   title: string;
@@ -15,40 +15,10 @@ export interface GeneratedArticle {
 }
 
 /**
- * Selects the next category using a round-robin rotation based on the most recent posts.
+ * Generates an SEO-optimized, engaging, 100% unique blog post using Google Gemini API.
+ * Pulls from the prioritized low-competition keyword queue automatically.
  */
-async function selectNextCategory(): Promise<string> {
-  const categories = await getActiveCategories();
-  if (categories.length === 0) return "ARC Raiders News";
-
-  // Check the last few published posts to pick the least recently used category
-  const recentPosts = await prisma.post.findMany({
-    orderBy: { createdAt: "desc" },
-    take: categories.length,
-    select: { category: true },
-  });
-
-  const recentCategories = recentPosts.map((p) => p.category);
-
-  // Find a category that wasn't used in recent posts
-  for (const cat of categories) {
-    if (!recentCategories.includes(cat)) {
-      return cat;
-    }
-  }
-
-  // If all categories were used, pick the one least recently used
-  const lastUsed = recentCategories[0];
-  const remaining = categories.filter((c) => c !== lastUsed);
-  return remaining.length > 0
-    ? remaining[Math.floor(Math.random() * remaining.length)]
-    : categories[0];
-}
-
-/**
- * Generates an SEO-optimized, engaging blog post using Google Gemini API tailored for thearc-raiders.com.
- */
-export async function generateBlogPost(customCategory?: string): Promise<{
+export async function generateBlogPost(customKeywordOrCategory?: string): Promise<{
   success: boolean;
   post?: Post;
   error?: string;
@@ -62,43 +32,58 @@ export async function generateBlogPost(customCategory?: string): Promise<{
   }
 
   try {
-    const category = customCategory || (await selectNextCategory());
+    let targetKeyword = "";
+    let targetCategory = "ARC Raiders News";
+
+    if (customKeywordOrCategory) {
+      targetKeyword = customKeywordOrCategory;
+      targetCategory = "ARC Raiders News";
+    } else {
+      // Pick next prioritized keyword from the 1000-keyword queue (KD: 0 first!)
+      const nextItem = await getNextKeywordToPublish();
+      if (nextItem) {
+        targetKeyword = nextItem.keyword;
+        targetCategory = nextItem.category;
+      } else {
+        targetKeyword = "ARC Raiders Gameplay Mechanics";
+        targetCategory = "Guides & Walkthroughs";
+      }
+    }
+
     const genAI = new GoogleGenerativeAI(apiKey);
 
     const model = genAI.getGenerativeModel({
       model: "gemini-1.5-flash",
       generationConfig: {
         responseMimeType: "application/json",
-        temperature: 0.8,
+        temperature: 0.75,
       },
     });
 
-    const prompt = `You are the lead gaming journalist and database strategist for "The ARC Raiders Hub" (thearc-raiders.com), the premier publication for ARC Raiders (by Embark Studios) and the next-generation extraction shooter genre.
+    const prompt = `You are the lead gaming journalist and database editor for "The ARC Raiders Hub" (thearc-raiders.com).
 
-Write a high-ranking, 900–1400 word in-depth article in the category: "${category}".
+Your mission is to write a comprehensive, 100% original, in-depth 1000–1500 word gaming guide specifically targeting the search query:
+"${targetKeyword}" (Category: "${targetCategory}").
 
-Niche Domain Context:
-- Main Focus: ARC Raiders (Embark Studios, Speranza underground colony, PvPvE extraction mechanics, robotic ARC Titans, weapons, gadgets, playtests, 2025 release).
-- Platforms: PlayStation 5 (DualSense haptics, Tempest 3D audio, 4K/60fps), PC (Unreal Engine 5, Nanite, Lumen, DLSS/FSR), and Xbox Series X|S.
-- Broader Category Synergy: Extraction shooters, competitive tactics, weapon meta, and Unreal Engine 5 gaming optimization.
-
-Topic guidelines:
-- Choose an ultra-relevant, intriguing, high-search-intent gaming topic within "${category}".
-- Write a punchy, SEO-optimized title (50-65 characters) that gamers search for on Google.
-- Write a captivating meta description / excerpt (140-160 characters).
-- Choose 4 to 6 relevant tags (e.g. ARC Raiders, PS5, Embark Studios, Weapons, Guide, Extraction Shooter).
-- Provide 2-3 search keywords for finding a striking sci-fi/gaming cover image.
-- Structure the article thoroughly with Markdown: # Main Title, ## Major Sections, ### Tactical Subheadings, bulleted pro-tips, comparison tables, and highlighted blockquotes.
-- Ensure the tone is authoritative, exciting, tactical, and deeply knowledgeable about extraction shooter game design.
+CONTENT & SEO GUIDELINES:
+1. Target Keyword Focus: Answer the gamer's exact intent for "${targetKeyword}" in the very first 2 paragraphs.
+2. Structure & Detail:
+   - Catchy, SEO-optimized title (50-65 chars) incorporating "${targetKeyword}".
+   - Concise meta description / excerpt (140-160 chars).
+   - Detailed sections with Markdown formatting: # Main Title, ## Major Headings, ### Subheadings, bullet points, tactical comparison tables, and highlighted blockquotes.
+   - Specific locations (e.g. Speranza colony, Buried City, Dam complex, Spaceport vaults), exact loot mechanics, crafting requirements, and enemy counters (Titans, Sentinels, Leapers, Shredders).
+   - "Pro Survival Tips" section with actionable advice for Solo and Squad players.
+   - FAQ section answering 3 common related questions.
+3. Tone: Authoritative, exciting, modern, and deeply knowledgeable about extraction shooters. Do not use repetitive fluff.
 
 Return the response STRICTLY as valid JSON matching this schema:
 {
-  "title": "Compelling Article Title Here",
-  "category": "${category}",
-  "excerpt": "A concise and engaging summary of the article between 140 and 160 characters.",
-  "tags": ["ARC Raiders", "PS5", "Embark Studios", "Gaming"],
-  "imageKeywords": "futuristic robot combat sci-fi soldier",
-  "content": "Full markdown content of the 900-1400 word article here..."
+  "title": "Exact Compelling Title Targeting ${targetKeyword}",
+  "category": "${targetCategory}",
+  "excerpt": "A concise and engaging summary between 140 and 160 characters.",
+  "tags": ["ARC Raiders", "Gaming", "Guide", "PS5", "Embark Studios"],
+  "imageKeywords": "sci-fi robot combat extraction shooter",
+  "content": "Full markdown article content here (1000-1500 words)..."
 }`;
 
     const result = await model.generateContent(prompt);
@@ -125,8 +110,8 @@ Return the response STRICTLY as valid JSON matching this schema:
     }
 
     // Fetch relevant cover image
-    const searchQuery = parsed.imageKeywords || `sci-fi gaming robot ${parsed.tags?.[0] || ""}`;
-    const coverImageUrl = await getTopicImage(searchQuery, parsed.category || category);
+    const searchQuery = parsed.imageKeywords || `futuristic robot gaming ${targetKeyword}`;
+    const coverImageUrl = await getTopicImage(searchQuery, parsed.category || targetCategory);
 
     // Generate unique slug
     const slug = await createUniqueSlug(parsed.title);
@@ -142,7 +127,7 @@ Return the response STRICTLY as valid JSON matching this schema:
         content: parsed.content.trim(),
         excerpt: (parsed.excerpt || parsed.content.slice(0, 150)).trim(),
         coverImageUrl,
-        category: parsed.category || category,
+        category: parsed.category || targetCategory,
         tags: tagsString,
         status: "published",
         publishedAt: new Date(),
