@@ -1,8 +1,13 @@
 export function getSiteUrl(): string {
-  let url =
-    process.env.NEXT_PUBLIC_SITE_URL?.trim() ||
-    "https://thearc-raiders.com";
+  if (
+    process.env.NODE_ENV === "production" ||
+    !process.env.NEXT_PUBLIC_SITE_URL ||
+    process.env.NEXT_PUBLIC_SITE_URL.includes("localhost")
+  ) {
+    return "https://thearc-raiders.com";
+  }
 
+  let url = process.env.NEXT_PUBLIC_SITE_URL.trim();
   if (!url.startsWith("http://") && !url.startsWith("https://")) {
     url = `https://${url}`;
   }
