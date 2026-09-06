@@ -2,326 +2,52 @@ const fs = require('fs');
 const path = require('path');
 const { inferCategory } = require('./parse-keywords');
 
-// Let's create the full structured keyword queue
-const rawKeywordsData = [
-  { rank: 1, keyword: "is arc raiders crossplay", difficulty: 0, volume: 21000 },
-  { rank: 2, keyword: "arc raiders down", difficulty: 33, volume: 10000 },
-  { rank: 3, keyword: "where to find mushrooms arc raiders", difficulty: 0, volume: 7800 },
-  { rank: 4, keyword: "what we left behind arc raiders", difficulty: 0, volume: 7600 },
-  { rank: 5, keyword: "where to find prickly pear arc raiders", difficulty: 2, volume: 7200 },
-  { rank: 6, keyword: "is arc raiders free", difficulty: 48, volume: 6600 },
-  { rank: 7, keyword: "where to find olives arc raiders", difficulty: 0, volume: 6400 },
-  { rank: 8, keyword: "where to find rusted gear arc raiders", difficulty: 0, volume: 5100 },
-  { rank: 9, keyword: "is arc raiders cross platform", difficulty: 0, volume: 4900 },
-  { rank: 10, keyword: "where to find sentinel firing core arc raiders", difficulty: 0, volume: 4900 },
-  { rank: 11, keyword: "is arc raiders down", difficulty: 30, volume: 4600 },
-  { rank: 12, keyword: "is arc raiders on xbox", difficulty: 20, volume: 4400 },
-  { rank: 13, keyword: "is arc raiders on game pass", difficulty: 0, volume: 4300 },
-  { rank: 14, keyword: "where to find apricots arc raiders", difficulty: 1, volume: 4200 },
-  { rank: 15, keyword: "where to find motors arc raiders", difficulty: 0, volume: 4200 },
-  { rank: 16, keyword: "where to find industrial battery arc raiders", difficulty: 0, volume: 4100 },
-  { rank: 17, keyword: "how many quests are in arc raiders", difficulty: 0, volume: 4100 },
-  { rank: 18, keyword: "where to find lemons arc raiders", difficulty: 0, volume: 4100 },
-  { rank: 19, keyword: "what is arc raiders", difficulty: 49, volume: 3900 },
-  { rank: 20, keyword: "arc raiders servers down", difficulty: 28, volume: 3500 },
-  { rank: 21, keyword: "where to find light bulbs arc raiders", difficulty: 0, volume: 3500 },
-  { rank: 22, keyword: "where to find humidifiers arc raiders", difficulty: 0, volume: 3400 },
-  { rank: 23, keyword: "how much is arc raiders", difficulty: 0, volume: 3400 },
-  { rank: 24, keyword: "where to find cooling fans arc raiders", difficulty: 0, volume: 3300 },
-  { rank: 25, keyword: "where to find rusted gears arc raiders", difficulty: 0, volume: 3200 },
-  { rank: 26, keyword: "is arc raiders down right now", difficulty: 33, volume: 2800 },
-  { rank: 27, keyword: "where is victory ridge arc raiders", difficulty: 0, volume: 2400 },
-  { rank: 28, keyword: "where to find toasters arc raiders", difficulty: 0, volume: 2300 },
-  { rank: 29, keyword: "arc raiders what we left behind", difficulty: 0, volume: 2200 },
-  { rank: 30, keyword: "where to find laboratory reagents arc raiders", difficulty: 0, volume: 2100 },
-  { rank: 31, keyword: "where to find rusted tools arc raiders", difficulty: 0, volume: 2000 },
-  { rank: 32, keyword: "where to find lemons and apricots arc raiders", difficulty: 0, volume: 1900 },
-  { rank: 33, keyword: "arc raiders what to recycle", difficulty: 0, volume: 1900 },
-  { rank: 34, keyword: "where to get prickly pear arc raiders", difficulty: 0, volume: 1800 },
-  { rank: 35, keyword: "where to get mushrooms arc raiders", difficulty: 0, volume: 1800 },
-  { rank: 36, keyword: "how to upgrade workbench in arc raiders", difficulty: 0, volume: 1800 },
-  { rank: 37, keyword: "when did arc raiders come out", difficulty: 46, volume: 1800 },
-  { rank: 38, keyword: "where to find blueprints arc raiders", difficulty: 4, volume: 1800 },
-  { rank: 39, keyword: "where to get olives arc raiders", difficulty: 0, volume: 1600 },
-  { rank: 40, keyword: "what to sell in arc raiders", difficulty: 0, volume: 1600 },
-  { rank: 41, keyword: "what goes around arc raiders", difficulty: 0, volume: 1600 },
-  { rank: 42, keyword: "where to find prickly pears arc raiders", difficulty: 0, volume: 1600 },
-  { rank: 43, keyword: "how to play arc raiders", difficulty: 3, volume: 1600 },
-  { rank: 44, keyword: "where to get sentinel firing core arc raiders", difficulty: 0, volume: 1600 },
-  { rank: 45, keyword: "can you play arc raiders solo", difficulty: 0, volume: 1500 },
-  { rank: 46, keyword: "when does arc raiders come out", difficulty: 0, volume: 1500 },
-  { rank: 47, keyword: "where to find cat bed arc raiders", difficulty: 0, volume: 1500 },
-  { rank: 48, keyword: "where to find dog collar arc raiders", difficulty: 0, volume: 1500 },
-  { rank: 49, keyword: "is arc raiders cross progression", difficulty: 0, volume: 1400 },
-  { rank: 50, keyword: "how to recycle in arc raiders", difficulty: 0, volume: 1400 },
-  { rank: 51, keyword: "where to find surveyors arc raiders", difficulty: 0, volume: 1400 },
-  { rank: 52, keyword: "arc raiders server down", difficulty: 29, volume: 1400 },
-  { rank: 53, keyword: "where to find power cables arc raiders", difficulty: 0, volume: 1300 },
-  { rank: 54, keyword: "where to find anvil blueprint arc raiders", difficulty: 0, volume: 1300 },
-  { rank: 55, keyword: "how much is arc raiders on ps5", difficulty: 0, volume: 1300 },
-  { rank: 56, keyword: "arc raiders what to sell", difficulty: 0, volume: 1300 },
-  { rank: 57, keyword: "is arc raiders on ps5", difficulty: 21, volume: 1300 },
-  { rank: 58, keyword: "how many quests in arc raiders", difficulty: 0, volume: 1300 },
-  { rank: 59, keyword: "what to recycle arc raiders", difficulty: 0, volume: 1300 },
-  { rank: 60, keyword: "where to find synthesized fuel arc raiders", difficulty: 0, volume: 1300 },
-  { rank: 61, keyword: "where to find flow controller arc raiders", difficulty: 0, volume: 1300 },
-  { rank: 62, keyword: "where to get rusted gears arc raiders", difficulty: 0, volume: 1300 },
-  { rank: 63, keyword: "where to find mechanical components arc raiders", difficulty: 0, volume: 1300 },
-  { rank: 64, keyword: "is arc raiders on ps4", difficulty: 15, volume: 1300 },
-  { rank: 65, keyword: "who made arc raiders", difficulty: 54, volume: 1300 },
-  { rank: 66, keyword: "are arc raiders servers down", difficulty: 27, volume: 1300 },
-  { rank: 67, keyword: "where to find cracked bioscanner arc raiders", difficulty: 0, volume: 1200 },
-  { rank: 68, keyword: "where to find sentinels arc raiders", difficulty: 0, volume: 1200 },
-  { rank: 69, keyword: "is arc raiders cross play", difficulty: 0, volume: 1200 },
-  { rank: 70, keyword: "arc raiders down?", difficulty: 0, volume: 1200 },
-  { rank: 71, keyword: "where to get lemons and apricots arc raiders", difficulty: 2, volume: 1200 },
-  { rank: 72, keyword: "where to find lemon and apricot arc raiders", difficulty: 0, volume: 1100 },
-  { rank: 73, keyword: "how much is arc raiders on xbox", difficulty: 23, volume: 1100 },
-  { rank: 74, keyword: "how many quest are in arc raiders", difficulty: 0, volume: 1100 },
-  { rank: 75, keyword: "where to find surveyor vault arc raiders", difficulty: 0, volume: 1100 },
-  { rank: 76, keyword: "where to get lemons arc raiders", difficulty: 0, volume: 1100 },
-  { rank: 77, keyword: "arc raiders where to find mushrooms", difficulty: 0, volume: 1100 },
-  { rank: 78, keyword: "where to find tempest blueprint arc raiders", difficulty: 0, volume: 1100 },
-  { rank: 79, keyword: "how many quests are there in arc raiders", difficulty: 5, volume: 1100 },
-  { rank: 80, keyword: "where to find bombardier arc raiders", difficulty: 0, volume: 1100 },
-  { rank: 81, keyword: "where to find damaged heat sink arc raiders", difficulty: 0, volume: 1000 },
-  { rank: 82, keyword: "how many players is arc raiders", difficulty: 9, volume: 1000 },
-  { rank: 83, keyword: "can you play arc raiders on xbox one", difficulty: 0, volume: 1000 },
-  { rank: 84, keyword: "where to find leapers arc raiders", difficulty: 0, volume: 1000 },
-  { rank: 85, keyword: "how to get mechanical components arc raiders", difficulty: 0, volume: 1000 },
-  { rank: 86, keyword: "where to find geiger counter arc raiders", difficulty: 0, volume: 1000 },
-  { rank: 87, keyword: "arc raiders safe to recycle", difficulty: 0, volume: 900 },
-  { rank: 88, keyword: "how to upgrade workbench arc raiders", difficulty: 0, volume: 900 },
-  { rank: 89, keyword: "arc raiders where to find blueprints", difficulty: 1, volume: 900 },
-  { rank: 90, keyword: "where to find mushrooms in arc raiders", difficulty: 0, volume: 900 },
-  { rank: 91, keyword: "arc raiders how many players per map", difficulty: 0, volume: 900 },
-  { rank: 92, keyword: "where to find bastion arc raiders", difficulty: 0, volume: 900 },
-  { rank: 93, keyword: "arc raiders where to find lemons", difficulty: 0, volume: 900 },
-  { rank: 94, keyword: "what is max level in arc raiders", difficulty: 0, volume: 900 },
-  { rank: 95, keyword: "where to find apricots in arc raiders", difficulty: 0, volume: 900 },
-  { rank: 96, keyword: "where to get cooling fans arc raiders", difficulty: 0, volume: 900 },
-  { rank: 97, keyword: "where to get mechanical components arc raiders", difficulty: 0, volume: 900 },
-  { rank: 98, keyword: "where to get rusted tools arc raiders", difficulty: 0, volume: 900 },
-  { rank: 99, keyword: "does arc raiders use ai", difficulty: 0, volume: 900 },
-  { rank: 100, keyword: "where to find magneton arc raiders", difficulty: 0, volume: 800 },
-  { rank: 101, keyword: "how to level up workbench arc raiders", difficulty: 0, volume: 800 },
-  { rank: 102, keyword: "where to get prickly pears arc raiders", difficulty: 0, volume: 800 },
-  { rank: 103, keyword: "where to find wires arc raiders", difficulty: 0, volume: 800 },
-  { rank: 104, keyword: "how to do hidden bunker arc raiders", difficulty: 0, volume: 800 },
-  { rank: 105, keyword: "how to kill shredder arc raiders", difficulty: 0, volume: 800 },
-  { rank: 106, keyword: "where to find expired respirator arc raiders", difficulty: 0, volume: 800 },
-  { rank: 107, keyword: "where to find humidifiers in arc raiders", difficulty: 0, volume: 800 },
-  { rank: 108, keyword: "where to find toaster arc raiders", difficulty: 0, volume: 800 },
-  { rank: 109, keyword: "where to find lemons and apricots in arc raiders", difficulty: 0, volume: 800 },
-  { rank: 110, keyword: "where to find olives in arc raiders", difficulty: 0, volume: 800 },
-  { rank: 111, keyword: "arc raiders where to find olives", difficulty: 0, volume: 800 },
-  { rank: 112, keyword: "where to find ion sputter arc raiders", difficulty: 0, volume: 800 },
-  { rank: 113, keyword: "is arc raiders free to play", difficulty: 0, volume: 800 },
-  { rank: 114, keyword: "how does arc raiders matchmaking work", difficulty: 0, volume: 800 },
-  { rank: 115, keyword: "how many gb is arc raiders", difficulty: 0, volume: 700 },
-  { rank: 116, keyword: "when is bird city arc raiders", difficulty: 0, volume: 700 },
-  { rank: 117, keyword: "where to get apricots arc raiders", difficulty: 1, volume: 700 },
-  { rank: 118, keyword: "arc raiders where to find light bulbs", difficulty: 0, volume: 700 },
-  { rank: 119, keyword: "does arc raiders have cross progression", difficulty: 0, volume: 700 },
-  { rank: 120, keyword: "arc raiders what goes around", difficulty: 0, volume: 700 },
-  { rank: 121, keyword: "what recycles into sensors arc raiders", difficulty: 0, volume: 700 },
-  { rank: 122, keyword: "where to find roots arc raiders", difficulty: 0, volume: 700 },
-  { rank: 123, keyword: "where to get rusted gear arc raiders", difficulty: 0, volume: 700 },
-  { rank: 124, keyword: "when is the next arc raiders update", difficulty: 39, volume: 700 },
-  { rank: 125, keyword: "how to get sentinel firing core arc raiders", difficulty: 0, volume: 700 },
-  { rank: 126, keyword: "where to find water filter arc raiders", difficulty: 0, volume: 700 },
-  { rank: 127, keyword: "how to get blueprints arc raiders", difficulty: 1, volume: 700 },
-  { rank: 128, keyword: "arc raiders how to upgrade workbench", difficulty: 0, volume: 700 },
-  { rank: 129, keyword: "where to get industrial batteries arc raiders", difficulty: 0, volume: 700 },
-  { rank: 130, keyword: "what are bastion cells used for arc raiders", difficulty: 0, volume: 700 },
-  { rank: 131, keyword: "how much does arc raiders cost", difficulty: 10, volume: 700 },
-  { rank: 132, keyword: "can you play arc raiders on ps4", difficulty: 2, volume: 600 },
-  { rank: 133, keyword: "where to get motors arc raiders", difficulty: 0, volume: 600 },
-  { rank: 134, keyword: "where to find field crate arc raiders", difficulty: 0, volume: 600 },
-  { rank: 135, keyword: "where is the dam surveillance room arc raiders", difficulty: 0, volume: 600 },
-  { rank: 136, keyword: "arc raiders where to find prickly pear", difficulty: 0, volume: 600 },
-  { rank: 137, keyword: "where to find very comfortable pillow arc raiders", difficulty: 0, volume: 600 },
-  { rank: 138, keyword: "where is the old emp trap arc raiders", difficulty: 0, volume: 600 },
-  { rank: 139, keyword: "where to get olives in arc raiders", difficulty: 0, volume: 600 },
-  { rank: 140, keyword: "where to find magnetron arc raiders", difficulty: 0, volume: 600 },
-  { rank: 141, keyword: "what is a field depot arc raiders", difficulty: 5, volume: 600 },
-  { rank: 142, keyword: "arc raiders deluxe edition worth it", difficulty: 0, volume: 600 },
-  { rank: 143, keyword: "is arc raiders shutting down", difficulty: 0, volume: 600 },
-  { rank: 144, keyword: "arc raiders where to find sentinel firing core", difficulty: 0, volume: 600 },
-  { rank: 145, keyword: "how to get rusted tools arc raiders", difficulty: 0, volume: 600 },
-  { rank: 146, keyword: "where to find blueprints in arc raiders", difficulty: 4, volume: 600 },
-  { rank: 147, keyword: "where to get laboratory reagents arc raiders", difficulty: 0, volume: 600 },
-  { rank: 148, keyword: "where is the field depot in arc raiders", difficulty: 4, volume: 600 },
-  { rank: 149, keyword: "where to get light bulbs arc raiders", difficulty: 0, volume: 600 },
-  { rank: 150, keyword: "how to get simple gun parts arc raiders", difficulty: 0, volume: 600 },
-  { rank: 151, keyword: "where to get synthesized fuel arc raiders", difficulty: 0, volume: 600 },
-  { rank: 152, keyword: "where to find rusted bolts arc raiders", difficulty: 0, volume: 600 },
-  { rank: 153, keyword: "is arc raiders worth it", difficulty: 0, volume: 600 },
-  { rank: 154, keyword: "where to find lemons in arc raiders", difficulty: 0, volume: 600 },
-  { rank: 155, keyword: "what to keep in arc raiders", difficulty: 0, volume: 600 },
-  { rank: 156, keyword: "arc raiders where to find rusted gear", difficulty: 0, volume: 600 },
-  { rank: 157, keyword: "how to play crossplay in arc raiders", difficulty: 0, volume: 600 },
-  { rank: 158, keyword: "arc raiders where to find lemons and apricots", difficulty: 0, volume: 600 },
-  { rank: 159, keyword: "where is the hidden bunker arc raiders", difficulty: 1, volume: 500 },
-  { rank: 160, keyword: "what recycles into springs arc raiders", difficulty: 0, volume: 500 },
-  { rank: 161, keyword: "arc raiders what to keep", difficulty: 0, volume: 500 },
-  { rank: 162, keyword: "does arc raiders wipe", difficulty: 0, volume: 500 },
-  { rank: 163, keyword: "is arc raiders fun solo", difficulty: 0, volume: 500 },
-  { rank: 164, keyword: "where are prickly pears arc raiders", difficulty: 0, volume: 500 },
-  { rank: 165, keyword: "how to kill the queen arc raiders", difficulty: 0, volume: 500 },
-  { rank: 166, keyword: "where to find fried motherboard arc raiders", difficulty: 0, volume: 500 },
-  { rank: 167, keyword: "arc raiders how many quests are there", difficulty: 0, volume: 500 },
-  { rank: 168, keyword: "how to take a photo in arc raiders", difficulty: 0, volume: 500 },
-  { rank: 169, keyword: "how much is arc raiders on steam", difficulty: 0, volume: 500 },
-  { rank: 170, keyword: "where to use dam surveillance key arc raiders", difficulty: 0, volume: 500 },
-  { rank: 171, keyword: "how to kill matriarch arc raiders", difficulty: 0, volume: 500 },
-  { rank: 172, keyword: "arc raiders where to find cooling fans", difficulty: 0, volume: 500 },
-  { rank: 173, keyword: "where to find a magnetron arc raiders", difficulty: 0, volume: 500 },
-  { rank: 174, keyword: "is arc raiders pvp", difficulty: 0, volume: 500 },
-  { rank: 175, keyword: "when is arc raiders update", difficulty: 14, volume: 500 },
-  { rank: 176, keyword: "what is the point of arc raiders", difficulty: 0, volume: 500 },
-  { rank: 177, keyword: "is arc raiders servers down", difficulty: 33, volume: 500 },
-  { rank: 178, keyword: "where to find motors in arc raiders", difficulty: 0, volume: 500 },
-  { rank: 179, keyword: "where to find cooling coils arc raiders", difficulty: 0, volume: 500 },
-  { rank: 180, keyword: "when will arc raiders servers be back up", difficulty: 32, volume: 500 },
-  { rank: 181, keyword: "where to find antiseptic arc raiders", difficulty: 0, volume: 500 },
-  { rank: 182, keyword: "is arc raiders on console", difficulty: 0, volume: 500 },
-  { rank: 183, keyword: "where to use power rod arc raiders", difficulty: 0, volume: 500 },
-  { rank: 184, keyword: "where is broken earth arc raiders", difficulty: 0, volume: 500 },
-  { rank: 185, keyword: "is arc raiders on xbox one", difficulty: 0, volume: 500 },
-  { rank: 186, keyword: "arc raiders where to find motors", difficulty: 0, volume: 500 },
-  { rank: 187, keyword: "how to find blueprints arc raiders", difficulty: 1, volume: 500 },
-  { rank: 188, keyword: "what to sell arc raiders", difficulty: 0, volume: 450 },
-  { rank: 189, keyword: "where is field depot arc raiders", difficulty: 0, volume: 450 },
-  { rank: 190, keyword: "where to find tick pods arc raiders", difficulty: 0, volume: 450 },
-  { rank: 191, keyword: "where does arc raiders take place", difficulty: 0, volume: 450 },
-  { rank: 192, keyword: "what is the max level in arc raiders", difficulty: 0, volume: 450 },
-  { rank: 193, keyword: "what recycles into wires arc raiders", difficulty: 0, volume: 450 },
-  { rank: 194, keyword: "where are field depots in arc raiders", difficulty: 0, volume: 450 },
-  { rank: 195, keyword: "where can i find mushrooms in arc raiders", difficulty: 0, volume: 450 },
-  { rank: 196, keyword: "why is arc raiders down", difficulty: 0, volume: 450 },
-  { rank: 197, keyword: "how to do harvester arc raiders", difficulty: 0, volume: 450 },
-  { rank: 198, keyword: "when is the arc raiders update", difficulty: 0, volume: 450 },
-  { rank: 199, keyword: "where to find film reel arc raiders", difficulty: 0, volume: 450 },
-  { rank: 200, keyword: "where to find magnetic accelerator arc raiders", difficulty: 0, volume: 450 },
-  { rank: 201, keyword: "are the arc raiders servers down", difficulty: 0, volume: 450 },
-  { rank: 202, keyword: "where to get blueprints arc raiders", difficulty: 0, volume: 450 },
-  { rank: 203, keyword: "when is arc raiders wipe", difficulty: 0, volume: 450 },
-  { rank: 204, keyword: "when does the expedition start arc raiders", difficulty: 0, volume: 450 },
-  { rank: 205, keyword: "is arc raiders deluxe edition worth it", difficulty: 0, volume: 450 },
-  { rank: 206, keyword: "arc raiders where to find apricots", difficulty: 0, volume: 450 },
-  { rank: 207, keyword: "how to kill queen arc raiders", difficulty: 0, volume: 450 },
-  { rank: 208, keyword: "how many gigs is arc raiders", difficulty: 0, volume: 450 },
-  { rank: 209, keyword: "how to kill rocketeer arc raiders", difficulty: 0, volume: 450 },
-  { rank: 210, keyword: "is arc raiders a battle royale", difficulty: 0, volume: 450 },
-  { rank: 211, keyword: "what is the best gun in arc raiders", difficulty: 0, volume: 450 },
-  { rank: 212, keyword: "will arc raiders go on sale", difficulty: 0, volume: 450 },
-  { rank: 213, keyword: "how to craft energy ammo arc raiders", difficulty: 0, volume: 450 },
-  { rank: 214, keyword: "where to find battery arc raiders", difficulty: 0, volume: 450 },
-  { rank: 215, keyword: "how to kill leaper arc raiders", difficulty: 0, volume: 450 },
-  { rank: 216, keyword: "will arc raiders be on game pass", difficulty: 0, volume: 450 },
-  { rank: 217, keyword: "where to find bobcat blueprint arc raiders", difficulty: 0, volume: 400 },
-  { rank: 218, keyword: "why does arc raiders keep crashing", difficulty: 0, volume: 400 },
-  { rank: 219, keyword: "what are trinkets for arc raiders", difficulty: 0, volume: 400 },
-  { rank: 220, keyword: "can you play arc raiders on steam deck", difficulty: 0, volume: 400 },
-  { rank: 221, keyword: "is arc raiders good", difficulty: 0, volume: 400 },
-  { rank: 222, keyword: "what are candleberries for arc raiders", difficulty: 0, volume: 400 },
-  { rank: 223, keyword: "where are sentinels arc raiders", difficulty: 0, volume: 400 },
-  { rank: 224, keyword: "where to find music album arc raiders", difficulty: 0, volume: 400 },
-  { rank: 225, keyword: "is arc raiders on gamepass", difficulty: 0, volume: 400 },
-  { rank: 226, keyword: "where to find lightbulbs in arc raiders", difficulty: 0, volume: 400 },
-  { rank: 227, keyword: "how to kill bastion arc raiders", difficulty: 0, volume: 400 },
-  { rank: 228, keyword: "is arc raiders free on xbox", difficulty: 0, volume: 400 },
-  { rank: 229, keyword: "where is the compass arc raiders", difficulty: 0, volume: 400 },
-  { rank: 230, keyword: "where to find fireball burner arc raiders", difficulty: 0, volume: 400 },
-  { rank: 231, keyword: "where to find rotary encoder arc raiders", difficulty: 0, volume: 400 },
-  { rank: 232, keyword: "how to see stash value arc raiders", difficulty: 0, volume: 400 },
-  { rank: 233, keyword: "where to find wolfpack blueprint arc raiders", difficulty: 0, volume: 400 },
-  { rank: 234, keyword: "how many blueprints are in arc raiders", difficulty: 0, volume: 400 },
-  { rank: 235, keyword: "where can i find olives in arc raiders", difficulty: 0, volume: 400 },
-  { rank: 236, keyword: "how does arc raiders work", difficulty: 0, volume: 400 },
-  { rank: 237, keyword: "how to get anvil blueprint arc raiders", difficulty: 0, volume: 400 },
-  { rank: 238, keyword: "what to do with candleberries arc raiders", difficulty: 0, volume: 400 },
-  { rank: 239, keyword: "when is arc raiders expedition", difficulty: 0, volume: 400 },
-  { rank: 240, keyword: "is arc raiders down?", difficulty: 0, volume: 400 },
-  { rank: 241, keyword: "what is a fireball burner arc raiders", difficulty: 0, volume: 400 },
-  { rank: 242, keyword: "when is the expedition arc raiders", difficulty: 3, volume: 400 },
-  { rank: 243, keyword: "where to find rusted shut medical kit arc raiders", difficulty: 0, volume: 400 },
-  { rank: 244, keyword: "where is the dam staff room arc raiders", difficulty: 0, volume: 400 },
-  { rank: 245, keyword: "what to do with trinkets arc raiders", difficulty: 0, volume: 400 },
-  { rank: 246, keyword: "when is the arc raiders wipe", difficulty: 0, volume: 400 },
-  { rank: 247, keyword: "what is the objective of arc raiders", difficulty: 0, volume: 400 },
-  { rank: 248, keyword: "how do trials work arc raiders", difficulty: 0, volume: 400 },
-  { rank: 249, keyword: "where to find arc circuitry arc raiders", difficulty: 0, volume: 400 },
-  { rank: 250, keyword: "where is the emp trap arc raiders", difficulty: 0, volume: 400 },
-  { rank: 251, keyword: "where is the galleria sign arc raiders", difficulty: 0, volume: 400 },
-  { rank: 252, keyword: "is arc raiders servers down right now", difficulty: 0, volume: 350 },
-  { rank: 253, keyword: "where to get industrial battery arc raiders", difficulty: 0, volume: 350 },
-  { rank: 254, keyword: "how to get rusted gears in arc raiders", difficulty: 0, volume: 350 },
-  { rank: 255, keyword: "where to get humidifier arc raiders", difficulty: 0, volume: 350 },
-  { rank: 256, keyword: "where to find prickly pears in arc raiders", difficulty: 0, volume: 350 },
-  { rank: 257, keyword: "where to find sensors arc raiders", difficulty: 0, volume: 350 },
-  { rank: 258, keyword: "what do trinkets do in arc raiders", difficulty: 0, volume: 350 },
-  { rank: 259, keyword: "arc raiders where to find humidifiers", difficulty: 0, volume: 350 },
-  { rank: 260, keyword: "how to do the harvester arc raiders", difficulty: 0, volume: 350 },
-  { rank: 261, keyword: "what is a sentinel in arc raiders", difficulty: 0, volume: 350 },
-  { rank: 262, keyword: "where to find field depot in arc raiders", difficulty: 0, volume: 350 },
-  { rank: 263, keyword: "arc raiders what to keep and what to recycle", difficulty: 0, volume: 350 },
-  { rank: 264, keyword: "where to get fireball burner arc raiders", difficulty: 0, volume: 350 },
-  { rank: 265, keyword: "what do you do in arc raiders", difficulty: 0, volume: 350 },
-  { rank: 266, keyword: "where is dam surveillance arc raiders", difficulty: 0, volume: 350 },
-  { rank: 267, keyword: "how to get synthesized fuel arc raiders", difficulty: 0, volume: 350 },
-  { rank: 268, keyword: "what is per shot dispersion arc raiders", difficulty: 0, volume: 350 },
-  { rank: 269, keyword: "what anti cheat does arc raiders use", difficulty: 0, volume: 350 },
-  { rank: 270, keyword: "where to get power cables arc raiders", difficulty: 0, volume: 350 },
-  { rank: 271, keyword: "when does arc raiders release", difficulty: 0, volume: 350 },
-  { rank: 272, keyword: "where can i find prickly pears arc raiders", difficulty: 0, volume: 350 },
-  { rank: 273, keyword: "arc raiders how to get blueprints", difficulty: 0, volume: 350 },
-  { rank: 274, keyword: "how to kill bombardier arc raiders", difficulty: 0, volume: 350 },
-  { rank: 275, keyword: "how to get mechanical components in arc raiders", difficulty: 0, volume: 350 },
-  { rank: 276, keyword: "where to get toasters arc raiders", difficulty: 0, volume: 350 },
-  { rank: 277, keyword: "where is the jkv building in arc raiders", difficulty: 0, volume: 350 },
-  { rank: 278, keyword: "is arc raiders on switch", difficulty: 0, volume: 350 },
-  { rank: 279, keyword: "where to find motor arc raiders", difficulty: 0, volume: 350 },
-  { rank: 280, keyword: "arc raiders what to recycle or sell", difficulty: 0, volume: 350 },
-  { rank: 281, keyword: "how many quest in arc raiders", difficulty: 0, volume: 350 },
-  { rank: 282, keyword: "where to find a flow controller arc raiders", difficulty: 0, volume: 350 },
-  { rank: 283, keyword: "when will arc raiders go on sale", difficulty: 0, volume: 350 },
-  { rank: 284, keyword: "where to get surveyor vault arc raiders", difficulty: 0, volume: 350 },
-  { rank: 285, keyword: "where can i find rusted gears in arc raiders", difficulty: 0, volume: 350 },
-  { rank: 286, keyword: "does arc raiders have a campaign", difficulty: 0, volume: 350 },
-  { rank: 287, keyword: "where to find keys arc raiders", difficulty: 0, volume: 350 },
-  { rank: 288, keyword: "when does the new arc raiders map come out", difficulty: 0, volume: 350 },
-  { rank: 289, keyword: "where to get anvil blueprint arc raiders", difficulty: 0, volume: 350 },
-  { rank: 290, keyword: "where to get cracked bioscanner arc raiders", difficulty: 0, volume: 350 },
-  { rank: 291, keyword: "is arc raiders single player", difficulty: 0, volume: 350 },
-  { rank: 292, keyword: "where to find electrical components arc raiders", difficulty: 0, volume: 350 },
-  { rank: 293, keyword: "what recycles into processors arc raiders", difficulty: 0, volume: 350 },
-  { rank: 294, keyword: "where do sentinels spawn arc raiders", difficulty: 0, volume: 350 },
-  { rank: 295, keyword: "where to use patrol car key arc raiders", difficulty: 0, volume: 350 },
-  { rank: 296, keyword: "can i play arc raiders on xbox one", difficulty: 0, volume: 350 },
-  { rank: 297, keyword: "when does the expedition end arc raiders", difficulty: 0, volume: 350 },
-  { rank: 298, keyword: "where to find metal brackets arc raiders", difficulty: 0, volume: 350 },
-  { rank: 299, keyword: "where do bastions spawn arc raiders", difficulty: 0, volume: 350 },
-  { rank: 300, keyword: "where to find water filters arc raiders", difficulty: 0, volume: 350 }
-];
+const csvPath = 'C:/Users/Lapzone.pk/.gemini/antigravity/brain/aab5a8a1-fe71-411b-ba18-f426e92a95b6/.user_uploaded/media_1788702915243.csv';
 
-// Sort: Difficulty 0 first, then by Volume descending
-const sortedQueue = rawKeywordsData
-  .map(item => ({
-    id: `kw-${item.rank}`,
-    keyword: item.keyword.trim(),
-    difficulty: item.difficulty,
-    volume: item.volume,
-    category: inferCategory(item.keyword),
-    status: 'pending', // 'pending' | 'published'
-  }))
-  .sort((a, b) => {
-    if (a.difficulty !== b.difficulty) {
-      return a.difficulty - b.difficulty;
+if (!fs.existsSync(csvPath)) {
+  console.error('CSV file not found at:', csvPath);
+  process.exit(1);
+}
+
+const rawContent = fs.readFileSync(csvPath, 'utf8');
+const cleaned = rawContent.replace(/\0/g, '');
+const lines = cleaned.split(/\r?\n/).filter(Boolean);
+
+const keywords = [];
+const seenKeywords = new Set();
+
+for (let i = 1; i < lines.length; i++) {
+  const line = lines[i];
+  const parts = line.split('\t').map(p => p.replace(/^"+|"+$/g, '').trim());
+  if (parts.length >= 5) {
+    const rank = parseInt(parts[0], 10) || i;
+    const keyword = parts[1];
+    const difficulty = parseInt(parts[3], 10) || 0;
+    const volume = parseInt(parts[4], 10) || 0;
+    const parentKeyword = parts[7] || keyword;
+
+    if (keyword && !seenKeywords.has(keyword.toLowerCase())) {
+      seenKeywords.add(keyword.toLowerCase());
+      keywords.push({
+        id: `kw-${rank}`,
+        keyword: keyword,
+        difficulty: difficulty,
+        volume: volume,
+        parentKeyword: parentKeyword,
+        category: inferCategory(keyword),
+        status: 'pending'
+      });
     }
-    return b.volume - a.volume;
-  });
+  }
+}
+
+// Sort: Lowest Difficulty first, then Highest Volume first
+keywords.sort((a, b) => {
+  if (a.difficulty !== b.difficulty) {
+    return a.difficulty - b.difficulty;
+  }
+  return b.volume - a.volume;
+});
 
 const dataDir = path.join(__dirname, '..', 'data');
 if (!fs.existsSync(dataDir)) {
@@ -330,8 +56,19 @@ if (!fs.existsSync(dataDir)) {
 
 fs.writeFileSync(
   path.join(dataDir, 'keywords.json'),
-  JSON.stringify(sortedQueue, null, 2),
+  JSON.stringify(keywords, null, 2),
   'utf-8'
 );
 
-console.log(`Successfully parsed and saved ${sortedQueue.length} prioritized keywords to data/keywords.json`);
+const kd0 = keywords.filter(k => k.difficulty === 0);
+const kd1_5 = keywords.filter(k => k.difficulty >= 1 && k.difficulty <= 5);
+const kd6_15 = keywords.filter(k => k.difficulty >= 6 && k.difficulty <= 15);
+const kd16plus = keywords.filter(k => k.difficulty > 15);
+
+console.log('=== KEYWORD IMPORT SUMMARY ===');
+console.log('Total unique keywords loaded:', keywords.length);
+console.log('KD = 0 (Immediate Low-Hanging Fruit):', kd0.length);
+console.log('KD 1 - 5 (Easy Ranking Targets):', kd1_5.length);
+console.log('KD 6 - 15 (Medium Competition):', kd6_15.length);
+console.log('KD > 15 (Long-term Authority):', kd16plus.length);
+console.log('==============================');
