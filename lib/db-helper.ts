@@ -2,11 +2,11 @@ import prisma from "./prisma";
 
 export const SAMPLE_FALLBACK_POSTS = [
   {
-    id: "post-arc-raiders",
+    id: "post-arc-raiders-ps5",
     title: "ARC Raiders on PS5: Everything You Need to Know About Gameplay, Release Date, and Mechanics",
     slug: "arc-raiders-ps5-gameplay-release-date-guide",
-    category: "Technology",
-    tags: "ARC Raiders, PS5, Gaming, Extraction Shooter, Embark Studios, PlayStation 5, Unreal Engine 5",
+    category: "PS5 & Console Gaming",
+    tags: "ARC Raiders, PS5, Gaming, Extraction Shooter, Embark Studios, PlayStation 5, DualSense",
     excerpt: "Get the complete breakdown of ARC Raiders on PS5: gameplay loop, PvPvE extraction mechanics, Unreal Engine 5 visuals, DualSense haptics, and launch expectations.",
     coverImageUrl: "https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&w=1200&q=80",
     status: "published",
@@ -63,8 +63,6 @@ Powered by Unreal Engine 5, ARC Raiders delivers breathtaking atmospheric lighti
 
 ## 4. Key Gameplay Mechanics You Need to Master
 
-To survive and thrive in ARC Raiders on PS5, players will need to master several core systems:
-
 \`\`\`
 Core Game Loop:
 [ Underground Hub: Speranza ] ➡️ [ Scavenge Wasteland Surface ] ➡️ [ Fight ARC & Rival Squads ] ➡️ [ Extract Successfully ]
@@ -80,134 +78,206 @@ Core Game Loop:
 ## 5. Release Date, Price, and Platforms
 
 - **Release Window**: Scheduled for **2025** on PlayStation 5, Xbox Series X|S, and PC.
-- **Business Model**: Premium Release priced at **$39.99 USD** (avoiding aggressive pay-to-win microtransactions in favor of rewarding progression).
+- **Business Model**: Premium Release priced at **$39.99 USD** (avoiding pay-to-win microtransactions in favor of rewarding progression).
 - **Crossplay & Matchmaking**: Expected full crossplay support across PS5, PC, and Xbox.
-
----
-
-## 6. Pro Tips for PS5 Players Preparing for Launch
-
-> **Pro Tip 1: Prioritize Survival Over Greed**
-> If your backpack is full of rare crafting materials, don't hunt down that extra Titan. Head straight for extraction. A safe extraction with modest loot beats losing everything.
-
-> **Pro Tip 2: Use Gadgets Creatively**
-> Use explosive mines to cover your extraction perimeter, or throw lure grenades to redirect aggressive ARC machines toward rival squads.
-
-> **Pro Tip 3: Communicate with Your Squad**
-> Clear voice comms and pinging enemy positions gives your team an enormous tactical edge in multi-team firefights.
 
 ---
 
 ## Conclusion
 
-**ARC Raiders on PS5** is shaping up to be one of the most exciting extraction shooters in recent memory. With its jaw-dropping visual presentation, tactical PvPvE combat, and rich atmosphere, it promises to deliver hours of heart-pounding sci-fi survival gameplay.
-
-Stay tuned as more playtests and official gameplay deep dives are released by Embark Studios!
+**ARC Raiders on PS5** is shaping up to be one of the most exciting extraction shooters in recent memory. Stay tuned as more playtests and official gameplay deep dives are released by Embark Studios!
 `,
   },
   {
-    id: "sample-1",
-    title: "The Rise of Agentic AI: How Autonomous Agents Are Transforming Software Development",
-    slug: "rise-of-agentic-ai-autonomous-agents",
-    category: "Technology",
-    tags: "AI, Software Engineering, Automation, Future Tech",
-    excerpt: "Explore how autonomous AI agents are moving beyond basic code completion to multi-step reasoning, pair programming, and full application architecture.",
-    coverImageUrl: "https://images.unsplash.com/photo-1485827404703-89b55fcc595e?auto=format&fit=crop&w=1200&q=80",
+    id: "post-arc-raiders-weapons",
+    title: "ARC Raiders Weapons & Gadgets Meta: Best Guns, Perks, and Survival Loadouts",
+    slug: "arc-raiders-best-weapons-gadgets-loadout-guide",
+    category: "Weapons & Loadouts",
+    tags: "ARC Raiders, Weapons, Meta, Loadouts, Guns, Gadgets, Combat",
+    excerpt: "Discover the most lethal weapons, essential gadgets, and optimal survival loadouts to conquer both ARC robotic titans and rival players.",
+    coverImageUrl: "https://images.unsplash.com/photo-1563089145-599997674d42?auto=format&fit=crop&w=1200&q=80",
     status: "published",
     createdAt: new Date(Date.now() - 3600000),
     publishedAt: new Date(Date.now() - 3600000),
     updatedAt: new Date(Date.now() - 3600000),
-    content: `# The Rise of Agentic AI: How Autonomous Agents Are Transforming Software Development
+    content: `# ARC Raiders Weapons & Gadgets Meta: Best Guns, Perks, and Survival Loadouts
 
-Artificial Intelligence in software engineering has rapidly evolved from simple syntax autocomplete into sophisticated, autonomous coding agents capable of multi-step planning, debugging, and end-to-end execution.
+In the dangerous wastelands of ARC Raiders, your weapon loadout is the only thing standing between a successful extraction with high-tier loot and waking up empty-handed back in the Speranza medical bay.
 
-## From Copilots to Autonomous Collaborators
+Because ARC Raiders is a **PvPvE extraction shooter**, your loadout must balance two distinct combat challenges:
+1. **Armor-Piercing Heavy Damage**: Needed to crack mechanized ARC Titan plates and surveillance drones.
+2. **High-Handling Rapid Firepower**: Essential for winning close-quarters firefights against rival player squads.
 
-Early developer tools focused on single-line suggestions. While helpful, they still required developers to break down large problems into tiny manual steps. 
+---
 
-Agentic AI changes this paradigm:
-- **Autonomous Planning**: Analyzing complex multi-file codebases and drafting architectural roadmaps.
-- **Self-Correction**: Executing terminal commands, parsing error traces, and adjusting code iteratively.
-- **Context-Aware Tooling**: Interacting with databases, git repositories, and cloud deployments seamlessly.
+## 1. Top Tier Weapon Classes in ARC Raiders
 
-> "The true breakthrough of modern AI systems is not just understanding natural language, but taking purposeful actions within developer environments."
+### S-Tier: Assault Rifles & Energy Carbines
+- **Role**: Versatile, mid-to-long range precision with manageable recoil.
+- **Best Use**: Excellent for engaging enemy Raiders across open fields and stripping weak-spot sensors off flying ARC probes.
 
-## Key Pillars of Modern AI Agents
+### S-Tier: Heavy Anti-Materiel Rifles & Rocket Launchers
+- **Role**: Heavy burst anti-armor artillery.
+- **Best Use**: Mandatory for taking down colossal ARC Titans before their area-of-effect laser sweeps wipe your entire squad.
 
-1. **Deep Context Windows**: Processing entire repositories to understand dependencies.
-2. **Tool Invocation**: Reading files, running test suites, and querying APIs directly.
-3. **Structured Verification**: Continuously testing modifications against requirements before shipping.
+### A-Tier: High-Fire-Rate SMGs & Tactical Shotguns
+- **Role**: Extreme close-quarters lethal burst.
+- **Best Use**: Defending extraction beacons inside ruined bunker corridors and tight loot vaults.
 
-## The Future Landscape
+---
 
-As models become more efficient and capable, developer workflows will increasingly focus on system architecture, prompt strategy, and validation rather than boilerplate coding. The future belongs to engineers who leverage these agentic superpowers effectively.
+## 2. Essential Survival Gadgets
+
+In Embark Studios' physics-driven combat sandbox, gadgets provide unparalleled verticality and escape options:
+
+| Gadget Name | Tactical Purpose | Best Situation |
+| :--- | :--- | :--- |
+| **Grapple Hook** | High-speed vertical repositioning | Escaping ground shockwaves & scaling sniper perches |
+| **EMP Disruptor Grenade** | Disables ARC robot shields & sensors | Stun-locking aggressive machines |
+| **Deployable Hardlight Shield** | Instant cover during extraction | Surviving extraction point ambushes |
+| **Acoustic Lure Drone** | Emits fake gunfire audio frequencies | Directing ARC patrols toward rival player squads |
+
+---
+
+## 3. Recommended Starter & Pro Loadouts
+
+### The "Solo Ghost" Loadout (Stealth & Scavenge)
+- **Primary**: Suppressed Energy DMR
+- **Secondary**: Compact Burst SMG
+- **Gadgets**: Smoke Grenades + Grapple Hook + Stagger Mine
+- **Strategy**: Avoid direct Titan fights, pick off isolated scouts, and sneak away with rare materials.
+
+### The "Titan Buster" Squad Loadout (Heavy Boss Farming)
+- **Primary**: Heavy Armor-Piercing Rifle
+- **Secondary**: Micro-Rocket Launcher
+- **Gadgets**: EMP Grenades + Repair Beacon + Hardlight Cover
+- **Strategy**: Focus on Titan weakpoints while squadmates provide perimeter defense against greedy third-party squads.
 `,
   },
   {
-    id: "sample-2",
-    title: "Mastering Personal Finance: 5 High-Impact Rules for Building Long-Term Wealth",
-    slug: "mastering-personal-finance-5-rules-building-wealth",
-    category: "Finance & Money",
-    tags: "Finance, Investing, Wealth Building, Budgeting",
-    excerpt: "Discover the five foundational rules of personal finance that turn everyday income into sustainable, compounding long-term wealth.",
-    coverImageUrl: "https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?auto=format&fit=crop&w=1200&q=80",
+    id: "post-speranza-lore",
+    title: "Speranza Colony & Wasteland Lore: How Extraction, Trading, and Contracts Work",
+    slug: "speranza-colony-arc-raiders-extraction-contracts-guide",
+    category: "Guides & Walkthroughs",
+    tags: "Speranza, Lore, Extraction, Crafting, Contracts, ARC Raiders",
+    excerpt: "Explore the underground sanctuary of Speranza: how Raider contracts work, black market trading, crafting benches, and wasteland lore.",
+    coverImageUrl: "https://images.unsplash.com/photo-1538481199705-c710c4e965fc?auto=format&fit=crop&w=1200&q=80",
     status: "published",
     createdAt: new Date(Date.now() - 7200000),
     publishedAt: new Date(Date.now() - 7200000),
     updatedAt: new Date(Date.now() - 7200000),
-    content: `# Mastering Personal Finance: 5 High-Impact Rules for Building Long-Term Wealth
+    content: `# Speranza Colony & Wasteland Lore: How Extraction, Trading, and Contracts Work
 
-Building wealth isn't about finding a lucky shortcut; it is about establishing disciplined, compounding habits that work reliably over decades.
+Deep beneath the ruined surface of Earth lies **Speranza**—humanity's final underground bastion. In ARC Raiders, Speranza serves as your central social hub, workshop, and marketplace between dangerous surface expeditions.
 
-## 1. Pay Yourself First
+---
 
-Before paying bills or allocating discretionary spending, automatically route 15–25% of your income into investments and emergency savings. Treat your financial future as non-negotiable.
+## 1. What is Speranza?
 
-## 2. Eliminate High-Interest Debt
+When the mechanized invaders arrived from the cosmos, Earth's surface defenses collapsed rapidly. The survivors banded together to build Speranza within subterranean caverns and geothermal vaults.
 
-Credit card debt and high-interest loans are wealth destroyers. Use the **Avalanche method** (paying off highest interest rates first) to eliminate expensive debt rapidly.
+Life in Speranza is rugged and resource-starved. Everything from clean water filtration components to weapon modifications must be harvested from the surface wasteland by brave **Raiders**.
 
-## 3. Leverage the Magic of Compound Interest
+---
 
-Time in the market consistently beats timing the market. Consistently investing in low-cost, broad-market index funds allows compounding returns to accelerate your net worth.
+## 2. Key Facilities Inside Speranza
 
-## 4. Build a 3 to 6 Month Emergency Buffer
+### 🛠️ The Workshop & Crafting Benches
+- Convert scrap metal, optical sensors, and power cells into high-grade weapon attachments.
+- Craft medical stimpacks, EMP modules, and ammunition packs.
 
-Having liquid cash stored in a high-yield savings account protects you from liquidating long-term investments during unexpected market downturns or life emergencies.
+### 📋 The Contract Dispatch Board
+- Accept high-reward faction missions (e.g. *"Retrieve power core from the Sector 4 Radar Station"*).
+- Completing contracts unlocks faction reputation, granting access to rare blueprint schematics.
 
-## 5. Keep Lifestyle Inflation in Check
+### ⚖️ The Underground Black Market
+- Buy and sell scavenged electronics, rare metals, and surplus weapons.
+- High-risk items extracted from deep bunkers fetch astronomical prices on the trader exchange.
 
-As your career progresses and income rises, resist the temptation to inflate your cost of living proportionally. Instead, increase your savings rate to accelerate financial independence.
+---
+
+## 3. Surface Expedition Prep Checklist
+
+Before taking the lift to the surface:
+1. **Check Contract Requirements**: Ensure you have the tools needed for your active mission.
+2. **Equip Insurance & Safe Pockets**: Store your most precious crafting blueprints in protected secure containers.
+3. **Form Squad Alliances**: Group up with trusted teammates to maximize extraction success rates.
 `,
   },
   {
-    id: "sample-3",
-    title: "The Science of High-Quality Sleep: How to Optimize Your Rest for Peak Energy",
-    slug: "science-of-high-quality-sleep-peak-energy",
-    category: "Health & Wellness",
-    tags: "Sleep, Health, Biohacking, Wellness, Recovery",
-    excerpt: "Unlock restorative deep sleep with evidence-backed protocols: circadian alignment, temperature regulation, and screen-time management.",
-    coverImageUrl: "https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?auto=format&fit=crop&w=1200&q=80",
+    id: "post-titan-bosses",
+    title: "ARC Raiders Titan Boss Guide: Weakpoints, Squad Tactics, and Elite Loot Drops",
+    slug: "arc-raiders-titan-boss-fight-weakpoints-loot-guide",
+    category: "ARC Raiders News",
+    tags: "Boss Fight, Titan, ARC Machines, Weakpoints, Tactics, Guide",
+    excerpt: "Learn how to defeat colossal ARC Titans: identifying glowing heat vents, dodging orbital strikes, coordinating squad fire, and securing elite cores.",
+    coverImageUrl: "https://images.unsplash.com/photo-1511512578047-dfb367046420?auto=format&fit=crop&w=1200&q=80",
     status: "published",
     createdAt: new Date(Date.now() - 10800000),
     publishedAt: new Date(Date.now() - 10800000),
     updatedAt: new Date(Date.now() - 10800000),
-    content: `# The Science of High-Quality Sleep: How to Optimize Your Rest for Peak Energy
+    content: `# ARC Raiders Titan Boss Guide: Weakpoints, Squad Tactics, and Elite Loot Drops
 
-Sleep is the ultimate biological performance enhancer. Quality rest improves memory consolidation, hormone balance, immune function, and mental clarity.
+The signature encounters in ARC Raiders are the colossal **ARC Titans**—gargantuan, multi-legged robotic war machines that patrol the wasteland surface. Defeating a Titan offers the rarest crafting materials in the game, but requires synchronized teamwork and tactical precision.
 
-## Understanding Your Circadian Rhythm
+---
 
-Your body's internal clock is governed primarily by light exposure. When photon receptors in your eyes detect sunlight in the morning, cortisol rises and melatonin production shuts down, setting a timer for restful sleep later that night.
+## 1. Understanding Titan Mechanics
 
-### Morning Protocols
-- View natural sunlight within 30 minutes of waking (10–15 minutes).
-- Delay caffeine intake by 90 minutes to prevent the afternoon energy crash.
+Titans are heavily armored and immune to conventional small-arms gunfire on their main chassis. To deal lethal damage, squads must target **Exposed Heat Sinks** and **Joint Actuators**.
 
-### Evening Protocols
-- Dim ambient lighting 2 hours prior to bed.
-- Avoid blue light from screens or use blue-blocking filters.
-- Keep your bedroom cool (around 65°F / 18°C) to facilitate core body temperature drop.
+### Key Weakpoint Locations:
+- **Rear Cooling Vents (Glowing Orange)**: Open temporarily after the Titan unleashes its heavy laser cannon.
+- **Knee Joint Servo Motors**: Concentrated fire on these joints causes the Titan to collapse into a vulnerable stagger state.
+- **Optical Sensor Array**: Blinding the Titan's sensors forces it to fire wildly, giving your squad time to reposition.
+
+---
+
+## 2. Dealing with the "Third-Party" Threat
+
+The greatest danger when fighting a Titan isn't the machine itself—it's **rival player squads** waiting nearby to steal your kill and loot your corpses.
+
+> **Tactical Rule**: Always assign one squad member to **Overwatch**. While two players bombard the Titan, the third player scans surrounding ridgelines for approaching enemy Raiders.
+`,
+  },
+  {
+    id: "post-pc-optimization",
+    title: "Unreal Engine 5 & PC Performance Guide for ARC Raiders: Optimal Settings for Max FPS",
+    slug: "arc-raiders-pc-settings-unreal-engine-5-fps-guide",
+    category: "PC Specs & Performance",
+    tags: "PC, Unreal Engine 5, FPS, Optimization, Graphics, Benchmark, DLSS",
+    excerpt: "Maximize your framerate and visual clarity in ARC Raiders: optimal Unreal Engine 5 settings, DLSS/FSR configurations, and latency reduction tips.",
+    coverImageUrl: "https://images.unsplash.com/photo-1587202372775-e229f172b9d7?auto=format&fit=crop&w=1200&q=80",
+    status: "published",
+    createdAt: new Date(Date.now() - 14400000),
+    publishedAt: new Date(Date.now() - 14400000),
+    updatedAt: new Date(Date.now() - 14400000),
+    content: `# Unreal Engine 5 & PC Performance Guide for ARC Raiders: Optimal Settings for Max FPS
+
+Built on **Unreal Engine 5**, ARC Raiders features stunning global illumination (Lumen), high-geometry micro-polygons (Nanite), and dynamic weather. However, in a fast-paced extraction shooter where split-second reaction times determine survival, **high framerates and low input latency are paramount**.
+
+Here is how to optimize your PC settings for competitive clarity and maximum FPS.
+
+---
+
+## 1. Recommended Graphics Settings for Competitive Play
+
+| Setting | Recommended Value | Performance Impact |
+| :--- | :--- | :--- |
+| **Resolution Scale** | 100% Native | Neutral |
+| **Upscaling (NVIDIA)** | DLSS Quality / Balanced | +25-40% FPS Gain |
+| **Upscaling (AMD)** | FSR 3.1 Quality | +25-35% FPS Gain |
+| **Global Illumination** | High (Lumen Software) | Heavy (Set Medium for +15% FPS) |
+| **Shadow Quality** | Medium | +12% FPS Gain with minimal visual loss |
+| **Reflections** | Low / Screen Space | Saves substantial GPU VRAM |
+| **Motion Blur & Depth of Field** | **OFF** | Crucial for spotting distant enemy movement |
+
+---
+
+## 2. Input Latency & System Responsiveness
+
+- **NVIDIA Reflex / AMD Anti-Lag**: Turn **ON + Boost**. This minimizes render queue buffering and delivers instant mouse response during frantic firefights.
+- **Display Mode**: Always run in **Exclusive Fullscreen** to bypass Windows Desktop Window Manager composition delays.
 `,
   },
 ];

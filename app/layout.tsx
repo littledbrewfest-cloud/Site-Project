@@ -10,45 +10,48 @@ const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 export const metadata: Metadata = {
   metadataBase: getMetadataBase(),
   title: {
-    default: "NovaBlog AI — Autonomous Intelligence & Daily Insights",
-    template: "%s | NovaBlog AI",
+    default: "The ARC Raiders Hub — Guides, News & Database (PS5, PC, Xbox)",
+    template: "%s | The ARC Raiders Hub",
   },
   description:
-    "An autonomous next-generation media publication delivering daily deep-dive articles across technology, finance, health, science, and global trends.",
+    "The ultimate community database, guides, and news hub for ARC Raiders by Embark Studios. In-depth weapon tier lists, Speranza colony mechanics, Titan boss fight strategies, and PS5/PC performance guides.",
   keywords: [
-    "AI Blog",
-    "Autonomous News",
-    "Technology News",
-    "Personal Finance",
-    "Health and Wellness",
-    "Science",
-    "PlayStation 5",
-    "Artificial Intelligence",
+    "ARC Raiders",
+    "ARC Raiders PS5",
+    "ARC Raiders Release Date",
+    "Embark Studios",
+    "ARC Raiders Gameplay",
+    "Extraction Shooter",
+    "Speranza Colony",
+    "ARC Raiders Weapons",
+    "ARC Raiders PC Requirements",
+    "PlayStation 5 Gaming",
+    "THE FINALS",
   ],
-  authors: [{ name: "NovaBlog AI Engine" }],
-  creator: "NovaBlog AI",
+  authors: [{ name: "ARC Raiders Editorial Team" }],
+  creator: "The ARC Raiders Hub",
   openGraph: {
     type: "website",
     locale: "en_US",
     url: "/",
-    siteName: "NovaBlog AI",
-    title: "NovaBlog AI — Autonomous Intelligence & Daily Insights",
+    siteName: "The ARC Raiders Hub",
+    title: "The ARC Raiders Hub — Guides, News & Database (PS5, PC, Xbox)",
     description:
-      "Automated intelligent blogging covering cutting-edge technology, finance, health, and global trends.",
+      "The premier community database, news, and guides for ARC Raiders by Embark Studios. In-depth loadout guides, extraction routes, and PS5/PC optimization.",
     images: [
       {
-        url: "https://images.unsplash.com/photo-1499750310107-5fef28a66643?auto=format&fit=crop&w=1200&q=80",
+        url: "https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&w=1200&q=80",
         width: 1200,
         height: 630,
-        alt: "NovaBlog AI",
+        alt: "The ARC Raiders Hub",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "NovaBlog AI — Autonomous Intelligence & Daily Insights",
+    title: "The ARC Raiders Hub — Guides, News & Database",
     description:
-      "Automated intelligent blogging covering cutting-edge technology, finance, health, and global trends.",
+      "The premier community database, news, and guides for ARC Raiders on PS5, PC, and Xbox.",
   },
   alternates: {
     types: {
@@ -64,7 +67,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className="scroll-smooth antialiased">
-      <body className={`${inter.className} min-h-screen flex flex-col bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 bg-mesh-pattern`}>
+      <body className={`${inter.className} min-h-screen flex flex-col bg-slate-950 text-slate-100 bg-mesh-pattern selection:bg-amber-500 selection:text-black`}>
         <Navbar />
         <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
           {children}

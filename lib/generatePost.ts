@@ -10,8 +10,8 @@ export interface GeneratedArticle {
   category: string;
   excerpt: string;
   tags: string[];
-  content: string;
   imageKeywords: string;
+  content: string;
 }
 
 /**
@@ -19,7 +19,7 @@ export interface GeneratedArticle {
  */
 async function selectNextCategory(): Promise<string> {
   const categories = await getActiveCategories();
-  if (categories.length === 0) return "Technology";
+  if (categories.length === 0) return "ARC Raiders News";
 
   // Check the last few published posts to pick the least recently used category
   const recentPosts = await prisma.post.findMany({
@@ -37,7 +37,7 @@ async function selectNextCategory(): Promise<string> {
     }
   }
 
-  // If all categories were used, pick the one least recently used (the one furthest back or random)
+  // If all categories were used, pick the one least recently used
   const lastUsed = recentCategories[0];
   const remaining = categories.filter((c) => c !== lastUsed);
   return remaining.length > 0
@@ -46,7 +46,7 @@ async function selectNextCategory(): Promise<string> {
 }
 
 /**
- * Generates an SEO-optimized, engaging blog post using Google Gemini API.
+ * Generates an SEO-optimized, engaging blog post using Google Gemini API tailored for thearc-raiders.com.
  */
 export async function generateBlogPost(customCategory?: string): Promise<{
   success: boolean;
@@ -65,7 +65,6 @@ export async function generateBlogPost(customCategory?: string): Promise<{
     const category = customCategory || (await selectNextCategory());
     const genAI = new GoogleGenerativeAI(apiKey);
 
-    // Use gemini-1.5-flash for fast responses and free tier compatibility
     const model = genAI.getGenerativeModel({
       model: "gemini-1.5-flash",
       generationConfig: {
@@ -74,27 +73,32 @@ export async function generateBlogPost(customCategory?: string): Promise<{
       },
     });
 
-    const prompt = `You are an expert content creator, journalist, and SEO specialist.
-Write a comprehensive, engaging, well-researched, and original blog post in the category: "${category}".
+    const prompt = `You are the lead gaming journalist and database strategist for "The ARC Raiders Hub" (thearc-raiders.com), the premier publication for ARC Raiders (by Embark Studios) and the next-generation extraction shooter genre.
+
+Write a high-ranking, 900–1400 word in-depth article in the category: "${category}".
+
+Niche Domain Context:
+- Main Focus: ARC Raiders (Embark Studios, Speranza underground colony, PvPvE extraction mechanics, robotic ARC Titans, weapons, gadgets, playtests, 2025 release).
+- Platforms: PlayStation 5 (DualSense haptics, Tempest 3D audio, 4K/60fps), PC (Unreal Engine 5, Nanite, Lumen, DLSS/FSR), and Xbox Series X|S.
+- Broader Category Synergy: Extraction shooters, competitive tactics, weapon meta, and Unreal Engine 5 gaming optimization.
 
 Topic guidelines:
-- Choose a fresh, highly relevant, and fascinating topic within "${category}".
-- Write a captivating, click-worthy SEO title (50-65 characters).
-- Write a concise meta description / excerpt (140-160 characters).
-- Choose 3 to 5 relevant tags (single words or short phrases).
-- Provide 2-3 search keywords for finding a high-quality cover photo.
-- Write a detailed, insightful, and well-structured 800–1200 word article in clean Markdown.
-- The article body must use proper Markdown formatting: # Main Title, ## Section Headings, ### Subheadings, bullet points, numbered lists, blockquotes, and bold text for emphasis.
-- Ensure the tone is authoritative yet accessible, engaging, and modern.
+- Choose an ultra-relevant, intriguing, high-search-intent gaming topic within "${category}".
+- Write a punchy, SEO-optimized title (50-65 characters) that gamers search for on Google.
+- Write a captivating meta description / excerpt (140-160 characters).
+- Choose 4 to 6 relevant tags (e.g. ARC Raiders, PS5, Embark Studios, Weapons, Guide, Extraction Shooter).
+- Provide 2-3 search keywords for finding a striking sci-fi/gaming cover image.
+- Structure the article thoroughly with Markdown: # Main Title, ## Major Sections, ### Tactical Subheadings, bulleted pro-tips, comparison tables, and highlighted blockquotes.
+- Ensure the tone is authoritative, exciting, tactical, and deeply knowledgeable about extraction shooter game design.
 
 Return the response STRICTLY as valid JSON matching this schema:
 {
-  "title": "Compelling Blog Title Here",
+  "title": "Compelling Article Title Here",
   "category": "${category}",
   "excerpt": "A concise and engaging summary of the article between 140 and 160 characters.",
-  "tags": ["Tag1", "Tag2", "Tag3", "Tag4"],
-  "imageKeywords": "two or three keywords describing ideal cover image",
-  "content": "Full markdown content of the 800-1200 word article here..."
+  "tags": ["ARC Raiders", "PS5", "Embark Studios", "Gaming"],
+  "imageKeywords": "futuristic robot combat sci-fi soldier",
+  "content": "Full markdown content of the 900-1400 word article here..."
 }`;
 
     const result = await model.generateContent(prompt);
@@ -108,7 +112,6 @@ Return the response STRICTLY as valid JSON matching this schema:
     try {
       parsed = JSON.parse(responseText);
     } catch {
-      // Fallback: extract json between markdown backticks if present
       const jsonMatch = responseText.match(/```(?:json)?\s*([\s\S]*?)\s*```/);
       if (jsonMatch && jsonMatch[1]) {
         parsed = JSON.parse(jsonMatch[1]);
@@ -121,14 +124,14 @@ Return the response STRICTLY as valid JSON matching this schema:
       throw new Error("Generated content is missing required fields (title or content).");
     }
 
-    // Fetch relevant cover image (Unsplash API or curated fallback)
-    const searchQuery = parsed.imageKeywords || `${parsed.category} ${parsed.tags?.[0] || ""}`;
+    // Fetch relevant cover image
+    const searchQuery = parsed.imageKeywords || `sci-fi gaming robot ${parsed.tags?.[0] || ""}`;
     const coverImageUrl = await getTopicImage(searchQuery, parsed.category || category);
 
     // Generate unique slug
     const slug = await createUniqueSlug(parsed.title);
 
-    // Format tags as comma-separated string
+    // Format tags
     const tagsString = Array.isArray(parsed.tags) ? parsed.tags.join(", ") : (parsed.tags || "");
 
     // Save to SQLite database
