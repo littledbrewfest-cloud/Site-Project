@@ -1,19 +1,16 @@
 import { NextResponse } from "next/server";
-import prisma from "@/lib/prisma";
+import { getSafePublishedPosts } from "@/lib/db-helper";
+import { getSiteUrl } from "@/lib/site-url";
 
 export const dynamic = "force-dynamic";
 
 export async function GET() {
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
+  const siteUrl = getSiteUrl();
 
-  const posts = await prisma.post.findMany({
-    where: { status: "published" },
-    orderBy: { createdAt: "desc" },
-    take: 30,
-  });
+  const posts = await getSafePublishedPosts();
 
   const escapeXml = (unsafe: string) => {
-    return unsafe.replace(/[<>&'"]/g, (c) => {
+    return (unsafe || "").replace(/[<>&'"]/g, (c) => {
       switch (c) {
         case "<":
           return "&lt;";
@@ -32,6 +29,7 @@ export async function GET() {
   };
 
   const feedItems = posts
+    .slice(0, 30)
     .map((post) => {
       const postUrl = `${siteUrl}/blog/${post.slug}`;
       const pubDate = post.publishedAt

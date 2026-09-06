@@ -1,7 +1,7 @@
 import React from "react";
 import Link from "next/link";
 import type { Metadata } from "next";
-import prisma from "@/lib/prisma";
+import { getSafePublishedPosts } from "@/lib/db-helper";
 import { getActiveCategories } from "@/lib/settings";
 import PostCard from "@/components/PostCard";
 import CategoryBadge from "@/components/CategoryBadge";
@@ -37,16 +37,11 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
     (c) => c.toLowerCase() === decodedCategory.toLowerCase()
   ) || decodedCategory;
 
-  // Query posts matching this category
-  const posts = await prisma.post.findMany({
-    where: {
-      status: "published",
-      category: {
-        equals: matchedCategory,
-      },
-    },
-    orderBy: { createdAt: "desc" },
-  });
+  // Query posts matching this category safely
+  const allPublished = await getSafePublishedPosts();
+  const posts = allPublished.filter(
+    (p) => p.category.toLowerCase() === matchedCategory.toLowerCase()
+  );
 
   return (
     <div className="space-y-10 max-w-7xl mx-auto">

@@ -1,5 +1,5 @@
 import React from "react";
-import prisma from "@/lib/prisma";
+import { getSafePublishedPosts } from "@/lib/db-helper";
 import { getActiveCategories } from "@/lib/settings";
 import BlogExplorer from "@/components/BlogExplorer";
 import { Sparkles, TrendingUp, Cpu, ShieldCheck } from "lucide-react";
@@ -8,18 +8,22 @@ export const revalidate = 60; // ISR revalidate every 60s
 
 export default async function HomePage() {
   const [posts, categories] = await Promise.all([
-    prisma.post.findMany({
-      where: { status: "published" },
-      orderBy: { createdAt: "desc" },
-    }),
+    getSafePublishedPosts(),
     getActiveCategories(),
   ]);
 
   // Serialize dates for Client Component
   const serializedPosts = posts.map((p) => ({
-    ...p,
-    publishedAt: p.publishedAt ? p.publishedAt.toISOString() : null,
-    createdAt: p.createdAt.toISOString(),
+    id: p.id,
+    title: p.title,
+    slug: p.slug,
+    excerpt: p.excerpt,
+    content: p.content,
+    coverImageUrl: p.coverImageUrl,
+    category: p.category,
+    tags: p.tags,
+    publishedAt: p.publishedAt ? (typeof p.publishedAt === "string" ? p.publishedAt : p.publishedAt.toISOString()) : null,
+    createdAt: typeof p.createdAt === "string" ? p.createdAt : p.createdAt.toISOString(),
   }));
 
   return (

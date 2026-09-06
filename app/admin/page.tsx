@@ -1,7 +1,7 @@
 import React from "react";
 import { redirect } from "next/navigation";
 import { isAuthenticated } from "@/lib/auth";
-import prisma from "@/lib/prisma";
+import { getSafePublishedPosts } from "@/lib/db-helper";
 import { getActiveCategories } from "@/lib/settings";
 import AdminDashboardClient from "./AdminDashboardClient";
 
@@ -13,9 +13,7 @@ export default async function AdminPage() {
   }
 
   const [posts, categories] = await Promise.all([
-    prisma.post.findMany({
-      orderBy: { createdAt: "desc" },
-    }),
+    getSafePublishedPosts(),
     getActiveCategories(),
   ]);
 
@@ -27,8 +25,8 @@ export default async function AdminPage() {
     category: p.category,
     tags: p.tags,
     status: p.status,
-    createdAt: p.createdAt.toISOString(),
-    publishedAt: p.publishedAt ? p.publishedAt.toISOString() : null,
+    createdAt: typeof p.createdAt === "string" ? p.createdAt : p.createdAt.toISOString(),
+    publishedAt: p.publishedAt ? (typeof p.publishedAt === "string" ? p.publishedAt : p.publishedAt.toISOString()) : null,
   }));
 
   return (

@@ -2,6 +2,7 @@ import React from "react";
 import { notFound, redirect } from "next/navigation";
 import { isAuthenticated } from "@/lib/auth";
 import prisma from "@/lib/prisma";
+import { getSafePublishedPosts } from "@/lib/db-helper";
 import { getActiveCategories } from "@/lib/settings";
 import PostEditClient from "./PostEditClient";
 
@@ -18,16 +19,25 @@ export default async function PostEditPage({ params }: PostEditPageProps) {
     redirect("/admin/login");
   }
 
-  const [post, categories] = await Promise.all([
-    prisma.post.findUnique({
+  let post = null;
+  try {
+    post = await prisma.post.findUnique({
       where: { id: params.id },
-    }),
-    getActiveCategories(),
-  ]);
+    });
+  } catch {
+    // Fallback search
+  }
+
+  if (!post) {
+    const fallbackList = await getSafePublishedPosts();
+    post = fallbackList.find((p) => p.id === params.id || p.slug === params.id);
+  }
 
   if (!post) {
     notFound();
   }
+
+  const categories = await getActiveCategories();
 
   const serializedPost = {
     id: post.id,

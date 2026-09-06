@@ -1,21 +1,20 @@
 import { MetadataRoute } from "next";
-import prisma from "@/lib/prisma";
+import { getSafePublishedPosts } from "@/lib/db-helper";
 import { getActiveCategories } from "@/lib/settings";
+import { getSiteUrl } from "@/lib/site-url";
+
+export const dynamic = "force-dynamic";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
+  const siteUrl = getSiteUrl();
 
-  // Fetch all published posts
-  const posts = await prisma.post.findMany({
-    where: { status: "published" },
-    select: { slug: true, updatedAt: true },
-  });
-
+  // Fetch all published posts safely
+  const posts = await getSafePublishedPosts();
   const categories = await getActiveCategories();
 
   const postUrls: MetadataRoute.Sitemap = posts.map((post) => ({
     url: `${siteUrl}/blog/${post.slug}`,
-    lastModified: post.updatedAt,
+    lastModified: post.updatedAt ? new Date(post.updatedAt) : new Date(),
     changeFrequency: "weekly",
     priority: 0.8,
   }));

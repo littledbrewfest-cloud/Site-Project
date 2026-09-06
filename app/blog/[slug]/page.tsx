@@ -5,11 +5,14 @@ import Link from "next/link";
 import type { Metadata } from "next";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
-import prisma from "@/lib/prisma";
+import { getSafePostBySlug, getSafePublishedPosts, SAMPLE_FALLBACK_POSTS } from "@/lib/db-helper";
 import CategoryBadge from "@/components/CategoryBadge";
 import PostCard from "@/components/PostCard";
 import { Calendar, Clock, ArrowLeft, Tag, Sparkles } from "lucide-react";
 import { DEFAULT_FALLBACK_IMAGE } from "@/lib/constants";
+import { getSiteUrl } from "@/lib/site-url";
+
+export const dynamic = "force-dynamic";
 
 interface PostPageProps {
   params: {
@@ -17,77 +20,67 @@ interface PostPageProps {
   };
 }
 
-export const revalidate = 60; // Revalidate every 60s
-
 export async function generateMetadata({ params }: PostPageProps): Promise<Metadata> {
-  const post = await prisma.post.findUnique({
-    where: { slug: params.slug },
-  });
+  try {
+    const post = (await getSafePostBySlug(params?.slug || "")) || SAMPLE_FALLBACK_POSTS[0];
 
-  if (!post) {
+    const siteUrl = getSiteUrl();
+    const postUrl = `${siteUrl}/blog/${post.slug}`;
+    const imageUrl = post.coverImageUrl || DEFAULT_FALLBACK_IMAGE;
+
     return {
-      title: "Post Not Found",
+      title: post.title,
+      description: post.excerpt,
+      keywords: post.tags ? post.tags.split(",").map((t) => t.trim()) : [],
+      authors: [{ name: "NovaBlog AI" }],
+      alternates: {
+        canonical: postUrl,
+      },
+      openGraph: {
+        type: "article",
+        url: postUrl,
+        title: post.title,
+        description: post.excerpt,
+        publishedTime: post.publishedAt ? new Date(post.publishedAt).toISOString() : undefined,
+        modifiedTime: post.updatedAt ? new Date(post.updatedAt).toISOString() : undefined,
+        section: post.category,
+        tags: post.tags ? post.tags.split(",").map((t) => t.trim()) : [],
+        images: [
+          {
+            url: imageUrl,
+            width: 1200,
+            height: 630,
+            alt: post.title,
+          },
+        ],
+      },
+      twitter: {
+        card: "summary_large_image",
+        title: post.title,
+        description: post.excerpt,
+        images: [imageUrl],
+      },
+    };
+  } catch {
+    return {
+      title: "Article | NovaBlog AI",
     };
   }
-
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
-  const postUrl = `${siteUrl}/blog/${post.slug}`;
-  const imageUrl = post.coverImageUrl || DEFAULT_FALLBACK_IMAGE;
-
-  return {
-    title: post.title,
-    description: post.excerpt,
-    keywords: post.tags ? post.tags.split(",").map((t) => t.trim()) : [],
-    authors: [{ name: "NovaBlog AI" }],
-    alternates: {
-      canonical: postUrl,
-    },
-    openGraph: {
-      type: "article",
-      url: postUrl,
-      title: post.title,
-      description: post.excerpt,
-      publishedTime: post.publishedAt ? post.publishedAt.toISOString() : undefined,
-      modifiedTime: post.updatedAt.toISOString(),
-      section: post.category,
-      tags: post.tags ? post.tags.split(",").map((t) => t.trim()) : [],
-      images: [
-        {
-          url: imageUrl,
-          width: 1200,
-          height: 630,
-          alt: post.title,
-        },
-      ],
-    },
-    twitter: {
-      card: "summary_large_image",
-      title: post.title,
-      description: post.excerpt,
-      images: [imageUrl],
-    },
-  };
 }
 
 export default async function BlogPostPage({ params }: PostPageProps) {
-  const post = await prisma.post.findUnique({
-    where: { slug: params.slug },
-  });
+  const slug = params?.slug ? String(params.slug) : "";
+  const post = await getSafePostBySlug(slug);
 
-  if (!post || post.status !== "published") {
+  if (!post) {
     notFound();
   }
 
-  // Fetch related posts from the same category
-  const relatedPosts = await prisma.post.findMany({
-    where: {
-      category: post.category,
-      id: { not: post.id },
-      status: "published",
-    },
-    take: 3,
-    orderBy: { createdAt: "desc" },
-  });
+  // Fetch all published posts for related section
+  const allPublished = await getSafePublishedPosts();
+  const relatedPosts = allPublished
+    .filter((p) => p.category.toLowerCase() === post.category.toLowerCase() && p.slug !== post.slug)
+    .slice(0, 3);
 
   const formattedDate = post.publishedAt
     ? new Date(post.publishedAt).toLocaleDateString("en-US", {
@@ -101,7 +94,7 @@ export default async function BlogPostPage({ params }: PostPageProps) {
         year: "numeric",
       });
 
-  const wordCount = post.content.split(/\s+/).length;
+  const wordCount = post.content ? post.content.split(/\s+/).length : 500;
   const readTime = Math.max(1, Math.ceil(wordCount / 200));
   const coverUrl = post.coverImageUrl || DEFAULT_FALLBACK_IMAGE;
   const tagsList = post.tags
@@ -111,7 +104,7 @@ export default async function BlogPostPage({ params }: PostPageProps) {
         .filter(Boolean)
     : [];
 
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
+  const siteUrl = getSiteUrl();
 
   // JSON-LD Structured Data Schema for SEO
   const jsonLd = {
@@ -120,8 +113,8 @@ export default async function BlogPostPage({ params }: PostPageProps) {
     headline: post.title,
     description: post.excerpt,
     image: coverUrl,
-    datePublished: post.publishedAt ? post.publishedAt.toISOString() : post.createdAt.toISOString(),
-    dateModified: post.updatedAt.toISOString(),
+    datePublished: post.publishedAt ? new Date(post.publishedAt).toISOString() : new Date(post.createdAt).toISOString(),
+    dateModified: post.updatedAt ? new Date(post.updatedAt).toISOString() : new Date().toISOString(),
     author: {
       "@type": "Organization",
       name: "NovaBlog AI Engine",
@@ -169,7 +162,7 @@ export default async function BlogPostPage({ params }: PostPageProps) {
             <span className="text-slate-300 dark:text-slate-700">•</span>
             <div className="flex items-center gap-1.5 text-xs sm:text-sm text-slate-500 dark:text-slate-400">
               <Calendar className="w-4 h-4" />
-              <time dateTime={post.createdAt.toISOString()}>{formattedDate}</time>
+              <time dateTime={new Date(post.createdAt).toISOString()}>{formattedDate}</time>
             </div>
             <span className="text-slate-300 dark:text-slate-700">•</span>
             <div className="flex items-center gap-1.5 text-xs sm:text-sm text-slate-500 dark:text-slate-400">
