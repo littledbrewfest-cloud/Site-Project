@@ -1,0 +1,44 @@
+{
+  "name": "auto-blog",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "cron": "node scripts/cron-worker.js",
+    "seed": "npx tsx prisma/seed.ts"
+  },
+  "prisma": {
+    "seed": "npx tsx prisma/seed.ts"
+  },
+  "dependencies": {
+    "@google/generative-ai": "^0.24.1",
+    "@prisma/client": "5.22.0",
+    "clsx": "^2.1.1",
+    "dotenv": "^17.4.2",
+    "lucide-react": "^1.41.0",
+    "next": "14.2.35",
+    "node-cron": "^4.6.0",
+    "react": "^18",
+    "react-dom": "^18",
+    "react-markdown": "^10.1.0",
+    "remark-gfm": "^4.0.1",
+    "tailwind-merge": "^3.6.0"
+  },
+  "devDependencies": {
+    "@tailwindcss/typography": "^0.5.20",
+    "@types/node": "^20",
+    "@types/node-cron": "^3.0.11",
+    "@types/react": "^18",
+    "@types/react-dom": "^18",
+    "eslint": "^8",
+    "eslint-config-next": "14.2.35",
+    "postcss": "^8",
+    "prisma": "5.22.0",
+    "tailwindcss": "^3.4.1",
+    "tsx": "^4.23.13",
+    "typescript": "^5"
+  }
+}
