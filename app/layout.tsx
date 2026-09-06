@@ -58,6 +58,9 @@ export const metadata: Metadata = {
       "application/rss+xml": "/rss.xml",
     },
   },
+  verification: {
+    google: "BrTIRXxCklNpGRA9SgpsaQzuQWOsF0WBuRZPEKeoOr8",
+  },
 };
 
 export default function RootLayout({
