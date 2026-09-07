@@ -1,29 +1,28 @@
-# 🚀 NovaBlog AI — Autonomous Auto-Blogging Platform
+# 🚀 The ARC Raiders HUB — Tactical Gaming Intel Platform
 
-NovaBlog AI is a production-ready, fully automated blogging platform built with **Next.js 14 (App Router)**, **TypeScript**, **Tailwind CSS**, **Prisma ORM (SQLite)**, and **Google Gemini AI**.
+The ARC Raiders HUB (`thearc-raiders.com`) is a production-ready, fully automated gaming intelligence and guides platform built with **Next.js 14 (App Router)**, **TypeScript**, **Tailwind CSS (Dark Tactical UI)**, **Prisma ORM (SQLite)**, and **Google Gemini AI**.
 
-It autonomously writes, formats in Markdown, enriches with SEO metadata, pairs with Unsplash photography, and publishes engaging, high-quality blog posts on a recurring schedule across diverse trending topics—with zero manual writing required.
+It autonomously researches, writes 1,200–1,800+ word masterclass guides, formats with Markdown comparison tables, enriches with SEO metadata & FAQ schemas, and publishes engaging, high-ranking content for ARC Raiders on PS5, PC, and Xbox Series X|S.
 
 ---
 
 ## 🌟 Key Features
 
-- 🤖 **Autonomous AI Content Engine**:
-  - Automatically rotates across categories (*Technology, Health & Wellness, Finance & Money, Lifestyle, Science, World Trends, Productivity*).
-  - Uses Google Gemini API (`gemini-1.5-flash` or `gemini-2.0-flash`) on the **free tier**.
-  - Generates SEO-optimized titles, 800–1200 word Markdown articles, 150-character meta descriptions, and relevant tags.
-  - Automatically pairs articles with high-resolution imagery via Unsplash API with automatic curated fallbacks.
+- 🤖 **Vanguard AI Content Engine**:
+  - Automatically targets 1,000+ zero-KD search queries from the verified master keyword sheet (`data/keywords.json`).
+  - Uses Google Gemini API (`gemini-1.5-flash` or `gemini-2.0-flash`) on the free tier.
+  - Generates comprehensive 1,200–1,800+ word tactical guides complete with comparison markdown tables, gameplay steps, damage stats, and FAQ schema.
   
 - ⏱️ **Dual Scheduling System**:
-  - **Vercel Cron** (`vercel.json`) for seamless zero-maintenance cloud scheduling (configured for twice daily).
-  - **Node-Cron Worker** (`scripts/cron-worker.js`) for self-hosted VPS or local development (`npm run cron`).
+  - **Vercel Cron** (`vercel.json`) configured for multiple automated daily dispatches.
+  - **Node-Cron Worker** (`scripts/cron-worker.js`) for local development or background automation.
   - Protected endpoint (`/api/cron/generate`) secured by `CRON_SECRET`.
 
-- 💻 **Public Blog Frontend**:
-  - **Homepage**: Responsive grid with featured story, real-time client-side search, category filter, reading time estimates, and publication badges.
-  - **/blog/[slug]**: Beautiful prose Markdown reader with OpenGraph tags, Twitter Cards, and schema.org `BlogPosting` JSON-LD structured data.
-  - **/category/[category]**: Category archives with breadcrumbs.
-  - **SEO Feeds**: Dynamic `/sitemap.xml`, `/robots.txt`, and full `/rss.xml` feed.
+- 💻 **Dark Sci-Fi Tactical Frontend**:
+  - 100% Dark Mode (`#070b14` void slate, amber `#f59e0b`, radiant orange `#ea580c`, cyber cyan).
+  - Responsive markdown comparison matrices, callout boxes, and tactical index.
+  - Category archives, real-time live search, reading time, and related guides.
+  - Full SEO optimization: dynamic `/sitemap.xml`, `/robots.txt`, `/rss.xml`, and schema.org `BlogPosting` + `FAQPage` JSON-LD.
 
 - 🛡️ **Admin Dashboard (`/admin`)**:
   - Password-protected with session cookie authentication (`ADMIN_PASSWORD`).

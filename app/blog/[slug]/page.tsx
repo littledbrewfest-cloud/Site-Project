@@ -36,7 +36,7 @@ export async function generateMetadata({ params }: PostPageProps): Promise<Metad
       title: post.title,
       description: post.excerpt,
       keywords: post.tags ? post.tags.split(",").map((t) => t.trim()) : [],
-      authors: [{ name: "NovaBlog AI" }],
+      authors: [{ name: "The ARC Raiders Editorial Staff" }],
       alternates: {
         canonical: postUrl,
       },
@@ -67,7 +67,7 @@ export async function generateMetadata({ params }: PostPageProps): Promise<Metad
     };
   } catch {
     return {
-      title: "Article | NovaBlog AI",
+      title: "Tactical Intel Article | The ARC Raiders Hub",
     };
   }
 }
@@ -122,11 +122,11 @@ export default async function BlogPostPage({ params }: PostPageProps) {
     dateModified: post.updatedAt ? new Date(post.updatedAt).toISOString() : new Date().toISOString(),
     author: {
       "@type": "Organization",
-      name: "NovaBlog AI Engine",
+      name: "The ARC Raiders Editorial Staff",
     },
     publisher: {
       "@type": "Organization",
-      name: "NovaBlog AI",
+      name: "The ARC Raiders Hub",
       logo: {
         "@type": "ImageObject",
         url: `${siteUrl}/favicon.ico`,
@@ -154,18 +154,18 @@ export default async function BlogPostPage({ params }: PostPageProps) {
       <div className="max-w-6xl mx-auto space-y-12">
         {/* Breadcrumb Navigation */}
         <nav className="flex items-center gap-2 text-xs font-semibold text-slate-400">
-          <Link href="/" className="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
+          <Link href="/" className="hover:text-amber-400 transition-colors">
             Home
           </Link>
-          <ChevronRight className="w-3.5 h-3.5" />
+          <ChevronRight className="w-3.5 h-3.5 text-slate-600" />
           <Link
             href={`/category/${encodeURIComponent(post.category.toLowerCase())}`}
-            className="hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+            className="hover:text-amber-400 transition-colors"
           >
             {post.category}
           </Link>
-          <ChevronRight className="w-3.5 h-3.5" />
-          <span className="text-slate-600 dark:text-slate-300 truncate max-w-xs sm:max-w-md">
+          <ChevronRight className="w-3.5 h-3.5 text-slate-600" />
+          <span className="text-slate-300 truncate max-w-xs sm:max-w-md">
             {post.title}
           </span>
         </nav>
@@ -174,47 +174,47 @@ export default async function BlogPostPage({ params }: PostPageProps) {
         <header className="space-y-6 max-w-4xl">
           <div className="flex flex-wrap items-center gap-3">
             <CategoryBadge category={post.category} />
-            <span className="text-slate-300 dark:text-slate-700">•</span>
-            <div className="flex items-center gap-1.5 text-xs sm:text-sm text-slate-500 dark:text-slate-400">
-              <Calendar className="w-4 h-4 text-blue-500" />
+            <span className="text-slate-700">•</span>
+            <div className="flex items-center gap-1.5 text-xs sm:text-sm text-slate-400">
+              <Calendar className="w-4 h-4 text-amber-500" />
               <time dateTime={new Date(post.createdAt).toISOString()}>{formattedDate}</time>
             </div>
-            <span className="text-slate-300 dark:text-slate-700">•</span>
-            <div className="flex items-center gap-1.5 text-xs sm:text-sm text-slate-500 dark:text-slate-400">
-              <Clock className="w-4 h-4 text-indigo-500" />
+            <span className="text-slate-700">•</span>
+            <div className="flex items-center gap-1.5 text-xs sm:text-sm text-slate-400">
+              <Clock className="w-4 h-4 text-orange-400" />
               <span>{readTime} min read ({wordCount} words)</span>
             </div>
           </div>
 
-          <h1 className="text-3xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-slate-950 dark:text-white leading-[1.15]">
+          <h1 className="text-3xl sm:text-5xl lg:text-6xl font-black tracking-tight text-white leading-[1.15] uppercase">
             {post.title}
           </h1>
 
-          <p className="text-lg sm:text-2xl text-slate-600 dark:text-slate-300 leading-relaxed font-normal">
+          <p className="text-lg sm:text-2xl text-slate-300 leading-relaxed font-normal">
             {post.excerpt}
           </p>
 
           {/* Author Badge */}
-          <div className="flex items-center gap-3 pt-4 border-t border-slate-200/80 dark:border-slate-800/80">
-            <div className="w-10 h-10 rounded-2xl bg-gradient-to-tr from-blue-600 to-indigo-600 text-white flex items-center justify-center font-bold text-sm shadow-md shadow-blue-500/20">
-              AI
+          <div className="flex items-center gap-3 pt-4 border-t border-slate-800">
+            <div className="w-10 h-10 rounded-2xl bg-gradient-to-tr from-amber-600 to-orange-600 text-white flex items-center justify-center font-bold text-sm shadow-md shadow-amber-500/20">
+              ARC
             </div>
             <div>
               <div className="flex items-center gap-1.5">
-                <span className="font-bold text-sm text-slate-900 dark:text-white">
-                  NovaBlog Autonomous Engine
+                <span className="font-bold text-sm text-white">
+                  Speranza Field Intelligence Archive
                 </span>
-                <CheckCircle2 className="w-4 h-4 text-blue-500" />
+                <CheckCircle2 className="w-4 h-4 text-amber-400" />
               </div>
               <p className="text-xs text-slate-400">
-                Synthesized via Google Gemini AI • Fact-Checked Pipeline
+                Verified Embark Studios PvPvE Meta & Surface Recon Intel
               </p>
             </div>
           </div>
         </header>
 
         {/* Featured Cover Image */}
-        <div className="relative aspect-video w-full rounded-[2rem] overflow-hidden shadow-2xl bg-slate-100 dark:bg-slate-800 border border-slate-200/60 dark:border-slate-800/60">
+        <div className="relative aspect-video w-full rounded-[2rem] overflow-hidden shadow-2xl bg-slate-900 border border-slate-800">
           <Image
             src={coverUrl}
             alt={post.title}
@@ -232,25 +232,45 @@ export default async function BlogPostPage({ params }: PostPageProps) {
             {/* Top Share Widget */}
             <ArticleActions title={post.title} url={postFullUrl} />
 
-            {/* Markdown Body */}
+            {/* Markdown Body with auto IDs on Headings for Table of Contents */}
             <article className="prose prose-slate lg:prose-lg dark:prose-invert max-w-none">
-              <ReactMarkdown remarkPlugins={[remarkGfm]}>
+              <ReactMarkdown
+                remarkPlugins={[remarkGfm]}
+                components={{
+                  h2: ({ children }) => {
+                    const text = String(children);
+                    const id = text
+                      .toLowerCase()
+                      .replace(/[^\w\s-]/g, "")
+                      .replace(/\s+/g, "-");
+                    return <h2 id={id} className="scroll-mt-24">{children}</h2>;
+                  },
+                  h3: ({ children }) => {
+                    const text = String(children);
+                    const id = text
+                      .toLowerCase()
+                      .replace(/[^\w\s-]/g, "")
+                      .replace(/\s+/g, "-");
+                    return <h3 id={id} className="scroll-mt-24">{children}</h3>;
+                  },
+                }}
+              >
                 {post.content}
               </ReactMarkdown>
             </article>
 
             {/* Tags Section */}
             {tagsList.length > 0 && (
-              <div className="pt-8 border-t border-slate-200 dark:border-slate-800 space-y-3">
+              <div className="pt-8 border-t border-slate-800 space-y-3">
                 <h3 className="text-xs font-bold uppercase tracking-wider text-slate-400 flex items-center gap-1.5">
-                  <Tag className="w-3.5 h-3.5" />
-                  Related Keywords & Topics
+                  <Tag className="w-3.5 h-3.5 text-amber-400" />
+                  Related ARC Raiders Topics
                 </h3>
                 <div className="flex flex-wrap gap-2">
                   {tagsList.map((tag) => (
                     <span
                       key={tag}
-                      className="px-3 py-1.5 bg-slate-100 dark:bg-slate-800/80 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 rounded-xl text-xs font-semibold transition-colors border border-slate-200/60 dark:border-slate-700/60"
+                      className="px-3 py-1.5 bg-slate-900/90 hover:bg-slate-800 text-slate-300 rounded-xl text-xs font-semibold transition-colors border border-slate-800"
                     >
                       #{tag}
                     </span>
@@ -273,29 +293,29 @@ export default async function BlogPostPage({ params }: PostPageProps) {
             {/* Table of Contents */}
             <TableOfContents content={post.content || ""} />
 
-            {/* Author Profile Spotlight */}
-            <div className="p-6 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800/80 shadow-sm space-y-4">
+            {/* Field Recon Dossier Spotlight */}
+            <div className="p-6 rounded-3xl bg-slate-900/90 border border-slate-800 shadow-xl space-y-4">
               <div className="flex items-center gap-3">
-                <div className="w-12 h-12 rounded-2xl bg-gradient-to-tr from-blue-600 via-indigo-600 to-purple-600 text-white flex items-center justify-center font-bold text-base shadow-md shadow-blue-500/25">
+                <div className="w-12 h-12 rounded-2xl bg-gradient-to-tr from-amber-600 via-orange-600 to-rose-600 text-white flex items-center justify-center font-bold text-base shadow-md shadow-amber-500/25">
                   <Sparkles className="w-6 h-6" />
                 </div>
                 <div>
-                  <h4 className="font-extrabold text-sm text-slate-900 dark:text-white">
-                    NovaBlog AI Engine
+                  <h4 className="font-extrabold text-sm text-white">
+                    ARC Raiders Field Intel
                   </h4>
-                  <p className="text-[11px] text-blue-600 dark:text-blue-400 font-semibold">
-                    Autonomous Intelligence
+                  <p className="text-[11px] text-amber-400 font-semibold font-mono">
+                    Speranza Tactical Unit
                   </p>
                 </div>
               </div>
 
-              <p className="text-xs text-slate-500 leading-relaxed">
-                This article was researched, synthesized, and published autonomously using Google Gemini 1.5 Flash structured reasoning models and verified news indexing.
+              <p className="text-xs text-slate-400 leading-relaxed">
+                Comprehensive database records, weapon damage benchmarks, extract point coordinates, and tactical playbooks verified for PlayStation 5, PC, and Xbox.
               </p>
 
-              <div className="pt-3 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between text-xs text-slate-400 font-medium">
-                <span>Model: Gemini Flash</span>
-                <span className="text-emerald-500 font-bold">● Active 24/7</span>
+              <div className="pt-3 border-t border-slate-800 flex items-center justify-between text-xs text-slate-400 font-medium font-mono">
+                <span>Database: v2026.1</span>
+                <span className="text-emerald-400 font-bold">● Surface Live</span>
               </div>
             </div>
           </aside>
@@ -303,20 +323,20 @@ export default async function BlogPostPage({ params }: PostPageProps) {
 
         {/* Related Posts Section */}
         {relatedPosts.length > 0 && (
-          <section className="pt-16 border-t border-slate-200 dark:border-slate-800 space-y-8">
+          <section className="pt-16 border-t border-slate-800 space-y-8">
             <div className="flex items-center justify-between">
               <div>
-                <h3 className="text-2xl font-extrabold text-slate-900 dark:text-white">
+                <h3 className="text-2xl font-extrabold text-white">
                   Continue Reading in {post.category}
                 </h3>
                 <p className="text-xs sm:text-sm text-slate-400 mt-1">
-                  Hand-picked related stories curated for you
+                  Tactical field guides and related intelligence
                 </p>
               </div>
 
               <Link
                 href={`/category/${encodeURIComponent(post.category.toLowerCase())}`}
-                className="text-xs font-bold text-blue-600 dark:text-blue-400 hover:underline px-4 py-2 rounded-xl bg-blue-50 dark:bg-blue-950/50"
+                className="text-xs font-bold text-amber-400 hover:text-amber-300 hover:underline px-4 py-2 rounded-xl bg-amber-500/10 border border-amber-500/30 transition-colors"
               >
                 View Category →
               </Link>

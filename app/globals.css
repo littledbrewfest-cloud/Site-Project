@@ -4,86 +4,96 @@
 
 @layer base {
   :root {
-    --background: 248 250 252;
-    --foreground: 15 23 42;
+    --background: 7 11 20;
+    --foreground: 241 245 249;
   }
 
   body {
-    @apply bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-slate-100 antialiased selection:bg-blue-600 selection:text-white;
+    @apply bg-[#070b14] text-slate-100 antialiased selection:bg-amber-500 selection:text-black;
     font-feature-settings: "cv02", "cv03", "cv04", "cv11";
   }
 }
 
-/* Custom modern scrollbar */
+/* Custom sci-fi modern scrollbar */
 ::-webkit-scrollbar {
   width: 8px;
   height: 8px;
 }
 
 ::-webkit-scrollbar-track {
-  background: transparent;
+  background: #080c16;
 }
 
 ::-webkit-scrollbar-thumb {
-  @apply bg-slate-300 dark:bg-slate-700 rounded-full;
+  @apply bg-slate-800 rounded-full border border-slate-700/50 hover:bg-amber-500/80 transition-colors;
 }
 
-::-webkit-scrollbar-thumb:hover {
-  @apply bg-slate-400 dark:bg-slate-600;
-}
-
-/* Glassmorphism utility classes */
+/* Glassmorphism & Cyber Card utilities */
 .glass-panel {
-  @apply bg-white/80 dark:bg-slate-900/80 backdrop-blur-md border border-slate-200/80 dark:border-slate-800/80;
+  @apply bg-slate-900/80 backdrop-blur-xl border border-slate-800/90 shadow-2xl;
 }
 
 .glass-card {
-  @apply bg-white/70 dark:bg-slate-900/70 backdrop-blur-sm border border-slate-200/70 dark:border-slate-800/70 hover:border-blue-500/40 dark:hover:border-blue-500/40 transition-all duration-300;
+  @apply bg-slate-900/70 backdrop-blur-md border border-slate-800/80 hover:border-amber-500/50 hover:shadow-lg hover:shadow-amber-500/10 transition-all duration-300;
 }
 
-/* Subtle background mesh */
+/* Sci-fi tactical mesh pattern */
 .bg-mesh-pattern {
-  background-image: radial-gradient(rgba(59, 130, 246, 0.08) 1px, transparent 1px),
-    radial-gradient(rgba(99, 102, 241, 0.05) 1px, transparent 1px);
+  background-image: 
+    radial-gradient(rgba(245, 158, 11, 0.07) 1px, transparent 1px),
+    radial-gradient(rgba(234, 88, 12, 0.04) 1px, transparent 1px);
   background-size: 32px 32px;
   background-position: 0 0, 16px 16px;
 }
 
 /* Rich Prose Markdown Styles */
 .prose {
-  @apply max-w-none text-slate-800 dark:text-slate-200;
+  @apply max-w-none text-slate-200 leading-relaxed;
 }
 
 .prose h1, .prose h2, .prose h3, .prose h4 {
-  @apply tracking-tight font-extrabold text-slate-950 dark:text-white scroll-mt-24;
+  @apply tracking-tight font-black text-white scroll-mt-24;
 }
 
 .prose h1 {
-  @apply text-3xl sm:text-4xl mt-8 mb-4;
+  @apply text-3xl sm:text-4xl mt-8 mb-5 text-white tracking-tight;
 }
 
 .prose h2 {
-  @apply text-2xl sm:text-3xl mt-10 mb-4 pb-2 border-b border-slate-200 dark:border-slate-800;
+  @apply text-2xl sm:text-3xl mt-12 mb-5 pb-3 border-b border-slate-800/80 text-amber-400 flex items-center gap-2;
 }
 
 .prose h3 {
-  @apply text-xl sm:text-2xl mt-8 mb-3 text-slate-900 dark:text-slate-100;
+  @apply text-xl sm:text-2xl mt-8 mb-3 text-slate-100 font-bold;
+}
+
+.prose h4 {
+  @apply text-lg sm:text-xl mt-6 mb-2 text-slate-200 font-semibold;
 }
 
 .prose p {
-  @apply leading-relaxed text-base sm:text-lg text-slate-700 dark:text-slate-300 mb-6;
+  @apply leading-relaxed text-base sm:text-lg text-slate-300 mb-6;
 }
 
+/* Enhanced Callout / Blockquote */
 .prose blockquote {
-  @apply relative border-l-4 border-blue-600 bg-gradient-to-r from-blue-50/70 to-transparent dark:from-blue-950/30 dark:to-transparent py-3 px-5 my-6 italic text-slate-800 dark:text-slate-200 rounded-r-2xl shadow-sm;
+  @apply relative border-l-4 border-amber-500 bg-gradient-to-r from-amber-500/15 via-slate-900/90 to-slate-900/50 py-4 px-6 my-8 not-italic text-slate-100 rounded-r-2xl shadow-lg border border-amber-500/20 backdrop-blur-sm;
+}
+
+.prose blockquote strong {
+  @apply text-amber-300 font-bold;
+}
+
+.prose blockquote p {
+  @apply mb-2 last:mb-0 text-slate-200;
 }
 
 .prose code {
-  @apply bg-slate-100 dark:bg-slate-800/80 text-blue-600 dark:text-blue-400 px-2 py-0.5 rounded-md text-sm font-mono font-medium border border-slate-200/50 dark:border-slate-700/50;
+  @apply bg-slate-900 text-amber-300 px-2 py-0.5 rounded-md text-sm font-mono font-medium border border-slate-800;
 }
 
 .prose pre {
-  @apply bg-slate-950 text-slate-100 p-5 rounded-2xl overflow-x-auto shadow-xl border border-slate-800 my-6 font-mono text-sm leading-relaxed;
+  @apply bg-[#0a0f1d] text-slate-100 p-6 rounded-2xl overflow-x-auto shadow-2xl border border-slate-800 my-8 font-mono text-sm leading-relaxed;
 }
 
 .prose pre code {
@@ -91,21 +101,64 @@
 }
 
 .prose ul {
-  @apply list-disc list-inside space-y-2 text-slate-700 dark:text-slate-300 mb-6 pl-2;
+  @apply list-disc list-outside space-y-2.5 text-slate-300 mb-6 pl-5 marker:text-amber-500;
 }
 
 .prose ol {
-  @apply list-decimal list-inside space-y-2 text-slate-700 dark:text-slate-300 mb-6 pl-2;
+  @apply list-decimal list-outside space-y-2.5 text-slate-300 mb-6 pl-5 marker:text-amber-400 marker:font-bold;
+}
+
+.prose li {
+  @apply pl-1.5;
 }
 
 .prose hr {
-  @apply border-slate-200 dark:border-slate-800 my-10;
+  @apply border-slate-800/90 my-12;
 }
 
 .prose strong {
-  @apply font-bold text-slate-950 dark:text-white;
+  @apply font-bold text-white;
 }
 
 .prose a {
-  @apply text-blue-600 dark:text-blue-400 font-semibold underline decoration-blue-400/40 hover:decoration-blue-500 underline-offset-4 transition-colors;
+  @apply text-amber-400 hover:text-amber-300 font-semibold underline decoration-amber-500/40 hover:decoration-amber-400 underline-offset-4 transition-colors;
+}
+
+/* Comprehensive Markdown Table Styling */
+.prose table {
+  @apply w-full text-left my-8 border-collapse rounded-2xl overflow-hidden shadow-xl border border-slate-800/90;
+  display: table;
+}
+
+.prose table thead {
+  @apply bg-slate-900/95 border-b-2 border-amber-500/40;
+}
+
+.prose table thead th {
+  @apply py-3.5 px-4 text-xs sm:text-sm font-extrabold uppercase tracking-wider text-amber-400 border-r border-slate-800/80 last:border-r-0;
+}
+
+.prose table tbody tr {
+  @apply border-b border-slate-800/60 transition-colors hover:bg-amber-500/5;
+}
+
+.prose table tbody tr:nth-child(even) {
+  @apply bg-slate-900/40;
+}
+
+.prose table tbody tr:nth-child(odd) {
+  @apply bg-slate-950/40;
+}
+
+.prose table tbody td {
+  @apply py-3.5 px-4 text-xs sm:text-sm text-slate-200 border-r border-slate-800/60 last:border-r-0 leading-relaxed;
+}
+
+.prose table tbody td strong {
+  @apply text-white font-bold;
+}
+
+/* Wrapper to make tables horizontally scrollable on mobile */
+.table-wrapper {
+  @apply w-full overflow-x-auto my-8 rounded-2xl border border-slate-800/90;
 }

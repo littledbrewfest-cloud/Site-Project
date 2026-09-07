@@ -61,10 +61,10 @@ export default function TableOfContents({ content }: TOCProps) {
   };
 
   return (
-    <div className="p-5 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm space-y-3">
-      <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-slate-900 dark:text-white">
-        <ListOrdered className="w-4 h-4 text-blue-600" />
-        <span>Table of Contents</span>
+    <div className="p-5 rounded-2xl bg-slate-900/90 border border-slate-800 shadow-lg space-y-3 backdrop-blur-md">
+      <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-amber-400 font-mono">
+        <ListOrdered className="w-4 h-4 text-amber-400" />
+        <span>Tactical Intel Index</span>
       </div>
 
       <nav className="space-y-1.5 text-xs sm:text-sm">
@@ -72,8 +72,8 @@ export default function TableOfContents({ content }: TOCProps) {
           <button
             key={idx}
             onClick={() => scrollToHeading(item.id)}
-            className={`block text-left w-full truncate py-1 text-slate-600 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-400 hover:translate-x-1 transition-all ${
-              item.level === 3 ? "pl-4 text-xs text-slate-500" : "font-medium"
+            className={`block text-left w-full truncate py-1 text-slate-300 hover:text-amber-400 hover:translate-x-1 transition-all ${
+              item.level === 3 ? "pl-4 text-xs text-slate-400" : "font-semibold"
             }`}
           >
             {item.text}

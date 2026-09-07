@@ -44,17 +44,17 @@ export default function ArticleActions({ title, url }: ArticleActionsProps) {
   const shareWhatsApp = `https://api.whatsapp.com/send?text=${encodedTitle}%20${encodedUrl}`;
 
   return (
-    <div className="flex flex-wrap items-center justify-between gap-4 py-4 px-5 rounded-2xl bg-slate-50 dark:bg-slate-900/90 border border-slate-200/80 dark:border-slate-800/80 backdrop-blur-sm">
+    <div className="flex flex-wrap items-center justify-between gap-4 py-4 px-5 rounded-2xl bg-slate-900/90 border border-slate-800 backdrop-blur-sm shadow-md">
       {/* Reactions / Likes */}
       <div className="flex items-center gap-3">
         <button
           onClick={handleLike}
           className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold border transition-all duration-200 ${
             liked
-              ? "bg-rose-50 dark:bg-rose-950/40 text-rose-600 border-rose-200 dark:border-rose-900/60 shadow-sm"
-              : "bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 border-slate-200 dark:border-slate-700 hover:border-rose-300"
+              ? "bg-rose-950/40 text-rose-400 border-rose-900/60 shadow-sm"
+              : "bg-slate-800/80 text-slate-300 border-slate-700 hover:border-rose-400/50 hover:text-rose-400"
           }`}
-          title="Like this article"
+          title="Like this tactical guide"
         >
           <Heart className={`w-3.5 h-3.5 ${liked ? "fill-rose-500 text-rose-500" : ""}`} />
           <span>{likes}</span>
@@ -64,12 +64,12 @@ export default function ArticleActions({ title, url }: ArticleActionsProps) {
           onClick={() => setBookmarked(!bookmarked)}
           className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold border transition-all duration-200 ${
             bookmarked
-              ? "bg-blue-50 dark:bg-blue-950/40 text-blue-600 border-blue-200 dark:border-blue-900/60 shadow-sm"
-              : "bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 border-slate-200 dark:border-slate-700 hover:border-blue-300"
+              ? "bg-amber-950/40 text-amber-400 border-amber-900/60 shadow-sm"
+              : "bg-slate-800/80 text-slate-300 border-slate-700 hover:border-amber-400/50 hover:text-amber-400"
           }`}
-          title="Bookmark article"
+          title="Bookmark intel"
         >
-          <Bookmark className={`w-3.5 h-3.5 ${bookmarked ? "fill-blue-500 text-blue-500" : ""}`} />
+          <Bookmark className={`w-3.5 h-3.5 ${bookmarked ? "fill-amber-500 text-amber-500" : ""}`} />
           <span>{bookmarked ? "Saved" : "Save"}</span>
         </button>
       </div>
@@ -77,7 +77,7 @@ export default function ArticleActions({ title, url }: ArticleActionsProps) {
       {/* Share Actions */}
       <div className="flex items-center gap-2">
         <span className="text-xs font-semibold text-slate-400 mr-1 flex items-center gap-1 hidden sm:inline-flex">
-          <Share2 className="w-3.5 h-3.5" />
+          <Share2 className="w-3.5 h-3.5 text-amber-400" />
           Share:
         </span>
 
@@ -86,7 +86,7 @@ export default function ArticleActions({ title, url }: ArticleActionsProps) {
           href={shareTwitter}
           target="_blank"
           rel="noopener noreferrer"
-          className="p-2 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 hover:text-sky-500 hover:border-sky-300 dark:hover:border-sky-700 transition-colors shadow-sm"
+          className="p-2 rounded-xl bg-slate-800/80 border border-slate-700 text-slate-300 hover:text-sky-400 hover:border-sky-500/50 transition-colors shadow-sm"
           title="Share on X (Twitter)"
         >
           <svg className="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24">
@@ -99,7 +99,7 @@ export default function ArticleActions({ title, url }: ArticleActionsProps) {
           href={shareLinkedIn}
           target="_blank"
           rel="noopener noreferrer"
-          className="p-2 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 hover:text-blue-600 hover:border-blue-300 dark:hover:border-blue-700 transition-colors shadow-sm"
+          className="p-2 rounded-xl bg-slate-800/80 border border-slate-700 text-slate-300 hover:text-blue-400 hover:border-blue-500/50 transition-colors shadow-sm"
           title="Share on LinkedIn"
         >
           <svg className="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24">
@@ -112,7 +112,7 @@ export default function ArticleActions({ title, url }: ArticleActionsProps) {
           href={shareWhatsApp}
           target="_blank"
           rel="noopener noreferrer"
-          className="p-2 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 hover:text-emerald-500 hover:border-emerald-300 dark:hover:border-emerald-700 transition-colors shadow-sm"
+          className="p-2 rounded-xl bg-slate-800/80 border border-slate-700 text-slate-300 hover:text-emerald-400 hover:border-emerald-500/50 transition-colors shadow-sm"
           title="Share on WhatsApp"
         >
           <MessageCircle className="w-3.5 h-3.5" />
@@ -123,8 +123,8 @@ export default function ArticleActions({ title, url }: ArticleActionsProps) {
           onClick={handleCopy}
           className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold border transition-all ${
             copied
-              ? "bg-emerald-500 text-white border-emerald-500 shadow-sm shadow-emerald-500/30"
-              : "bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-200 border-slate-200 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-700"
+              ? "bg-amber-500 text-slate-950 font-bold border-amber-500 shadow-sm shadow-amber-500/30"
+              : "bg-slate-800/80 text-slate-200 border-slate-700 hover:bg-slate-700 hover:text-white"
           }`}
           title="Copy article link"
         >
