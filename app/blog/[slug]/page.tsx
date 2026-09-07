@@ -153,19 +153,19 @@ export default async function BlogPostPage({ params }: PostPageProps) {
 
       <div className="max-w-6xl mx-auto space-y-12">
         {/* Breadcrumb Navigation */}
-        <nav className="flex items-center gap-2 text-xs font-semibold text-slate-400">
-          <Link href="/" className="hover:text-amber-400 transition-colors">
+        <nav className="flex items-center gap-2 text-xs font-semibold text-slate-500 dark:text-slate-400">
+          <Link href="/" className="hover:text-amber-600 dark:hover:text-amber-400 transition-colors">
             Home
           </Link>
-          <ChevronRight className="w-3.5 h-3.5 text-slate-600" />
+          <ChevronRight className="w-3.5 h-3.5 text-slate-400 dark:text-slate-600" />
           <Link
             href={`/category/${categoryToSlug(post.category)}`}
-            className="hover:text-amber-400 transition-colors"
+            className="hover:text-amber-600 dark:hover:text-amber-400 transition-colors"
           >
             {post.category}
           </Link>
-          <ChevronRight className="w-3.5 h-3.5 text-slate-600" />
-          <span className="text-slate-300 truncate max-w-xs sm:max-w-md">
+          <ChevronRight className="w-3.5 h-3.5 text-slate-400 dark:text-slate-600" />
+          <span className="text-slate-800 dark:text-slate-300 truncate max-w-xs sm:max-w-md">
             {post.title}
           </span>
         </nav>
@@ -174,39 +174,39 @@ export default async function BlogPostPage({ params }: PostPageProps) {
         <header className="space-y-6 max-w-4xl">
           <div className="flex flex-wrap items-center gap-3">
             <CategoryBadge category={post.category} />
-            <span className="text-slate-700">•</span>
-            <div className="flex items-center gap-1.5 text-xs sm:text-sm text-slate-400">
+            <span className="text-slate-300 dark:text-slate-700">•</span>
+            <div className="flex items-center gap-1.5 text-xs sm:text-sm text-slate-500 dark:text-slate-400">
               <Calendar className="w-4 h-4 text-amber-500" />
               <time dateTime={new Date(post.createdAt).toISOString()}>{formattedDate}</time>
             </div>
-            <span className="text-slate-700">•</span>
-            <div className="flex items-center gap-1.5 text-xs sm:text-sm text-slate-400">
-              <Clock className="w-4 h-4 text-orange-400" />
+            <span className="text-slate-300 dark:text-slate-700">•</span>
+            <div className="flex items-center gap-1.5 text-xs sm:text-sm text-slate-500 dark:text-slate-400">
+              <Clock className="w-4 h-4 text-orange-500 dark:text-orange-400" />
               <span>{readTime} min read ({wordCount} words)</span>
             </div>
           </div>
 
-          <h1 className="text-3xl sm:text-5xl lg:text-6xl font-black tracking-tight text-white leading-[1.15] uppercase">
+          <h1 className="text-3xl sm:text-5xl lg:text-6xl font-black tracking-tight text-slate-900 dark:text-white leading-[1.15] uppercase">
             {post.title}
           </h1>
 
-          <p className="text-lg sm:text-2xl text-slate-300 leading-relaxed font-normal">
+          <p className="text-lg sm:text-2xl text-slate-700 dark:text-slate-300 leading-relaxed font-normal">
             {post.excerpt}
           </p>
 
           {/* Author Badge */}
-          <div className="flex items-center gap-3 pt-4 border-t border-slate-800">
+          <div className="flex items-center gap-3 pt-4 border-t border-slate-200 dark:border-slate-800">
             <div className="w-10 h-10 rounded-2xl bg-gradient-to-tr from-amber-600 to-orange-600 text-white flex items-center justify-center font-bold text-sm shadow-md shadow-amber-500/20">
               ARC
             </div>
             <div>
               <div className="flex items-center gap-1.5">
-                <span className="font-bold text-sm text-white">
+                <span className="font-bold text-sm text-slate-900 dark:text-white">
                   ARC Raiders Editorial Team
                 </span>
-                <CheckCircle2 className="w-4 h-4 text-amber-400" />
+                <CheckCircle2 className="w-4 h-4 text-amber-500 dark:text-amber-400" />
               </div>
-              <p className="text-xs text-slate-400">
+              <p className="text-xs text-slate-500 dark:text-slate-400">
                 Senior Gaming Editors &amp; Verified PvPvE Meta Analysts
               </p>
             </div>
@@ -214,7 +214,7 @@ export default async function BlogPostPage({ params }: PostPageProps) {
         </header>
 
         {/* Featured Cover Image */}
-        <div className="relative aspect-video w-full rounded-[2rem] overflow-hidden shadow-2xl bg-slate-900 border border-slate-800">
+        <div className="relative aspect-video w-full rounded-[2rem] overflow-hidden shadow-xl dark:shadow-2xl bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-slate-800">
           <Image
             src={coverUrl}
             alt={post.title}
@@ -233,7 +233,7 @@ export default async function BlogPostPage({ params }: PostPageProps) {
             <ArticleActions title={post.title} url={postFullUrl} />
 
             {/* Markdown Body with auto IDs on Headings for Table of Contents & Responsive Tables */}
-            <article className="prose prose-slate lg:prose-lg dark:prose-invert max-w-none text-base sm:text-lg leading-relaxed sm:leading-[1.85] text-slate-200">
+            <article className="prose prose-slate lg:prose-lg dark:prose-invert max-w-none text-base sm:text-lg leading-relaxed sm:leading-[1.85] text-slate-800 dark:text-slate-200">
               <ReactMarkdown
                 remarkPlugins={[remarkGfm]}
                 components={{
@@ -244,7 +244,7 @@ export default async function BlogPostPage({ params }: PostPageProps) {
                       .replace(/[^\w\s-]/g, "")
                       .replace(/\s+/g, "-");
                     return (
-                      <h2 id={id} className="scroll-mt-24 text-2xl sm:text-3xl font-black text-amber-400 mt-12 mb-5 pb-3 border-b border-slate-800/80 flex items-center gap-2">
+                      <h2 id={id} className="scroll-mt-24 text-2xl sm:text-3xl font-black text-amber-700 dark:text-amber-400 mt-12 mb-5 pb-3 border-b border-slate-200 dark:border-slate-800/80 flex items-center gap-2">
                         <span className="w-1.5 h-6 bg-gradient-to-b from-amber-500 to-orange-500 rounded-full inline-block" />
                         <span>{children}</span>
                       </h2>
@@ -257,13 +257,13 @@ export default async function BlogPostPage({ params }: PostPageProps) {
                       .replace(/[^\w\s-]/g, "")
                       .replace(/\s+/g, "-");
                     return (
-                      <h3 id={id} className="scroll-mt-24 text-xl sm:text-2xl font-bold text-white mt-8 mb-3">
+                      <h3 id={id} className="scroll-mt-24 text-xl sm:text-2xl font-bold text-slate-900 dark:text-white mt-8 mb-3">
                         {children}
                       </h3>
                     );
                   },
                   table: ({ children }) => (
-                    <div className="table-wrapper my-8 overflow-x-auto rounded-2xl border border-slate-800 shadow-xl bg-slate-950/60">
+                    <div className="table-wrapper my-8 overflow-x-auto rounded-2xl border border-slate-200 dark:border-slate-800 shadow-md dark:shadow-xl bg-white dark:bg-slate-950/60">
                       <table className="w-full text-left border-collapse">{children}</table>
                     </div>
                   ),
@@ -275,16 +275,16 @@ export default async function BlogPostPage({ params }: PostPageProps) {
 
             {/* Tags Section */}
             {tagsList.length > 0 && (
-              <div className="pt-8 border-t border-slate-800 space-y-3">
-                <h3 className="text-xs font-bold uppercase tracking-wider text-slate-400 flex items-center gap-1.5">
-                  <Tag className="w-3.5 h-3.5 text-amber-400" />
+              <div className="pt-8 border-t border-slate-200 dark:border-slate-800 space-y-3">
+                <h3 className="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 flex items-center gap-1.5">
+                  <Tag className="w-3.5 h-3.5 text-amber-500" />
                   Related ARC Raiders Topics
                 </h3>
                 <div className="flex flex-wrap gap-2">
                   {tagsList.map((tag) => (
                     <span
                       key={tag}
-                      className="px-3 py-1.5 bg-slate-900/90 hover:bg-slate-800 text-slate-300 rounded-xl text-xs font-semibold transition-colors border border-slate-800"
+                      className="px-3 py-1.5 bg-slate-100 dark:bg-slate-900/90 hover:bg-slate-200 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-300 rounded-xl text-xs font-semibold transition-colors border border-slate-200 dark:border-slate-800"
                     >
                       #{tag}
                     </span>
@@ -308,28 +308,28 @@ export default async function BlogPostPage({ params }: PostPageProps) {
             <TableOfContents content={post.content || ""} />
 
             {/* Editorial Team Spotlight */}
-            <div className="p-6 rounded-3xl bg-slate-900/90 border border-slate-800 shadow-xl space-y-4">
+            <div className="p-6 rounded-3xl bg-white dark:bg-slate-900/90 border border-slate-200 dark:border-slate-800 shadow-md dark:shadow-xl space-y-4">
               <div className="flex items-center gap-3">
                 <div className="w-12 h-12 rounded-2xl bg-gradient-to-tr from-amber-600 via-orange-600 to-rose-600 text-white flex items-center justify-center font-bold text-base shadow-md shadow-amber-500/25">
                   <Sparkles className="w-6 h-6" />
                 </div>
                 <div>
-                  <h4 className="font-extrabold text-sm text-white">
+                  <h4 className="font-extrabold text-sm text-slate-900 dark:text-white">
                     ARC Raiders Editorial Staff
                   </h4>
-                  <p className="text-[11px] text-amber-400 font-semibold font-mono">
+                  <p className="text-[11px] text-amber-600 dark:text-amber-400 font-semibold font-mono">
                     Official Guides &amp; News Team
                   </p>
                 </div>
               </div>
 
-              <p className="text-xs text-slate-400 leading-relaxed">
+              <p className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">
                 Researched, written, and fact-checked by our dedicated gaming writers covering ARC Raiders weapon balance, boss guides, extraction tactics, and performance on PS5, PC, and Xbox.
               </p>
 
-              <div className="pt-3 border-t border-slate-800 flex items-center justify-between text-xs text-slate-400 font-medium font-mono">
+              <div className="pt-3 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between text-xs text-slate-500 dark:text-slate-400 font-medium font-mono">
                 <span>Review: Passed</span>
-                <span className="text-emerald-400 font-bold">● Updated 2026</span>
+                <span className="text-emerald-600 dark:text-emerald-400 font-bold">● Updated 2026</span>
               </div>
             </div>
           </aside>
@@ -337,20 +337,20 @@ export default async function BlogPostPage({ params }: PostPageProps) {
 
         {/* Related Posts Section */}
         {relatedPosts.length > 0 && (
-          <section className="pt-16 border-t border-slate-800 space-y-8">
+          <section className="pt-16 border-t border-slate-200 dark:border-slate-800 space-y-8">
             <div className="flex items-center justify-between">
               <div>
-                <h3 className="text-2xl font-extrabold text-white">
+                <h3 className="text-2xl font-extrabold text-slate-900 dark:text-white">
                   Continue Reading in {post.category}
                 </h3>
-                <p className="text-xs sm:text-sm text-slate-400 mt-1">
+                <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400 mt-1">
                   Tactical field guides and related intelligence
                 </p>
               </div>
 
               <Link
                 href={`/category/${categoryToSlug(post.category)}`}
-                className="text-xs font-bold text-amber-400 hover:text-amber-300 hover:underline px-4 py-2 rounded-xl bg-amber-500/10 border border-amber-500/30 transition-colors"
+                className="text-xs font-bold text-amber-600 dark:text-amber-400 hover:text-amber-700 dark:hover:text-amber-300 hover:underline px-4 py-2 rounded-xl bg-amber-500/10 border border-amber-500/30 transition-colors"
               >
                 View Category →
               </Link>

@@ -4,12 +4,13 @@ import React, { useState } from "react";
 import Link from "next/link";
 import { Crosshair, Menu, X, Rss, ArrowRight, Radio } from "lucide-react";
 import { DEFAULT_CATEGORIES, categoryToSlug } from "@/lib/constants";
+import ThemeToggle from "./ThemeToggle";
 
 export default function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   return (
-    <header className="sticky top-0 z-40 w-full border-b border-slate-800/80 bg-slate-950/85 backdrop-blur-xl transition-all">
+    <header className="sticky top-0 z-40 w-full border-b border-slate-200/80 dark:border-slate-800/80 bg-white/90 dark:bg-slate-950/85 backdrop-blur-xl transition-colors duration-200">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16 sm:h-20">
           {/* Brand Logo */}
@@ -23,15 +24,15 @@ export default function Navbar() {
             </div>
             <div className="flex flex-col">
               <div className="flex items-center gap-2">
-                <span className="font-black text-lg sm:text-xl tracking-wider uppercase bg-gradient-to-r from-white via-slate-100 to-amber-300 bg-clip-text text-transparent">
+                <span className="font-black text-lg sm:text-xl tracking-wider uppercase text-slate-900 dark:text-transparent dark:bg-gradient-to-r dark:from-white dark:via-slate-100 dark:to-amber-300 dark:bg-clip-text">
                   ARC Raiders
                 </span>
-                <span className="px-1.5 py-0.5 rounded-md bg-amber-500/15 text-amber-400 font-mono text-[10px] font-extrabold uppercase tracking-widest border border-amber-500/30">
+                <span className="px-1.5 py-0.5 rounded-md bg-amber-500/15 text-amber-600 dark:text-amber-400 font-mono text-[10px] font-extrabold uppercase tracking-widest border border-amber-500/30">
                   HUB
                 </span>
               </div>
-              <span className="text-[10px] text-slate-400 font-medium tracking-wider uppercase hidden sm:inline">
-                Speranza Database & Guides
+              <span className="text-[10px] text-slate-500 dark:text-slate-400 font-medium tracking-wider uppercase hidden sm:inline">
+                Community Guides &amp; News
               </span>
             </div>
           </Link>
@@ -40,7 +41,7 @@ export default function Navbar() {
           <nav className="hidden lg:flex items-center gap-1">
             <Link
               href="/"
-              className="px-3.5 py-2 rounded-xl text-xs font-bold text-slate-200 hover:text-amber-400 hover:bg-slate-900 transition-colors"
+              className="px-3.5 py-2 rounded-xl text-xs font-bold text-slate-900 dark:text-slate-200 hover:text-amber-600 dark:hover:text-amber-400 hover:bg-slate-100 dark:hover:bg-slate-900 transition-colors"
             >
               Latest Intel
             </Link>
@@ -48,34 +49,38 @@ export default function Navbar() {
               <Link
                 key={category}
                 href={`/category/${categoryToSlug(category)}`}
-                className="px-3.5 py-2 rounded-xl text-xs font-semibold text-slate-400 hover:text-amber-400 hover:bg-slate-900 transition-colors"
+                className="px-3.5 py-2 rounded-xl text-xs font-semibold text-slate-600 dark:text-slate-400 hover:text-amber-600 dark:hover:text-amber-400 hover:bg-slate-100 dark:hover:bg-slate-900 transition-colors"
               >
                 {category}
               </Link>
             ))}
           </nav>
 
-          {/* Right Action Icons */}
+          {/* Right Action Icons (Theme Toggle + RSS Feed) */}
           <div className="hidden sm:flex items-center gap-3">
+            <ThemeToggle />
+
             <Link
               href="/rss.xml"
               target="_blank"
               title="RSS 2.0 Feed"
-              className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold text-slate-400 hover:text-amber-400 rounded-xl hover:bg-slate-900 transition-colors border border-slate-800/80"
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold text-slate-600 dark:text-slate-400 hover:text-amber-600 dark:hover:text-amber-400 rounded-xl bg-slate-50 dark:bg-slate-900 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors border border-slate-200 dark:border-slate-800/80 shadow-sm"
             >
-              <Rss className="w-3.5 h-3.5 text-amber-400" />
+              <Rss className="w-3.5 h-3.5 text-amber-500" />
               <span>RSS Feed</span>
             </Link>
           </div>
 
-          {/* Mobile menu button */}
+          {/* Mobile menu and theme toggle */}
           <div className="flex lg:hidden items-center gap-2">
+            <ThemeToggle />
+
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="p-2 rounded-xl bg-slate-900 text-slate-300"
+              className="p-2 rounded-xl bg-slate-100 dark:bg-slate-900 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-800"
               aria-label="Toggle menu"
             >
-              {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6 text-white" />}
+              {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6 text-slate-800 dark:text-white" />}
             </button>
           </div>
         </div>
@@ -83,11 +88,11 @@ export default function Navbar() {
 
       {/* Mobile dropdown menu */}
       {mobileMenuOpen && (
-        <div className="lg:hidden border-b border-slate-800 bg-slate-950/95 backdrop-blur-xl px-4 pt-3 pb-6 space-y-2">
+        <div className="lg:hidden border-b border-slate-200 dark:border-slate-800 bg-white/95 dark:bg-slate-950/95 backdrop-blur-xl px-4 pt-3 pb-6 space-y-2">
           <Link
             href="/"
             onClick={() => setMobileMenuOpen(false)}
-            className="flex items-center justify-between px-4 py-2.5 rounded-xl text-sm font-bold text-white hover:bg-slate-900"
+            className="flex items-center justify-between px-4 py-2.5 rounded-xl text-sm font-bold text-slate-900 dark:text-white hover:bg-slate-100 dark:hover:bg-slate-900"
           >
             <span>Home / Latest Intel</span>
             <ArrowRight className="w-4 h-4 text-slate-400" />
@@ -103,18 +108,18 @@ export default function Navbar() {
               key={category}
               href={`/category/${categoryToSlug(category)}`}
               onClick={() => setMobileMenuOpen(false)}
-              className="flex items-center justify-between px-4 py-2 rounded-xl text-sm font-medium text-slate-300 hover:bg-slate-900"
+              className="flex items-center justify-between px-4 py-2 rounded-xl text-sm font-medium text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-900"
             >
               <span>{category}</span>
-              <ArrowRight className="w-3.5 h-3.5 text-slate-500" />
+              <ArrowRight className="w-3.5 h-3.5 text-slate-400 dark:text-slate-500" />
             </Link>
           ))}
 
-          <div className="pt-4 mt-2 border-t border-slate-800 flex items-center justify-between">
+          <div className="pt-4 mt-2 border-t border-slate-200 dark:border-slate-800 flex items-center justify-between">
             <Link
               href="/rss.xml"
               target="_blank"
-              className="inline-flex items-center gap-1.5 px-3 py-2 text-xs font-semibold text-slate-400"
+              className="inline-flex items-center gap-1.5 px-3 py-2 text-xs font-semibold text-slate-600 dark:text-slate-400"
             >
               <Rss className="w-4 h-4 text-amber-500" />
               <span>RSS 2.0 Feed</span>

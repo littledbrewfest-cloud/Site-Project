@@ -1,5 +1,15 @@
 import { FALLBACK_IMAGES, DEFAULT_FALLBACK_IMAGE } from "./constants";
 
+function hashString(str: string): number {
+  let hash = 0;
+  for (let i = 0; i < str.length; i++) {
+    const char = str.charCodeAt(i);
+    hash = (hash << 5) - hash + char;
+    hash |= 0; // Convert to 32bit integer
+  }
+  return Math.abs(hash);
+}
+
 /**
  * Fetches a relevant photo from Unsplash API based on topic / category / keywords,
  * with graceful fallback to curated category images.
@@ -35,11 +45,12 @@ export async function getTopicImage(query: string, category: string): Promise<st
     }
   }
 
-  // Fallback: pick a high-quality curated image for this category
+  // Deterministic Fallback: pick a high-quality curated image for this category based on query hash
   const categoryList = FALLBACK_IMAGES[category] || [];
   if (categoryList.length > 0) {
-    const randomIndex = Math.floor(Math.random() * categoryList.length);
-    return categoryList[randomIndex];
+    const hash = hashString(query || category);
+    const index = hash % categoryList.length;
+    return categoryList[index];
   }
 
   return DEFAULT_FALLBACK_IMAGE;

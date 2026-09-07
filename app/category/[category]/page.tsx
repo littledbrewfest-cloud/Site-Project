@@ -40,16 +40,16 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
   return (
     <div className="space-y-12 max-w-7xl mx-auto">
       {/* Breadcrumb Navigation */}
-      <nav className="flex items-center gap-2 text-xs font-semibold text-slate-400">
-        <Link href="/" className="hover:text-amber-400 transition-colors">
+      <nav className="flex items-center gap-2 text-xs font-semibold text-slate-500 dark:text-slate-400">
+        <Link href="/" className="hover:text-amber-600 dark:hover:text-amber-400 transition-colors">
           Home
         </Link>
-        <ChevronRight className="w-3.5 h-3.5 text-slate-600" />
-        <span className="text-slate-400">
+        <ChevronRight className="w-3.5 h-3.5 text-slate-400 dark:text-slate-600" />
+        <span className="text-slate-500 dark:text-slate-400">
           Database Sectors
         </span>
-        <ChevronRight className="w-3.5 h-3.5 text-slate-600" />
-        <span className="text-amber-400 font-bold">
+        <ChevronRight className="w-3.5 h-3.5 text-slate-400 dark:text-slate-600" />
+        <span className="text-amber-600 dark:text-amber-400 font-bold">
           {matchedCategory}
         </span>
       </nav>
@@ -104,14 +104,14 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
           ))}
         </div>
       ) : (
-        <div className="text-center py-20 bg-slate-900/90 border border-slate-800 rounded-[2rem] p-8 space-y-4 shadow-xl">
-          <div className="w-16 h-16 rounded-3xl bg-amber-500/10 text-amber-400 border border-amber-500/30 mx-auto flex items-center justify-center">
+        <div className="text-center py-20 bg-white dark:bg-slate-900/90 border border-slate-200 dark:border-slate-800 rounded-[2rem] p-8 space-y-4 shadow-md dark:shadow-xl">
+          <div className="w-16 h-16 rounded-3xl bg-amber-500/10 text-amber-500 dark:text-amber-400 border border-amber-500/30 mx-auto flex items-center justify-center">
             <BookOpen className="w-8 h-8" />
           </div>
-          <h2 className="text-2xl font-black uppercase tracking-tight text-white">
+          <h2 className="text-2xl font-black uppercase tracking-tight text-slate-900 dark:text-white">
             No Intel In This Sector Yet
           </h2>
-          <p className="text-slate-400 text-sm max-w-md mx-auto">
+          <p className="text-slate-600 dark:text-slate-400 text-sm max-w-md mx-auto">
             Surface reconnaissance operatives are compiling data for {matchedCategory}. Check back soon for the next Speranza dispatch.
           </p>
           <Link
