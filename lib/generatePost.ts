@@ -60,30 +60,72 @@ export async function generateBlogPost(customKeywordOrCategory?: string): Promis
       },
     });
 
-    const prompt = `You are the lead gaming journalist and database editor for "The ARC Raiders Hub" (thearc-raiders.com).
+    const prompt = `You are the chief editor and master gaming strategist for "The ARC Raiders Hub" (thearc-raiders.com) — the definitive global database and tactical guide platform for Embark Studios' extraction shooter, ARC Raiders.
 
-Your mission is to write a comprehensive, 100% original, in-depth 1000–1500 word gaming guide specifically targeting the search query:
+Your mission is to write a MASTERCLASS, DEFINITIVE, IN-DEPTH 1200–1800 WORD GAMING GUIDE specifically targeting the high-priority search query:
 "${targetKeyword}" (Category: "${targetCategory}").
 
-CONTENT & SEO GUIDELINES:
-1. Target Keyword Focus: Answer the gamer's exact intent for "${targetKeyword}" in the very first 2 paragraphs.
-2. Structure & Detail:
-   - Catchy, SEO-optimized title (50-65 chars) incorporating "${targetKeyword}".
-   - Concise meta description / excerpt (140-160 chars).
-   - Detailed sections with Markdown formatting: # Main Title, ## Major Headings, ### Subheadings, bullet points, tactical comparison tables, and highlighted blockquotes.
-   - Specific locations (e.g. Speranza colony, Buried City, Dam complex, Spaceport vaults), exact loot mechanics, crafting requirements, and enemy counters (Titans, Sentinels, Leapers, Shredders).
-   - "Pro Survival Tips" section with actionable advice for Solo and Squad players.
-   - FAQ section answering 3 common related questions.
-3. Tone: Authoritative, exciting, modern, and deeply knowledgeable about extraction shooters. Do not use repetitive fluff.
+CRITICAL LENGTH & QUALITY REQUIREMENT:
+- The article MUST BE AT LEAST 1200 TO 1800 WORDS.
+- Do NOT write brief surface-level summaries. Every section must have deep, granular analysis, exact stats, gameplay mechanics, map callouts, tactical advice, and actionable strategies.
+- Answer the search query's direct intent in the very first 2 paragraphs for Google Featured Snippets and AI Overviews.
+
+STRUCTURE & MARKDOWN FORMATTING (MANDATORY SECTIONS):
+
+# [Target Keyword Catchy SEO Title (50-65 chars)]
+
+> **Quick Takeaways / At-A-Glance:** (A high-impact 3-4 bullet callout box directly answering "${targetKeyword}" for quick reader scanning and Google AI overviews).
+
+## 1. Complete Overview & Search Intent Breakdown
+- Explain in depth what "${targetKeyword}" means in the context of ARC Raiders.
+- Provide comprehensive background context (Speranza colony, surface wasteland, Embark Studios mechanics, PvPvE extraction stakes).
+- Address any common player misconceptions or recent game updates.
+
+## 2. Deep Dive Mechanics & Technical / Gameplay Specifications
+- Detailed technical breakdown (e.g. crossplay matchmaking rules, invite systems, input-based lobbies, platform parity, quest requirements, spawn probabilities, crafting formulas).
+- Cover PS5, Xbox Series X|S, and PC Steam/Epic differences where applicable.
+
+## 3. Comprehensive Comparison Table / Tactical Data Matrix
+- A full, multi-column Markdown comparison table with at least 4-6 rows detailing stats, requirements, platform features, drop locations, or weapon loadouts.
+- Example table formatting:
+| Feature / Item / Platform | Status / Location | Key Mechanics & Details | Tactical Priority |
+| :--- | :--- | :--- | :--- |
+| ... | ... | ... | ... |
+
+## 4. Step-by-Step Practical Walkthrough / In-Game Strategy
+- Provide an exact numbered tactical checklist (Step 1, Step 2, Step 3, Step 4, Step 5) showing players how to execute or locate what they searched for.
+- Solo Raider vs Squad strategies: How to approach this objective safely when avoiding or fighting rival player squads.
+
+## 5. Map Locations, Loot Farming & Enemy Threat Mitigation
+- Pinpoint specific surface map sectors (Buried City, Dam complex, Industrial Warehouses, Spaceport vaults, Speranza outskirts).
+- Detailed tactics against ARC robotic threats (Titans, Sentinels, Leapers, Shredders, Drones) encountered during this activity.
+
+## 6. Pro Survival Tips & Stash Value Optimization
+- 5 bulleted pro tips with bold headers for maximum readability and player survival rate.
+- Risk management: When to extract vs when to push deeper into high-tier loot zones.
+
+## 7. Troubleshooting, Known Issues & Frequently Asked Questions (FAQ)
+- Answer 4-5 distinct, frequently searched related questions in conversational, schema-ready format:
+### Q1: [Question 1]?
+[Detailed 2-3 sentence answer]
+### Q2: [Question 2]?
+[Detailed 2-3 sentence answer]
+### Q3: [Question 3]?
+[Detailed 2-3 sentence answer]
+### Q4: [Question 4]?
+[Detailed 2-3 sentence answer]
+
+## 8. Final Verdict & Raider Checklist
+- Concluding takeaway reinforcing player mastery and long-term progression.
 
 Return the response STRICTLY as valid JSON matching this schema:
 {
-  "title": "Exact Compelling Title Targeting ${targetKeyword}",
+  "title": "Exact Compelling Title (50-65 chars) Targeting ${targetKeyword}",
   "category": "${targetCategory}",
-  "excerpt": "A concise and engaging summary between 140 and 160 characters.",
-  "tags": ["ARC Raiders", "Gaming", "Guide", "PS5", "Embark Studios"],
-  "imageKeywords": "sci-fi robot combat extraction shooter",
-  "content": "Full markdown article content here (1000-1500 words)..."
+  "excerpt": "A concise and engaging summary between 140 and 160 characters designed for Google meta descriptions.",
+  "tags": ["ARC Raiders", "Gaming Guide", "${targetCategory}", "PS5", "PC Gaming", "Xbox"],
+  "imageKeywords": "sci-fi robot combat wasteland extraction shooter",
+  "content": "Full markdown article content here with all headings, tables, bullet points, and at least 1200+ words..."
 }`;
 
     const result = await model.generateContent(prompt);
