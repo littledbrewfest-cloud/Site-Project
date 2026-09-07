@@ -13,7 +13,7 @@ import ArticleActions from "@/components/ArticleActions";
 import TableOfContents from "@/components/TableOfContents";
 import NewsletterCard from "@/components/NewsletterCard";
 import { Calendar, Clock, Tag, Sparkles, ChevronRight, CheckCircle2 } from "lucide-react";
-import { DEFAULT_FALLBACK_IMAGE } from "@/lib/constants";
+import { DEFAULT_FALLBACK_IMAGE, categoryToSlug } from "@/lib/constants";
 import { getSiteUrl } from "@/lib/site-url";
 
 export const dynamic = "force-dynamic";
@@ -159,7 +159,7 @@ export default async function BlogPostPage({ params }: PostPageProps) {
           </Link>
           <ChevronRight className="w-3.5 h-3.5 text-slate-600" />
           <Link
-            href={`/category/${encodeURIComponent(post.category.toLowerCase())}`}
+            href={`/category/${categoryToSlug(post.category)}`}
             className="hover:text-amber-400 transition-colors"
           >
             {post.category}
@@ -232,8 +232,8 @@ export default async function BlogPostPage({ params }: PostPageProps) {
             {/* Top Share Widget */}
             <ArticleActions title={post.title} url={postFullUrl} />
 
-            {/* Markdown Body with auto IDs on Headings for Table of Contents */}
-            <article className="prose prose-slate lg:prose-lg dark:prose-invert max-w-none">
+            {/* Markdown Body with auto IDs on Headings for Table of Contents & Responsive Tables */}
+            <article className="prose prose-slate lg:prose-lg dark:prose-invert max-w-none text-base sm:text-lg leading-relaxed sm:leading-[1.85] text-slate-200">
               <ReactMarkdown
                 remarkPlugins={[remarkGfm]}
                 components={{
@@ -243,7 +243,12 @@ export default async function BlogPostPage({ params }: PostPageProps) {
                       .toLowerCase()
                       .replace(/[^\w\s-]/g, "")
                       .replace(/\s+/g, "-");
-                    return <h2 id={id} className="scroll-mt-24">{children}</h2>;
+                    return (
+                      <h2 id={id} className="scroll-mt-24 text-2xl sm:text-3xl font-black text-amber-400 mt-12 mb-5 pb-3 border-b border-slate-800/80 flex items-center gap-2">
+                        <span className="w-1.5 h-6 bg-gradient-to-b from-amber-500 to-orange-500 rounded-full inline-block" />
+                        <span>{children}</span>
+                      </h2>
+                    );
                   },
                   h3: ({ children }) => {
                     const text = String(children);
@@ -251,8 +256,17 @@ export default async function BlogPostPage({ params }: PostPageProps) {
                       .toLowerCase()
                       .replace(/[^\w\s-]/g, "")
                       .replace(/\s+/g, "-");
-                    return <h3 id={id} className="scroll-mt-24">{children}</h3>;
+                    return (
+                      <h3 id={id} className="scroll-mt-24 text-xl sm:text-2xl font-bold text-white mt-8 mb-3">
+                        {children}
+                      </h3>
+                    );
                   },
+                  table: ({ children }) => (
+                    <div className="table-wrapper my-8 overflow-x-auto rounded-2xl border border-slate-800 shadow-xl bg-slate-950/60">
+                      <table className="w-full text-left border-collapse">{children}</table>
+                    </div>
+                  ),
                 }}
               >
                 {post.content}
@@ -335,7 +349,7 @@ export default async function BlogPostPage({ params }: PostPageProps) {
               </div>
 
               <Link
-                href={`/category/${encodeURIComponent(post.category.toLowerCase())}`}
+                href={`/category/${categoryToSlug(post.category)}`}
                 className="text-xs font-bold text-amber-400 hover:text-amber-300 hover:underline px-4 py-2 rounded-xl bg-amber-500/10 border border-amber-500/30 transition-colors"
               >
                 View Category →

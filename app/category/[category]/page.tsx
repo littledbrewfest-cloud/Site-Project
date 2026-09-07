@@ -3,6 +3,7 @@ import Link from "next/link";
 import type { Metadata } from "next";
 import { getSafePublishedPosts } from "@/lib/db-helper";
 import { getActiveCategories } from "@/lib/settings";
+import { categoryToSlug, slugToCategory } from "@/lib/constants";
 import PostCard from "@/components/PostCard";
 import CategoryBadge from "@/components/CategoryBadge";
 import NewsletterCard from "@/components/NewsletterCard";
@@ -17,26 +18,18 @@ interface CategoryPageProps {
 export const revalidate = 60;
 
 export async function generateMetadata({ params }: CategoryPageProps): Promise<Metadata> {
-  const decodedCategory = decodeURIComponent(params.category);
-  const formattedCategory = decodedCategory
-    .split("-")
-    .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
-    .join(" ");
+  const allCategories = await getActiveCategories();
+  const matchedCategory = slugToCategory(params.category, allCategories);
 
   return {
-    title: `${formattedCategory} Guides, Meta & News | The ARC Raiders Hub`,
-    description: `Browse tactical guides, loadout meta, patch notes, and news in ${formattedCategory} for ARC Raiders on PS5, PC, and Xbox.`,
+    title: `${matchedCategory} Guides, Meta & News | The ARC Raiders Hub`,
+    description: `Browse tactical guides, loadout meta, patch notes, and news in ${matchedCategory} for ARC Raiders on PS5, PC, and Xbox.`,
   };
 }
 
 export default async function CategoryPage({ params }: CategoryPageProps) {
-  const decodedCategory = decodeURIComponent(params.category);
   const allCategories = await getActiveCategories();
-
-  // Match case-insensitively with active categories
-  const matchedCategory = allCategories.find(
-    (c) => c.toLowerCase() === decodedCategory.toLowerCase()
-  ) || decodedCategory;
+  const matchedCategory = slugToCategory(params.category, allCategories);
 
   // Query posts matching this category safely
   const allPublished = await getSafePublishedPosts();
@@ -93,7 +86,7 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
               .map((cat) => (
                 <Link
                   key={cat}
-                  href={`/category/${encodeURIComponent(cat.toLowerCase())}`}
+                  href={`/category/${categoryToSlug(cat)}`}
                   className="px-3.5 py-1.5 bg-slate-900/80 hover:bg-slate-800 text-slate-300 hover:text-white rounded-full font-semibold transition-colors whitespace-nowrap backdrop-blur-sm border border-slate-700"
                 >
                   {cat}

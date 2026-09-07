@@ -2,6 +2,7 @@ import { MetadataRoute } from "next";
 import { getSafePublishedPosts } from "@/lib/db-helper";
 import { getActiveCategories } from "@/lib/settings";
 import { getSiteUrl } from "@/lib/site-url";
+import { categoryToSlug } from "@/lib/constants";
 
 export const dynamic = "force-dynamic";
 
@@ -20,7 +21,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   }));
 
   const categoryUrls: MetadataRoute.Sitemap = categories.map((cat) => ({
-    url: `${siteUrl}/category/${encodeURIComponent(cat.toLowerCase())}`,
+    url: `${siteUrl}/category/${categoryToSlug(cat)}`,
     lastModified: new Date(),
     changeFrequency: "daily",
     priority: 0.6,

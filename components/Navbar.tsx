@@ -2,8 +2,8 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
-import { Crosshair, Menu, X, Shield, Rss, ArrowRight, Radio } from "lucide-react";
-import { DEFAULT_CATEGORIES } from "@/lib/constants";
+import { Crosshair, Menu, X, Rss, ArrowRight, Radio } from "lucide-react";
+import { DEFAULT_CATEGORIES, categoryToSlug } from "@/lib/constants";
 
 export default function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -47,7 +47,7 @@ export default function Navbar() {
             {DEFAULT_CATEGORIES.slice(0, 5).map((category) => (
               <Link
                 key={category}
-                href={`/category/${encodeURIComponent(category.toLowerCase())}`}
+                href={`/category/${categoryToSlug(category)}`}
                 className="px-3.5 py-2 rounded-xl text-xs font-semibold text-slate-400 hover:text-amber-400 hover:bg-slate-900 transition-colors"
               >
                 {category}
@@ -61,29 +61,15 @@ export default function Navbar() {
               href="/rss.xml"
               target="_blank"
               title="RSS 2.0 Feed"
-              className="p-2 text-slate-400 hover:text-amber-400 rounded-xl hover:bg-slate-900 transition-colors"
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold text-slate-400 hover:text-amber-400 rounded-xl hover:bg-slate-900 transition-colors border border-slate-800/80"
             >
-              <Rss className="w-4 h-4" />
-            </Link>
-
-            <Link
-              href="/admin"
-              className="inline-flex items-center gap-2 px-4 py-2 text-xs font-bold rounded-xl bg-gradient-to-r from-amber-600 to-orange-600 hover:from-amber-500 hover:to-orange-500 text-white shadow-md shadow-amber-500/20 transition-all"
-            >
-              <Shield className="w-3.5 h-3.5" />
-              <span>Admin Portal</span>
+              <Rss className="w-3.5 h-3.5 text-amber-400" />
+              <span>RSS Feed</span>
             </Link>
           </div>
 
           {/* Mobile menu button */}
           <div className="flex lg:hidden items-center gap-2">
-            <Link
-              href="/admin"
-              className="p-2 rounded-xl bg-slate-900 text-slate-200"
-              title="Admin"
-            >
-              <Shield className="w-4 h-4 text-amber-400" />
-            </Link>
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
               className="p-2 rounded-xl bg-slate-900 text-slate-300"
@@ -107,15 +93,15 @@ export default function Navbar() {
             <ArrowRight className="w-4 h-4 text-slate-400" />
           </Link>
           
-          <div className="pt-2 pb-1 px-4 text-xs font-semibold text-slate-500 uppercase tracking-wider flex items-center gap-1.5">
+          <div className="pt-2 pb-1 px-4 text-xs font-semibold text-slate-500 uppercase tracking-wider flex items-center gap-1.5 font-mono">
             <Radio className="w-3 h-3 text-amber-500" />
-            <span>Tactical Topics</span>
+            <span>Tactical Sectors</span>
           </div>
 
           {DEFAULT_CATEGORIES.map((category) => (
             <Link
               key={category}
-              href={`/category/${encodeURIComponent(category.toLowerCase())}`}
+              href={`/category/${categoryToSlug(category)}`}
               onClick={() => setMobileMenuOpen(false)}
               className="flex items-center justify-between px-4 py-2 rounded-xl text-sm font-medium text-slate-300 hover:bg-slate-900"
             >
@@ -132,14 +118,6 @@ export default function Navbar() {
             >
               <Rss className="w-4 h-4 text-amber-500" />
               <span>RSS 2.0 Feed</span>
-            </Link>
-            <Link
-              href="/admin"
-              onClick={() => setMobileMenuOpen(false)}
-              className="inline-flex items-center gap-1.5 px-4 py-2 text-xs font-bold rounded-xl bg-amber-600 text-white shadow-md"
-            >
-              <Shield className="w-3.5 h-3.5" />
-              <span>Admin Portal</span>
             </Link>
           </div>
         </div>

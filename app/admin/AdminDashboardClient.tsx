@@ -201,24 +201,32 @@ export default function AdminDashboardClient({
   return (
     <div className="space-y-12">
       {/* Header & Controls */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-slate-200 dark:border-slate-800">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-slate-800">
         <div>
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-500/10 text-blue-600 dark:text-blue-400 text-xs font-bold mb-2">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-500/10 text-amber-400 text-xs font-mono font-bold mb-2 border border-amber-500/30">
             <Zap className="w-3.5 h-3.5" />
-            Control Center Active
+            Speranza Admin Portal
           </div>
-          <h1 className="text-3xl sm:text-4xl font-extrabold text-slate-900 dark:text-white">
-            Admin Dashboard
+          <h1 className="text-3xl sm:text-4xl font-black uppercase text-white tracking-tight">
+            Tactical Intel Dispatch
           </h1>
-          <p className="text-sm text-slate-500 mt-1">
-            Trigger on-demand AI content generation, manage publications, and tune topic rotation.
+          <p className="text-sm text-slate-400 mt-1">
+            Publish client articles manually, trigger autonomous AI intel dispatches, and manage website content.
           </p>
         </div>
 
-        <div className="flex items-center gap-3">
+        <div className="flex flex-wrap items-center gap-3">
+          <Link
+            href="/admin/posts/new"
+            className="inline-flex items-center gap-2 px-5 py-2.5 text-xs font-bold rounded-xl bg-gradient-to-r from-amber-600 to-orange-600 hover:from-amber-500 hover:to-orange-500 text-white shadow-lg shadow-amber-500/20 transition-all hover:scale-105"
+          >
+            <Plus className="w-4 h-4" />
+            <span>Write / Client Post</span>
+          </Link>
+
           <button
             onClick={handleLogout}
-            className="inline-flex items-center gap-1.5 px-4 py-2 text-xs font-bold rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 shadow-sm transition-all"
+            className="inline-flex items-center gap-1.5 px-4 py-2.5 text-xs font-bold rounded-xl border border-slate-800 bg-slate-900 text-slate-300 hover:bg-slate-800 shadow-sm transition-all"
           >
             <LogOut className="w-3.5 h-3.5" />
             Logout
@@ -228,58 +236,58 @@ export default function AdminDashboardClient({
 
       {/* Stats Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-        <div className="bg-white dark:bg-slate-900 p-6 rounded-3xl border border-slate-200/80 dark:border-slate-800/80 shadow-sm flex items-center gap-4">
-          <div className="p-3.5 rounded-2xl bg-blue-50 dark:bg-blue-950/50 text-blue-600 shadow-inner">
+        <div className="bg-slate-900/90 p-6 rounded-3xl border border-slate-800 shadow-xl flex items-center gap-4">
+          <div className="p-3.5 rounded-2xl bg-amber-500/10 text-amber-400 border border-amber-500/20">
             <FileText className="w-6 h-6" />
           </div>
           <div>
-            <p className="text-xs text-slate-400 font-bold uppercase tracking-wider">Total Articles</p>
-            <p className="text-2xl font-extrabold text-slate-900 dark:text-white">{posts.length}</p>
+            <p className="text-xs text-slate-400 font-bold uppercase tracking-wider font-mono">Total Guides</p>
+            <p className="text-2xl font-black text-white">{posts.length}</p>
           </div>
         </div>
 
-        <div className="bg-white dark:bg-slate-900 p-6 rounded-3xl border border-slate-200/80 dark:border-slate-800/80 shadow-sm flex items-center gap-4">
-          <div className="p-3.5 rounded-2xl bg-emerald-50 dark:bg-emerald-950/50 text-emerald-600 shadow-inner">
+        <div className="bg-slate-900/90 p-6 rounded-3xl border border-slate-800 shadow-xl flex items-center gap-4">
+          <div className="p-3.5 rounded-2xl bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
             <CheckCircle className="w-6 h-6" />
           </div>
           <div>
-            <p className="text-xs text-slate-400 font-bold uppercase tracking-wider">Published</p>
-            <p className="text-2xl font-extrabold text-slate-900 dark:text-white">{totalPublished}</p>
+            <p className="text-xs text-slate-400 font-bold uppercase tracking-wider font-mono">Published Live</p>
+            <p className="text-2xl font-black text-white">{totalPublished}</p>
           </div>
         </div>
 
-        <div className="bg-white dark:bg-slate-900 p-6 rounded-3xl border border-slate-200/80 dark:border-slate-800/80 shadow-sm flex items-center gap-4">
-          <div className="p-3.5 rounded-2xl bg-amber-50 dark:bg-amber-950/50 text-amber-600 shadow-inner">
+        <div className="bg-slate-900/90 p-6 rounded-3xl border border-slate-800 shadow-xl flex items-center gap-4">
+          <div className="p-3.5 rounded-2xl bg-orange-500/10 text-orange-400 border border-orange-500/20">
             <FileQuestion className="w-6 h-6" />
           </div>
           <div>
-            <p className="text-xs text-slate-400 font-bold uppercase tracking-wider">Drafts</p>
-            <p className="text-2xl font-extrabold text-slate-900 dark:text-white">{totalDrafts}</p>
+            <p className="text-xs text-slate-400 font-bold uppercase tracking-wider font-mono">Drafts</p>
+            <p className="text-2xl font-black text-white">{totalDrafts}</p>
           </div>
         </div>
 
-        <div className="bg-white dark:bg-slate-900 p-6 rounded-3xl border border-slate-200/80 dark:border-slate-800/80 shadow-sm flex items-center gap-4">
-          <div className="p-3.5 rounded-2xl bg-purple-50 dark:bg-purple-950/50 text-purple-600 shadow-inner">
+        <div className="bg-slate-900/90 p-6 rounded-3xl border border-slate-800 shadow-xl flex items-center gap-4">
+          <div className="p-3.5 rounded-2xl bg-cyan-500/10 text-cyan-400 border border-cyan-500/20">
             <Layers className="w-6 h-6" />
           </div>
           <div>
-            <p className="text-xs text-slate-400 font-bold uppercase tracking-wider">Active Topics</p>
-            <p className="text-2xl font-extrabold text-slate-900 dark:text-white">{categories.length}</p>
+            <p className="text-xs text-slate-400 font-bold uppercase tracking-wider font-mono">Sectors</p>
+            <p className="text-2xl font-black text-white">{categories.length}</p>
           </div>
         </div>
       </div>
 
       {/* Action Banner: Generate New Post Now */}
-      <div className="p-6 sm:p-10 rounded-[2.5rem] bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 text-white shadow-2xl space-y-5">
+      <div className="p-6 sm:p-10 rounded-[2.5rem] bg-gradient-to-r from-slate-950 via-slate-900 to-amber-950/50 border border-amber-500/30 text-white shadow-2xl space-y-5">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
           <div className="space-y-2">
-            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/20 text-xs font-bold backdrop-blur-sm">
-              <Sparkles className="w-3.5 h-3.5" />
-              Direct AI Generator
+            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-500/15 border border-amber-500/30 text-xs font-mono font-bold text-amber-300 backdrop-blur-sm">
+              <Sparkles className="w-3.5 h-3.5 text-amber-400" />
+              1,000 Zero-KD Keyword AI Engine
             </div>
-            <h2 className="text-2xl sm:text-3xl font-extrabold">Instant Article Synthesizer</h2>
-            <p className="text-blue-100 text-sm max-w-xl">
-              Trigger Google Gemini Flash to write and publish a 1000+ word, SEO-structured article with high-res Unsplash imagery instantly.
+            <h2 className="text-2xl sm:text-3xl font-black uppercase">On-Demand Intel Synthesizer</h2>
+            <p className="text-slate-300 text-sm max-w-xl">
+              Trigger Google Gemini to write and publish a 1,200–1,800 word tactical guide with comparison tables & FAQ schema targeting the next zero-competition search query.
             </p>
           </div>
 
@@ -287,13 +295,13 @@ export default function AdminDashboardClient({
             <select
               value={generationCategory}
               onChange={(e) => setGenerationCategory(e.target.value)}
-              className="px-4 py-3 rounded-2xl bg-white/10 border border-white/20 text-white text-sm focus:outline-none focus:ring-2 focus:ring-white font-medium"
+              className="px-4 py-3 rounded-2xl bg-slate-900 border border-slate-700 text-white text-sm focus:outline-none focus:ring-2 focus:ring-amber-500 font-medium"
             >
-              <option value="" className="text-slate-900">
-                Auto-Rotate Topics
+              <option value="" className="text-slate-200">
+                Auto-Rotate Sectors (KD: 0 First)
               </option>
               {categories.map((cat) => (
-                <option key={cat} value={cat} className="text-slate-900">
+                <option key={cat} value={cat} className="text-slate-200">
                   {cat}
                 </option>
               ))}
@@ -302,17 +310,17 @@ export default function AdminDashboardClient({
             <button
               onClick={handleGeneratePost}
               disabled={generating}
-              className="px-6 py-3 bg-white text-blue-700 hover:bg-blue-50 font-extrabold rounded-2xl text-sm shadow-lg transition-all flex items-center justify-center gap-2 disabled:opacity-60 hover:scale-105 active:scale-95"
+              className="px-6 py-3 bg-gradient-to-r from-amber-600 to-orange-600 hover:from-amber-500 hover:to-orange-500 text-white font-extrabold rounded-2xl text-sm shadow-lg shadow-amber-500/20 transition-all flex items-center justify-center gap-2 disabled:opacity-60 hover:scale-105 active:scale-95"
             >
               {generating ? (
                 <>
-                  <RefreshCw className="w-4 h-4 animate-spin text-blue-600" />
-                  <span>Synthesizing...</span>
+                  <RefreshCw className="w-4 h-4 animate-spin text-white" />
+                  <span>Synthesizing 1500+ Words...</span>
                 </>
               ) : (
                 <>
-                  <Sparkles className="w-4 h-4 text-blue-600" />
-                  <span>Generate Article Now</span>
+                  <Sparkles className="w-4 h-4 text-white" />
+                  <span>Generate Guide Now</span>
                 </>
               )}
             </button>

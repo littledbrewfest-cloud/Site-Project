@@ -1,7 +1,7 @@
 import React from "react";
 import Link from "next/link";
 import { Crosshair, Rss, Globe, Shield, ArrowUpRight, Cpu, Layers } from "lucide-react";
-import { DEFAULT_CATEGORIES } from "@/lib/constants";
+import { DEFAULT_CATEGORIES, categoryToSlug } from "@/lib/constants";
 
 export default function Footer() {
   return (
@@ -53,7 +53,7 @@ export default function Footer() {
               {DEFAULT_CATEGORIES.map((category) => (
                 <li key={category}>
                   <Link
-                    href={`/category/${encodeURIComponent(category.toLowerCase())}`}
+                    href={`/category/${categoryToSlug(category)}`}
                     className="hover:text-amber-400 transition-colors flex items-center justify-between group"
                   >
                     <span>{category}</span>
@@ -72,18 +72,18 @@ export default function Footer() {
             </h3>
             <ul className="space-y-2.5 text-sm">
               <li>
-                <Link href="/" className="hover:text-amber-400 transition-colors">
+                <Link href={`/category/${categoryToSlug("PS5 & Console Gaming")}`} className="hover:text-amber-400 transition-colors">
                   PlayStation 5 Hub
                 </Link>
               </li>
               <li>
-                <Link href="/" className="hover:text-amber-400 transition-colors">
+                <Link href={`/category/${categoryToSlug("PC Specs & Performance")}`} className="hover:text-amber-400 transition-colors">
                   PC System Requirements
                 </Link>
               </li>
               <li>
-                <Link href="/admin" className="hover:text-amber-400 transition-colors">
-                  Admin Dispatch
+                <Link href={`/category/${categoryToSlug("Weapons & Loadouts")}`} className="hover:text-amber-400 transition-colors">
+                  Weapons & Armory
                 </Link>
               </li>
               <li>

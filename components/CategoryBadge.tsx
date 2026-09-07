@@ -1,6 +1,6 @@
 import React from "react";
 import Link from "next/link";
-import { CATEGORY_COLORS } from "@/lib/constants";
+import { CATEGORY_COLORS, categoryToSlug } from "@/lib/constants";
 
 interface CategoryBadgeProps {
   category: string;
@@ -16,9 +16,9 @@ export default function CategoryBadge({
   size = "md",
 }: CategoryBadgeProps) {
   const color = CATEGORY_COLORS[category] || {
-    bg: "bg-slate-100 dark:bg-slate-800",
-    text: "text-slate-700 dark:text-slate-300",
-    border: "border-slate-200 dark:border-slate-700",
+    bg: "bg-amber-500/10",
+    text: "text-amber-400",
+    border: "border-amber-500/30",
   };
 
   const sizeClasses =
@@ -39,7 +39,7 @@ export default function CategoryBadge({
 
   if (isLink) {
     return (
-      <Link href={`/category/${encodeURIComponent(category.toLowerCase())}`}>
+      <Link href={`/category/${categoryToSlug(category)}`}>
         {badgeContent}
       </Link>
     );

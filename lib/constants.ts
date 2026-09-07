@@ -7,6 +7,49 @@ export const DEFAULT_CATEGORIES = [
   "PC Specs & Performance",
 ];
 
+/**
+ * Converts category name to clean URL slug (e.g., "PS5 & Console Gaming" -> "ps5-and-console-gaming")
+ */
+export function categoryToSlug(category: string): string {
+  if (!category) return "";
+  return category
+    .toLowerCase()
+    .replace(/&/g, "and")
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "");
+}
+
+/**
+ * Normalizes URL slug back to the official Category name
+ * Handles both "ps5-and-console-gaming", "ps5-console-gaming", and "ps5%20%26%20console%20gaming"
+ */
+export function slugToCategory(slug: string, allCategories: string[] = DEFAULT_CATEGORIES): string {
+  if (!slug) return DEFAULT_CATEGORIES[0];
+  const decoded = decodeURIComponent(slug).toLowerCase().trim();
+
+  // 1. Direct match with converted category slug
+  for (const cat of allCategories) {
+    if (categoryToSlug(cat) === decoded) return cat;
+  }
+
+  // 2. Loose match ignoring "and", dashes, symbols
+  const cleanInput = decoded.replace(/[^a-z0-9]/g, "").replace(/and/g, "");
+  for (const cat of allCategories) {
+    const cleanCat = cat.toLowerCase().replace(/[^a-z0-9]/g, "").replace(/and/g, "");
+    if (cleanCat === cleanInput) return cat;
+  }
+
+  // 3. Match case-insensitively directly
+  const direct = allCategories.find((c) => c.toLowerCase() === decoded);
+  if (direct) return direct;
+
+  // 4. Prettify fallback
+  return decoded
+    .split("-")
+    .map((w) => (w === "and" ? "&" : w.charAt(0).toUpperCase() + w.slice(1)))
+    .join(" ");
+}
+
 export const CATEGORY_COLORS: Record<string, { bg: string; text: string; border: string }> = {
   "ARC Raiders News": {
     bg: "bg-amber-500/10 dark:bg-amber-500/15",
