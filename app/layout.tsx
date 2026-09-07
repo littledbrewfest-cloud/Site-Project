@@ -53,6 +53,15 @@ export const metadata: Metadata = {
     description:
       "The premier community database, news, and guides for ARC Raiders on PS5, PC, and Xbox.",
   },
+  icons: {
+    icon: [
+      { url: "/icon.svg", type: "image/svg+xml" },
+    ],
+    shortcut: ["/icon.svg"],
+    apple: [
+      { url: "/icon.svg", type: "image/svg+xml" },
+    ],
+  },
   alternates: {
     types: {
       "application/rss+xml": "/rss.xml",

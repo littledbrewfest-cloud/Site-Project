@@ -202,12 +202,12 @@ export default async function BlogPostPage({ params }: PostPageProps) {
             <div>
               <div className="flex items-center gap-1.5">
                 <span className="font-bold text-sm text-white">
-                  Speranza Field Intelligence Archive
+                  ARC Raiders Editorial Team
                 </span>
                 <CheckCircle2 className="w-4 h-4 text-amber-400" />
               </div>
               <p className="text-xs text-slate-400">
-                Verified Embark Studios PvPvE Meta & Surface Recon Intel
+                Senior Gaming Editors &amp; Verified PvPvE Meta Analysts
               </p>
             </div>
           </div>
@@ -307,7 +307,7 @@ export default async function BlogPostPage({ params }: PostPageProps) {
             {/* Table of Contents */}
             <TableOfContents content={post.content || ""} />
 
-            {/* Field Recon Dossier Spotlight */}
+            {/* Editorial Team Spotlight */}
             <div className="p-6 rounded-3xl bg-slate-900/90 border border-slate-800 shadow-xl space-y-4">
               <div className="flex items-center gap-3">
                 <div className="w-12 h-12 rounded-2xl bg-gradient-to-tr from-amber-600 via-orange-600 to-rose-600 text-white flex items-center justify-center font-bold text-base shadow-md shadow-amber-500/25">
@@ -315,21 +315,21 @@ export default async function BlogPostPage({ params }: PostPageProps) {
                 </div>
                 <div>
                   <h4 className="font-extrabold text-sm text-white">
-                    ARC Raiders Field Intel
+                    ARC Raiders Editorial Staff
                   </h4>
                   <p className="text-[11px] text-amber-400 font-semibold font-mono">
-                    Speranza Tactical Unit
+                    Official Guides &amp; News Team
                   </p>
                 </div>
               </div>
 
               <p className="text-xs text-slate-400 leading-relaxed">
-                Comprehensive database records, weapon damage benchmarks, extract point coordinates, and tactical playbooks verified for PlayStation 5, PC, and Xbox.
+                Researched, written, and fact-checked by our dedicated gaming writers covering ARC Raiders weapon balance, boss guides, extraction tactics, and performance on PS5, PC, and Xbox.
               </p>
 
               <div className="pt-3 border-t border-slate-800 flex items-center justify-between text-xs text-slate-400 font-medium font-mono">
-                <span>Database: v2026.1</span>
-                <span className="text-emerald-400 font-bold">● Surface Live</span>
+                <span>Review: Passed</span>
+                <span className="text-emerald-400 font-bold">● Updated 2026</span>
               </div>
             </div>
           </aside>
