@@ -716,6 +716,32 @@ With the right balance of Unreal Engine 5 settings, DLSS/FSR upscaling, and low-
   },
 ];
 
+export const DEDICATED_COVERS_BY_SLUG: Record<string, string> = {
+  "is-arc-raiders-crossplay-cross-platform-guide":
+    "https://images.unsplash.com/photo-1606813907291-d86efa9b94db?auto=format&fit=crop&w=1200&q=80",
+  "arc-raiders-ps5-gameplay-release-date-guide":
+    "https://images.unsplash.com/photo-1607604276583-eef5d076aa5f?auto=format&fit=crop&w=1200&q=80",
+  "arc-raiders-best-weapons-gadgets-loadout-guide":
+    "https://images.unsplash.com/photo-1563089145-599997674d42?auto=format&fit=crop&w=1200&q=80",
+  "speranza-colony-arc-raiders-extraction-contracts-guide":
+    "https://images.unsplash.com/photo-1538481199705-c710c4e965fc?auto=format&fit=crop&w=1200&q=80",
+  "arc-raiders-titan-boss-fight-weakpoints-loot-guide":
+    "https://images.unsplash.com/photo-1511512578047-dfb367046420?auto=format&fit=crop&w=1200&q=80",
+  "arc-raiders-pc-settings-unreal-engine-5-fps-guide":
+    "https://images.unsplash.com/photo-1587202372775-e229f172b9d7?auto=format&fit=crop&w=1200&q=80",
+};
+
+export function normalizePostCover<T extends { slug: string; coverImageUrl?: string | null }>(post: T): T {
+  const cleanSlug = post.slug.toLowerCase();
+  if (DEDICATED_COVERS_BY_SLUG[cleanSlug]) {
+    return {
+      ...post,
+      coverImageUrl: DEDICATED_COVERS_BY_SLUG[cleanSlug],
+    };
+  }
+  return post;
+}
+
 export async function getSafePublishedPosts() {
   try {
     const posts = await prisma.post.findMany({
@@ -731,12 +757,14 @@ export async function getSafePublishedPosts() {
     const allPosts = [...(posts || []), ...missingFallbacks];
     allPosts.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
 
-    if (allPosts.length > 0) return allPosts;
+    if (allPosts.length > 0) {
+      return allPosts.map(normalizePostCover);
+    }
   } catch (err) {
     console.warn("Database query failed, using fallback articles:", err);
   }
 
-  return SAMPLE_FALLBACK_POSTS;
+  return SAMPLE_FALLBACK_POSTS.map(normalizePostCover);
 }
 
 export async function getSafePostBySlug(rawSlug: string) {
@@ -750,15 +778,16 @@ export async function getSafePostBySlug(rawSlug: string) {
         },
       },
     });
-    if (post) return post;
+    if (post) return normalizePostCover(post);
   } catch (err) {
     console.warn("Database query for slug failed, falling back:", err);
   }
 
   // Fallback matching
-  return (
+  const fallback =
     SAMPLE_FALLBACK_POSTS.find(
       (p) => p.slug.toLowerCase() === cleanSlug || p.slug.toLowerCase() === rawSlug.toLowerCase()
-    ) || null
-  );
+    ) || null;
+
+  return fallback ? normalizePostCover(fallback) : null;
 }

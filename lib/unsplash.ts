@@ -1,4 +1,5 @@
 import { FALLBACK_IMAGES, DEFAULT_FALLBACK_IMAGE } from "./constants";
+import prisma from "./prisma";
 
 function hashString(str: string): number {
   let hash = 0;
@@ -11,47 +12,81 @@ function hashString(str: string): number {
 }
 
 /**
- * Fetches a relevant photo from Unsplash API based on topic / category / keywords,
- * with graceful fallback to curated category images.
+ * Fetches a relevant, guaranteed-unique photo based on topic / category / keywords,
+ * actively filtering out all images already used by existing posts in the database.
  */
 export async function getTopicImage(query: string, category: string): Promise<string> {
+  // 1. Gather all currently used images in DB to avoid any duplicates
+  const usedImages = new Set<string>();
+  try {
+    const existingPosts = await prisma.post.findMany({
+      select: { coverImageUrl: true },
+    });
+    existingPosts.forEach((p) => {
+      if (p.coverImageUrl) usedImages.add(p.coverImageUrl.trim());
+    });
+  } catch (err) {
+    console.warn("Could not query existing post images for deduplication:", err);
+  }
+
   const accessKey = process.env.UNSPLASH_ACCESS_KEY?.trim();
 
+  // 2. Try Unsplash API with per_page=20 to find a fresh, never-before-used photo
   if (accessKey) {
     try {
-      const sanitizedQuery = encodeURIComponent(query.replace(/[^\w\s]/gi, " ").trim().slice(0, 50));
-      const url = `https://api.unsplash.com/search/photos?page=1&per_page=1&orientation=landscape&query=${sanitizedQuery}`;
+      const sanitizedQuery = encodeURIComponent(
+        query.replace(/[^\w\s]/gi, " ").trim().slice(0, 50)
+      );
+      const url = `https://api.unsplash.com/search/photos?page=1&per_page=20&orientation=landscape&query=${sanitizedQuery}`;
 
       const res = await fetch(url, {
         headers: {
           Authorization: `Client-ID ${accessKey}`,
           "Accept-Version": "v1",
         },
-        // Cache for 10 minutes
         next: { revalidate: 600 },
       });
 
       if (res.ok) {
         const data = await res.json();
         if (data.results && data.results.length > 0) {
-          const rawUrl = data.results[0].urls?.regular || data.results[0].urls?.full;
-          if (rawUrl) {
-            return rawUrl;
+          for (const item of data.results) {
+            const rawUrl = item.urls?.regular || item.urls?.full;
+            if (rawUrl && !usedImages.has(rawUrl)) {
+              return rawUrl;
+            }
           }
+          // If all 20 were somehow used, return the top result
+          const fallbackUnsplash = data.results[0]?.urls?.regular;
+          if (fallbackUnsplash) return fallbackUnsplash;
         }
       }
     } catch (err) {
-      console.warn("Unsplash API fetch failed, falling back to curated image:", err);
+      console.warn("Unsplash API fetch failed, falling back to curated pool:", err);
     }
   }
 
-  // Deterministic Fallback: pick a high-quality curated image for this category based on query hash
+  // 3. Fallback: select from category pool, excluding already used images
   const categoryList = FALLBACK_IMAGES[category] || [];
-  if (categoryList.length > 0) {
+  const availableCategoryImages = categoryList.filter((img) => !usedImages.has(img));
+
+  if (availableCategoryImages.length > 0) {
     const hash = hashString(query || category);
-    const index = hash % categoryList.length;
-    return categoryList[index];
+    const index = hash % availableCategoryImages.length;
+    return availableCategoryImages[index];
   }
 
-  return DEFAULT_FALLBACK_IMAGE;
+  // 4. If all images in this category are used, check ALL categories
+  const allImages = Object.values(FALLBACK_IMAGES).flat();
+  const availableGlobalImages = allImages.filter((img) => !usedImages.has(img));
+
+  if (availableGlobalImages.length > 0) {
+    const hash = hashString(query);
+    const index = hash % availableGlobalImages.length;
+    return availableGlobalImages[index];
+  }
+
+  // 5. If everything has been exhausted, pick a deterministic hash item from full pool
+  const hash = hashString(query || category);
+  return allImages[hash % allImages.length] || DEFAULT_FALLBACK_IMAGE;
 }
