@@ -52,14 +52,6 @@ export async function generateBlogPost(customKeywordOrCategory?: string): Promis
 
     const genAI = new GoogleGenerativeAI(apiKey);
 
-    const model = genAI.getGenerativeModel({
-      model: "gemini-1.5-flash",
-      generationConfig: {
-        responseMimeType: "application/json",
-        temperature: 0.75,
-      },
-    });
-
     const prompt = `You are the chief editor and master gaming strategist for "The ARC Raiders Hub" (thearc-raiders.com) — the definitive global database and tactical guide platform for Embark Studios' extraction shooter, ARC Raiders.
 
 Your mission is to write a MASTERCLASS, DEFINITIVE, IN-DEPTH 1200–1800 WORD GAMING GUIDE specifically targeting the high-priority search query:
@@ -128,27 +120,77 @@ Return the response STRICTLY as valid JSON matching this schema:
   "content": "Full markdown article content here with all headings, tables, bullet points, and at least 1200+ words..."
 }`;
 
-    const result = await model.generateContent(prompt);
-    const responseText = result.response.text();
+    const candidateModels = [
+      "gemini-3.5-flash",
+      "gemini-3.5-flash-lite",
+      "gemini-3.1-flash-lite",
+      "gemini-flash-latest",
+      "gemini-3.8-flash",
+      "gemini-3.6-flash"
+    ];
 
-    if (!responseText) {
-      throw new Error("Empty response received from Gemini API.");
-    }
+    let parsed: GeneratedArticle | null = null;
+    let lastError: unknown = null;
 
-    let parsed: GeneratedArticle;
-    try {
-      parsed = JSON.parse(responseText);
-    } catch {
-      const jsonMatch = responseText.match(/```(?:json)?\s*([\s\S]*?)\s*```/);
-      if (jsonMatch && jsonMatch[1]) {
-        parsed = JSON.parse(jsonMatch[1]);
-      } else {
-        throw new Error("Failed to parse Gemini response as JSON: " + responseText.slice(0, 200));
+    for (const modelName of candidateModels) {
+      for (let attempt = 1; attempt <= 2; attempt++) {
+        try {
+          const model = genAI.getGenerativeModel({
+            model: modelName,
+            generationConfig: {
+              responseMimeType: "application/json",
+              temperature: 0.75,
+            },
+          });
+
+          const result = await model.generateContent(prompt);
+          const responseText = result.response.text();
+          if (!responseText) continue;
+
+          try {
+            parsed = JSON.parse(responseText);
+          } catch {
+            const jsonMatch = responseText.match(/```(?:json)?\s*([\s\S]*?)\s*```/);
+            if (jsonMatch && jsonMatch[1]) {
+              try {
+                parsed = JSON.parse(jsonMatch[1]);
+              } catch {}
+            }
+            if (!parsed) {
+              const start = responseText.indexOf('{');
+              const end = responseText.lastIndexOf('}');
+              if (start !== -1 && end !== -1 && end > start) {
+                const slice = responseText.slice(start, end + 1);
+                try {
+                  parsed = JSON.parse(slice);
+                } catch {
+                  const sanitized = slice
+                    .replace(/(?<!\\)\n/g, '\\n')
+                    .replace(/(?<!\\)\r/g, '\\r')
+                    .replace(/(?<!\\)\t/g, '\\t');
+                  parsed = JSON.parse(sanitized);
+                }
+              }
+            }
+          }
+
+          if (parsed && parsed.title && parsed.content) {
+            break;
+          }
+        } catch (err) {
+          lastError = err;
+          if (attempt < 2) {
+            await new Promise((r) => setTimeout(r, 1500));
+          }
+        }
+      }
+      if (parsed && parsed.title && parsed.content) {
+        break;
       }
     }
 
-    if (!parsed.title || !parsed.content) {
-      throw new Error("Generated content is missing required fields (title or content).");
+    if (!parsed || !parsed.title || !parsed.content) {
+      throw lastError || new Error("Failed to generate article content with available models.");
     }
 
     // Fetch relevant cover image

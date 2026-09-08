@@ -1,4 +1,4 @@
-﻿require('dotenv').config();
+require('dotenv').config();
 const { GoogleGenerativeAI } = require('@google/generative-ai');
 const { PrismaClient } = require('@prisma/client');
 const path = require('path');
@@ -80,17 +80,81 @@ async function getUniqueImage(category, query, usedImages) {
   return allImages[Math.floor(Math.random() * allImages.length)];
 }
 
+const CANDIDATE_MODELS = [
+  'gemini-3.5-flash',
+  'gemini-3.5-flash-lite',
+  'gemini-3.1-flash-lite',
+  'gemini-flash-latest',
+  'gemini-3.8-flash',
+  'gemini-3.6-flash'
+];
+
+function cleanAndParseJSON(rawText) {
+  try {
+    return JSON.parse(rawText);
+  } catch {}
+
+  let text = rawText.trim();
+  const fenceMatch = text.match(/```(?:json)?\s*([\s\S]*?)\s*```/);
+  if (fenceMatch && fenceMatch[1]) {
+    text = fenceMatch[1].trim();
+    try {
+      return JSON.parse(text);
+    } catch {}
+  }
+
+  const start = text.indexOf('{');
+  const end = text.lastIndexOf('}');
+  if (start !== -1 && end !== -1 && end > start) {
+    const slice = text.slice(start, end + 1);
+    try {
+      return JSON.parse(slice);
+    } catch {}
+    try {
+      const sanitized = slice
+        .replace(/(?<!\\)\n/g, '\\n')
+        .replace(/(?<!\\)\r/g, '\\r')
+        .replace(/(?<!\\)\t/g, '\\t');
+      return JSON.parse(sanitized);
+    } catch {}
+  }
+
+  throw new Error('Unable to parse JSON from AI response: ' + rawText.slice(0, 150));
+}
+
+async function generateWithModelFallback(genAI, prompt) {
+  let lastError = null;
+  for (const modelName of CANDIDATE_MODELS) {
+    for (let attempt = 1; attempt <= 2; attempt++) {
+      try {
+        const model = genAI.getGenerativeModel({
+          model: modelName,
+          generationConfig: {
+            responseMimeType: 'application/json',
+            temperature: 0.7,
+          },
+        });
+        const result = await model.generateContent(prompt);
+        const text = result.response.text();
+        if (text && text.trim()) {
+          return cleanAndParseJSON(text);
+        }
+      } catch (err) {
+        lastError = err;
+        console.warn(`[Model: ${modelName}, Attempt ${attempt}] Warning: ${err.message || err.status}`);
+        if (attempt < 2) {
+          await new Promise(r => setTimeout(r, 1500));
+        }
+      }
+    }
+  }
+  throw lastError || new Error('All candidate models failed.');
+}
+
 async function generateSingleArticle(apiKey, keywordItem, usedImages) {
   console.log(`\n🎯 Generating article for Keyword: "${keywordItem.keyword}" (Category: ${keywordItem.category})`);
 
   const genAI = new GoogleGenerativeAI(apiKey);
-  const model = genAI.getGenerativeModel({
-    model: 'gemini-1.5-flash',
-    generationConfig: {
-      responseMimeType: 'application/json',
-      temperature: 0.7,
-    },
-  });
 
   const prompt = `You are the senior editor and lead gaming strategist for "The ARC Raiders Hub" (thearc-raiders.com) — the premier tactical database for Embark Studios' extraction shooter, ARC Raiders.
 
@@ -121,16 +185,7 @@ Return strictly as JSON:
   "content": "Full markdown content..."
 }`;
 
-  const result = await model.generateContent(prompt);
-  const text = result.response.text();
-  let parsed;
-  try {
-    parsed = JSON.parse(text);
-  } catch (e) {
-    const m = text.match(/```(?:json)?([\s\S]*?)```/);
-    if (m) parsed = JSON.parse(m[1]);
-    else throw new Error('Could not parse Gemini JSON response: ' + text.slice(0, 100));
-  }
+  const parsed = await generateWithModelFallback(genAI, prompt);
 
   let baseSlug = slugify(parsed.title || keywordItem.keyword);
   let slug = baseSlug;
@@ -163,7 +218,7 @@ Return strictly as JSON:
 }
 
 async function main() {
-  const apiKey = process.env.GEMINI_API_KEY?.trim();
+  const apiKey = (process.env.GEMINI_API_KEY || process.env.GEMINI_KEY)?.trim();
   if (!apiKey) {
     console.error('❌ ERROR: GEMINI_API_KEY is missing in .env or environment variables.');
     console.error('💡 Please add your free GEMINI_API_KEY to .env or GitHub Secrets to enable automatic publishing.');
