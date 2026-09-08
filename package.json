@@ -8,6 +8,7 @@
     "postinstall": "prisma generate",
     "start": "next start",
     "lint": "next lint",
+    "generate:article": "node scripts/generate-article.js",
     "cron": "node scripts/cron-worker.js",
     "seed": "npx tsx prisma/seed.ts"
   },

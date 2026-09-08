@@ -1,0 +1,50 @@
+﻿name: 4x Daily Auto-Publish Gaming Articles
+
+on:
+  schedule:
+    # Runs 4 times a day: Every 6 hours (00:00, 06:00, 12:00, 18:00 UTC)
+    - cron: '0 0,6,12,18 * * *'
+  workflow_dispatch: # Allows manual 1-click trigger from GitHub Actions tab
+
+permissions:
+  contents: write
+
+jobs:
+  generate-and-publish:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 📥 Checkout Repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: ⚙️ Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+
+      - name: 📦 Install Dependencies
+        run: npm ci
+
+      - name: 🗄️ Generate Prisma Client
+        run: npx prisma generate
+
+      - name: 🤖 Generate SEO Article via Gemini AI
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY || secrets.GEMINI_KEY || vars.GEMINI_API_KEY }}
+          DATABASE_URL: "file:./dev.db"
+        run: node scripts/generate-article.js --count=1
+
+      - name: 🚀 Commit and Push New Article to Main
+        run: |
+          git config --global user.name "ARC-Raiders-Bot"
+          git config --global user.email "bot@thearc-raiders.com"
+          git add prisma/dev.db data/keywords.json
+          if git diff --staged --quiet; then
+            echo "No new articles generated or no changes to commit."
+          else
+            git commit -m "chore(auto-blog): published new keyword article [skip ci]"
+            git push origin HEAD:main
+          fi
