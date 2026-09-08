@@ -4,6 +4,7 @@ import prisma from "./prisma";
 import { getTopicImage } from "./unsplash";
 import { createUniqueSlug } from "./slugify";
 import { getNextKeywordToPublish } from "./keyword-queue";
+import { autoInterlinkContent } from "./interlinker";
 
 export interface GeneratedArticle {
   title: string;
@@ -68,35 +69,35 @@ STRUCTURE & MARKDOWN FORMATTING (MANDATORY SECTIONS):
 
 > **Quick Takeaways / At-A-Glance:** (A high-impact 3-4 bullet callout box directly answering "${targetKeyword}" for quick reader scanning and Google AI overviews).
 
-## 1. Complete Overview & Search Intent Breakdown
+## Complete Overview & Search Intent Breakdown
 - Explain in depth what "${targetKeyword}" means in the context of ARC Raiders.
 - Provide comprehensive background context (Speranza colony, surface wasteland, Embark Studios mechanics, PvPvE extraction stakes).
 - Address any common player misconceptions or recent game updates.
 
-## 2. Deep Dive Mechanics & Technical / Gameplay Specifications
+## Deep Dive Mechanics & Technical / Gameplay Specifications
 - Detailed technical breakdown (e.g. crossplay matchmaking rules, invite systems, input-based lobbies, platform parity, quest requirements, spawn probabilities, crafting formulas).
 - Cover PS5, Xbox Series X|S, and PC Steam/Epic differences where applicable.
 
-## 3. Comprehensive Comparison Table / Tactical Data Matrix
+## Comprehensive Comparison Table / Tactical Data Matrix
 - A full, multi-column Markdown comparison table with at least 4-6 rows detailing stats, requirements, platform features, drop locations, or weapon loadouts.
 - Example table formatting:
 | Feature / Item / Platform | Status / Location | Key Mechanics & Details | Tactical Priority |
 | :--- | :--- | :--- | :--- |
 | ... | ... | ... | ... |
 
-## 4. Step-by-Step Practical Walkthrough / In-Game Strategy
+## Step-by-Step Tactical Walkthrough / In-Game Strategy
 - Provide an exact numbered tactical checklist (Step 1, Step 2, Step 3, Step 4, Step 5) showing players how to execute or locate what they searched for.
 - Solo Raider vs Squad strategies: How to approach this objective safely when avoiding or fighting rival player squads.
 
-## 5. Map Locations, Loot Farming & Enemy Threat Mitigation
+## Map Locations, Loot Farming & Enemy Threat Mitigation
 - Pinpoint specific surface map sectors (Buried City, Dam complex, Industrial Warehouses, Spaceport vaults, Speranza outskirts).
 - Detailed tactics against ARC robotic threats (Titans, Sentinels, Leapers, Shredders, Drones) encountered during this activity.
 
-## 6. Pro Survival Tips & Stash Value Optimization
+## Pro Survival Tips & Stash Value Optimization
 - 5 bulleted pro tips with bold headers for maximum readability and player survival rate.
 - Risk management: When to extract vs when to push deeper into high-tier loot zones.
 
-## 7. Troubleshooting, Known Issues & Frequently Asked Questions (FAQ)
+## Troubleshooting, Known Issues & Frequently Asked Questions (FAQ)
 - Answer 4-5 distinct, frequently searched related questions in conversational, schema-ready format:
 ### Q1: [Question 1]?
 [Detailed 2-3 sentence answer]
@@ -107,7 +108,7 @@ STRUCTURE & MARKDOWN FORMATTING (MANDATORY SECTIONS):
 ### Q4: [Question 4]?
 [Detailed 2-3 sentence answer]
 
-## 8. Final Verdict & Raider Checklist
+## Final Verdict & Raider Checklist
 - Concluding takeaway reinforcing player mastery and long-term progression.
 
 Return the response STRICTLY as valid JSON matching this schema:
@@ -203,12 +204,15 @@ Return the response STRICTLY as valid JSON matching this schema:
     // Format tags
     const tagsString = Array.isArray(parsed.tags) ? parsed.tags.join(", ") : (parsed.tags || "");
 
+    // Interlink content
+    const interlinkedContent = autoInterlinkContent(parsed.content, slug);
+
     // Save to SQLite database
     const newPost = await prisma.post.create({
       data: {
         title: parsed.title.trim(),
         slug,
-        content: parsed.content.trim(),
+        content: interlinkedContent.trim(),
         excerpt: (parsed.excerpt || parsed.content.slice(0, 150)).trim(),
         coverImageUrl,
         category: parsed.category || targetCategory,

@@ -390,7 +390,7 @@ export default function AdminDashboardClient({
                       {post.title}
                     </p>
                     <p className="text-xs text-slate-400 font-mono mt-0.5 line-clamp-1">
-                      /blog/{post.slug}
+                      /{post.slug}
                     </p>
                   </td>
 
@@ -424,7 +424,7 @@ export default function AdminDashboardClient({
                   <td className="py-4 px-6 sm:px-8 text-right whitespace-nowrap space-x-2">
                     {post.status === "published" && (
                       <Link
-                        href={`/blog/${post.slug}`}
+                        href={`/${post.slug}`}
                         target="_blank"
                         className="p-2 rounded-xl text-slate-400 hover:text-blue-600 hover:bg-blue-50 dark:hover:bg-slate-800 inline-block transition-colors"
                         title="View live post"

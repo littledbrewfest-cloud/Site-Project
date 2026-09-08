@@ -26,6 +26,7 @@ export default function TableOfContents({ content }: TOCProps) {
         const rawText = match[2]
           .replace(/[*_~`]/g, "")
           .replace(/\[(.*?)\]\(.*?\)/g, "$1")
+          .replace(/^\d+[\.\)]\s*/, "")
           .trim();
 
         if (rawText) {

@@ -31,7 +31,7 @@ export async function GET() {
   const feedItems = posts
     .slice(0, 30)
     .map((post) => {
-      const postUrl = `${siteUrl}/blog/${post.slug}`;
+      const postUrl = `${siteUrl}/${post.slug}`;
       const pubDate = post.publishedAt
         ? new Date(post.publishedAt).toUTCString()
         : new Date(post.createdAt).toUTCString();

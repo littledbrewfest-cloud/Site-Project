@@ -29,7 +29,7 @@ export async function generateMetadata({ params }: PostPageProps): Promise<Metad
     const post = (await getSafePostBySlug(params?.slug || "")) || SAMPLE_FALLBACK_POSTS[0];
 
     const siteUrl = getSiteUrl();
-    const postUrl = `${siteUrl}/blog/${post.slug}`;
+    const postUrl = `${siteUrl}/${post.slug}`;
     const imageUrl = post.coverImageUrl || DEFAULT_FALLBACK_IMAGE;
 
     return {
@@ -109,7 +109,7 @@ export default async function BlogPostPage({ params }: PostPageProps) {
     : [];
 
   const siteUrl = getSiteUrl();
-  const postFullUrl = `${siteUrl}/blog/${post.slug}`;
+  const postFullUrl = `${siteUrl}/${post.slug}`;
 
   // JSON-LD Structured Data Schema for SEO
   const jsonLd = {
@@ -238,28 +238,42 @@ export default async function BlogPostPage({ params }: PostPageProps) {
                 remarkPlugins={[remarkGfm]}
                 components={{
                   h2: ({ children }) => {
-                    const text = String(children);
-                    const id = text
+                    const rawText = String(children);
+                    const cleanText = rawText.replace(/^\d+[\.\)]\s*/, "");
+                    const id = cleanText
                       .toLowerCase()
                       .replace(/[^\w\s-]/g, "")
                       .replace(/\s+/g, "-");
                     return (
                       <h2 id={id} className="scroll-mt-24 text-2xl sm:text-3xl font-black text-amber-700 dark:text-amber-400 mt-12 mb-5 pb-3 border-b border-slate-200 dark:border-slate-800/80 flex items-center gap-2">
                         <span className="w-1.5 h-6 bg-gradient-to-b from-amber-500 to-orange-500 rounded-full inline-block" />
-                        <span>{children}</span>
+                        <span>{cleanText}</span>
                       </h2>
                     );
                   },
                   h3: ({ children }) => {
-                    const text = String(children);
-                    const id = text
+                    const rawText = String(children);
+                    const cleanText = rawText.replace(/^\d+[\.\)]\s*/, "");
+                    const id = cleanText
                       .toLowerCase()
                       .replace(/[^\w\s-]/g, "")
                       .replace(/\s+/g, "-");
                     return (
                       <h3 id={id} className="scroll-mt-24 text-xl sm:text-2xl font-bold text-slate-900 dark:text-white mt-8 mb-3">
-                        {children}
+                        {cleanText}
                       </h3>
+                    );
+                  },
+                  a: ({ href, children }) => {
+                    const isInternal = href && (href.startsWith("/") || href.includes("thearc-raiders.com"));
+                    return (
+                      <Link
+                        href={href || "#"}
+                        className="text-amber-600 dark:text-amber-400 font-bold underline decoration-amber-500/40 hover:decoration-amber-500 hover:text-amber-700 dark:hover:text-amber-300 transition-colors"
+                        {...(!isInternal ? { target: "_blank", rel: "noopener noreferrer" } : {})}
+                      >
+                        {children}
+                      </Link>
                     );
                   },
                   table: ({ children }) => (

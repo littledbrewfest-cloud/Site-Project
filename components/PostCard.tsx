@@ -73,7 +73,7 @@ export default function PostCard({ post, featured = false }: PostCardProps) {
               <span>Priority Intel Report</span>
             </div>
 
-            <Link href={`/blog/${post.slug}`} className="block group/title">
+            <Link href={`/${post.slug}`} className="block group/title">
               <h2 className="text-2xl sm:text-3xl font-black tracking-tight text-slate-900 dark:text-white group-hover/title:text-amber-600 dark:group-hover/title:text-amber-400 transition-colors line-clamp-3 leading-tight">
                 {post.title}
               </h2>
@@ -96,7 +96,7 @@ export default function PostCard({ post, featured = false }: PostCardProps) {
             </div>
 
             <Link
-              href={`/blog/${post.slug}`}
+              href={`/${post.slug}`}
               className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-400 hover:to-orange-500 text-slate-950 text-xs font-extrabold shadow-lg shadow-amber-500/20 group/btn transition-all"
             >
               <span>Access Guide</span>
@@ -139,7 +139,7 @@ export default function PostCard({ post, featured = false }: PostCardProps) {
             <span>{formattedDate}</span>
           </div>
 
-          <Link href={`/blog/${post.slug}`} className="block group/title">
+          <Link href={`/${post.slug}`} className="block group/title">
             <h3 className="font-bold text-lg leading-snug text-slate-900 dark:text-white group-hover/title:text-amber-600 dark:group-hover/title:text-amber-400 transition-colors line-clamp-2">
               {post.title}
             </h3>
@@ -156,7 +156,7 @@ export default function PostCard({ post, featured = false }: PostCardProps) {
             <span>Field Dossier</span>
           </span>
           <Link
-            href={`/blog/${post.slug}`}
+            href={`/${post.slug}`}
             className="inline-flex items-center gap-1.5 text-xs font-bold text-amber-600 dark:text-amber-400 hover:text-amber-700 dark:hover:text-amber-300 group/link"
           >
             <span>Read Guide</span>
