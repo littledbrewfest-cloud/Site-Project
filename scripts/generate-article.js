@@ -217,6 +217,42 @@ Return strictly as JSON:
   return newPost;
 }
 
+const https = require('https');
+
+async function pingSearchEngines(slugs) {
+  if (!slugs || slugs.length === 0) return;
+  console.log(`📡 Pinging Google & IndexNow for ${slugs.length} new article(s)...`);
+  try {
+    const sitemapUrl = 'https://www.thearc-raiders.com/sitemap.xml';
+    https.get(`https://www.google.com/ping?sitemap=${encodeURIComponent(sitemapUrl)}`, () => {}).on('error', () => {});
+
+    const host = 'www.thearc-raiders.com';
+    const key = 'thearcraiders2026indexnow';
+    const urlList = slugs.map(s => `https://${host}/blog/${s}`);
+    const postData = JSON.stringify({
+      host,
+      key,
+      keyLocation: `https://${host}/${key}.txt`,
+      urlList
+    });
+
+    const req = https.request({
+      hostname: 'api.indexnow.org',
+      path: '/IndexNow',
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Content-Length': Buffer.byteLength(postData)
+      }
+    });
+    req.on('error', (e) => console.log('IndexNow ping notice:', e.message));
+    req.write(postData);
+    req.end();
+  } catch (err) {
+    console.log('Ping notice:', err.message);
+  }
+}
+
 async function main() {
   const apiKey = (process.env.GEMINI_API_KEY || process.env.GEMINI_KEY)?.trim();
   if (!apiKey) {
@@ -243,6 +279,7 @@ async function main() {
   const existingSlugs = existingPosts.map(p => p.slug.toLowerCase());
 
   let generated = 0;
+  const newSlugs = [];
   for (const item of keywords) {
     if (generated >= count) break;
     const kwLower = item.keyword.toLowerCase();
@@ -252,8 +289,9 @@ async function main() {
 
     if (!isAlreadyPublished) {
       try {
-        await generateSingleArticle(apiKey, item, usedImages);
+        const post = await generateSingleArticle(apiKey, item, usedImages);
         item.status = 'published';
+        newSlugs.push(post.slug);
         generated++;
       } catch (err) {
         console.error('Failed to generate for keyword:', item.keyword, err);
@@ -263,6 +301,11 @@ async function main() {
 
   fs.writeFileSync(KEYWORDS_FILE, JSON.stringify(keywords, null, 2));
   console.log(`\n🎉 Total Articles Published in this run: ${generated}`);
+
+  if (newSlugs.length > 0) {
+    await pingSearchEngines(newSlugs);
+  }
+
   process.exit(0);
 }
 

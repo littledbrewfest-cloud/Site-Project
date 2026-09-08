@@ -4,7 +4,7 @@ export function getSiteUrl(): string {
     !process.env.NEXT_PUBLIC_SITE_URL ||
     process.env.NEXT_PUBLIC_SITE_URL.includes("localhost")
   ) {
-    return "https://thearc-raiders.com";
+    return "https://www.thearc-raiders.com";
   }
 
   let url = process.env.NEXT_PUBLIC_SITE_URL.trim();
@@ -19,6 +19,6 @@ export function getMetadataBase(): URL {
   try {
     return new URL(getSiteUrl());
   } catch {
-    return new URL("https://thearc-raiders.com");
+    return new URL("https://www.thearc-raiders.com");
   }
 }
