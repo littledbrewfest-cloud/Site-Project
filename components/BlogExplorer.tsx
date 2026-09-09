@@ -10,7 +10,7 @@ interface Post {
   title: string;
   slug: string;
   excerpt: string;
-  content: string;
+  readTime: number;
   coverImageUrl: string | null;
   category: string;
   tags: string;
@@ -47,11 +47,7 @@ export default function BlogExplorer({ initialPosts, categories }: BlogExplorerP
     });
 
     if (sortBy === "readTime") {
-      return [...list].sort((a, b) => {
-        const wordsA = (a.content || "").split(/\s+/).length;
-        const wordsB = (b.content || "").split(/\s+/).length;
-        return wordsB - wordsA;
-      });
+      return [...list].sort((a, b) => (b.readTime || 4) - (a.readTime || 4));
     }
 
     return list;

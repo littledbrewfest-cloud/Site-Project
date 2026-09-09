@@ -16,6 +16,7 @@ interface PostCardProps {
     publishedAt?: Date | string | null;
     createdAt?: Date | string;
     content?: string;
+    readTime?: number;
   };
   featured?: boolean;
 }
@@ -31,8 +32,11 @@ export default function PostCard({ post, featured = false }: PostCardProps) {
     : "Recently published";
 
   // Calculate estimated reading time
-  const wordCount = post.content ? post.content.split(/\s+/).length : 800;
-  const readTime = Math.max(1, Math.ceil(wordCount / 200));
+  const readTime = post.readTime
+    ? post.readTime
+    : post.content
+    ? Math.max(1, Math.ceil(post.content.split(/\s+/).length / 200))
+    : 4;
 
   const imageUrl = post.coverImageUrl || DEFAULT_FALLBACK_IMAGE;
 

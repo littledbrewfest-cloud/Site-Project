@@ -15,19 +15,23 @@ export default async function HomePage() {
     getActiveCategories(),
   ]);
 
-  // Serialize dates for Client Component
-  const serializedPosts = posts.map((p) => ({
-    id: p.id,
-    title: p.title,
-    slug: p.slug,
-    excerpt: p.excerpt,
-    content: p.content,
-    coverImageUrl: p.coverImageUrl,
-    category: p.category,
-    tags: p.tags,
-    publishedAt: p.publishedAt ? (typeof p.publishedAt === "string" ? p.publishedAt : p.publishedAt.toISOString()) : null,
-    createdAt: typeof p.createdAt === "string" ? p.createdAt : p.createdAt.toISOString(),
-  }));
+  // Serialize posts without heavy markdown content payload for Client Component
+  const serializedPosts = posts.map((p) => {
+    const wordCount = (p.content || "").split(/\s+/).length;
+    const readTime = Math.max(1, Math.ceil(wordCount / 200));
+    return {
+      id: p.id,
+      title: p.title,
+      slug: p.slug,
+      excerpt: p.excerpt,
+      readTime,
+      coverImageUrl: p.coverImageUrl,
+      category: p.category,
+      tags: p.tags,
+      publishedAt: p.publishedAt ? (typeof p.publishedAt === "string" ? p.publishedAt : p.publishedAt.toISOString()) : null,
+      createdAt: typeof p.createdAt === "string" ? p.createdAt : p.createdAt.toISOString(),
+    };
+  });
 
   const homeJsonLd = {
     "@context": "https://schema.org",
