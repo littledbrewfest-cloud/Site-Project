@@ -39,7 +39,7 @@ export default function CategoryBadge({
 
   if (isLink) {
     return (
-      <Link href={`/category/${categoryToSlug(category)}`}>
+      <Link href={`/category/${categoryToSlug(category)}`} aria-label={`Explore ${category} intel sector`}>
         {badgeContent}
       </Link>
     );

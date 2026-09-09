@@ -29,18 +29,42 @@ export default async function HomePage() {
     createdAt: typeof p.createdAt === "string" ? p.createdAt : p.createdAt.toISOString(),
   }));
 
+  const homeJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "CollectionPage",
+    name: "The ARC Raiders Hub — Guides, News & Database",
+    description: "The premier community database, tactical loadout guides, and news intelligence network for ARC Raiders on PS5, PC, and Xbox.",
+    url: "https://www.thearc-raiders.com",
+    mainEntity: {
+      "@type": "ItemList",
+      itemListElement: posts.slice(0, 10).map((post, idx) => ({
+        "@type": "ListItem",
+        position: idx + 1,
+        url: `https://www.thearc-raiders.com/${post.slug}`,
+        name: post.title,
+      })),
+    },
+  };
+
   return (
     <div className="space-y-16">
+      {/* Inject CollectionPage JSON-LD */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(homeJsonLd) }}
+      />
+
       {/* Dynamic Hero Showcase Section */}
       <section className="relative overflow-hidden rounded-[2.5rem] bg-[#070b14] text-white p-6 sm:p-10 lg:p-14 shadow-2xl border border-amber-500/20">
         {/* Background Game Poster with Low Opacity & Cinematic Blending */}
         <div className="absolute inset-0 pointer-events-none overflow-hidden">
           <Image
-            src="https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&w=1920&q=80"
-            alt="ARC Raiders Surface Combat"
+            src="https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&w=1200&q=60"
+            alt="ARC Raiders Surface Atmosphere"
             fill
-            priority
-            sizes="100vw"
+            loading="lazy"
+            quality={60}
+            sizes="(max-width: 768px) 100vw, 1200px"
             className="object-cover opacity-15 sm:opacity-20 scale-105"
           />
           {/* Gradient Masks for smooth text contrast */}
@@ -148,11 +172,12 @@ export default async function HomePage() {
             <div className="relative aspect-[4/5] sm:aspect-[16/11] lg:aspect-[4/5] w-full rounded-[2rem] overflow-hidden border border-amber-500/30 shadow-2xl shadow-amber-500/10 group">
               {/* Poster Image */}
               <Image
-                src="https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&w=1200&q=85"
+                src="https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&w=800&q=80"
                 alt="ARC Raiders Official Key Art"
                 fill
                 priority
-                sizes="(max-width: 1024px) 100vw, 450px"
+                quality={80}
+                sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 450px"
                 className="object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
               />
               

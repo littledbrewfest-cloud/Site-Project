@@ -68,12 +68,13 @@ export default function TableOfContents({ content }: TOCProps) {
         <span>Tactical Intel Index</span>
       </div>
 
-      <nav className="space-y-1.5 text-xs sm:text-sm">
+      <nav className="space-y-1.5 text-xs sm:text-sm" aria-label="Table of Contents">
         {headings.map((item, idx) => (
           <button
             key={idx}
             onClick={() => scrollToHeading(item.id)}
-            className={`block text-left w-full truncate py-1 text-slate-300 hover:text-amber-400 hover:translate-x-1 transition-all ${
+            aria-label={`Jump to section: ${item.text}`}
+            className={`block text-left w-full truncate py-1 text-slate-300 hover:text-amber-400 hover:translate-x-1 transition-all cursor-pointer ${
               item.level === 3 ? "pl-4 text-xs text-slate-400" : "font-semibold"
             }`}
           >

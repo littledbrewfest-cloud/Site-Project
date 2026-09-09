@@ -1,15 +1,27 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { ThemeProvider } from "@/components/ThemeProvider";
-import { getMetadataBase } from "@/lib/site-url";
+import { getMetadataBase, getSiteUrl } from "@/lib/site-url";
 
-const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
+const inter = Inter({
+  subsets: ["latin"],
+  variable: "--font-inter",
+  display: "swap",
+});
+
+export const viewport: Viewport = {
+  themeColor: "#070b14",
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 5,
+};
 
 export const metadata: Metadata = {
   metadataBase: getMetadataBase(),
+  manifest: "/manifest.webmanifest",
   title: {
     default: "The ARC Raiders Hub — Guides, News & Database (PS5, PC, Xbox)",
     template: "%s | The ARC Raiders Hub",
@@ -66,6 +78,7 @@ export const metadata: Metadata = {
   alternates: {
     types: {
       "application/rss+xml": "/rss.xml",
+      "text/plain": "/llms.txt",
     },
   },
   verification: {
@@ -78,8 +91,54 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const siteUrl = getSiteUrl();
+
+  const websiteSchema = {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebSite",
+        "@id": `${siteUrl}/#website`,
+        url: siteUrl,
+        name: "The ARC Raiders Hub",
+        description:
+          "The premier community database, guides, and news hub for ARC Raiders by Embark Studios on PS5, PC, and Xbox Series X|S.",
+        publisher: {
+          "@type": "Organization",
+          "@id": `${siteUrl}/#organization`,
+          name: "The ARC Raiders Hub",
+          url: siteUrl,
+          logo: {
+            "@type": "ImageObject",
+            url: `${siteUrl}/icon.svg`,
+          },
+        },
+      },
+      {
+        "@type": "Organization",
+        "@id": `${siteUrl}/#organization`,
+        name: "The ARC Raiders Hub",
+        url: siteUrl,
+        logo: `${siteUrl}/icon.svg`,
+        sameAs: [
+          "https://twitter.com/ARC_Raiders_Hub",
+          "https://github.com/littledbrewfest-cloud/Site-Project",
+        ],
+      },
+    ],
+  };
+
   return (
     <html lang="en" className="scroll-smooth antialiased">
+      <head>
+        <link rel="preconnect" href="https://images.unsplash.com" crossOrigin="anonymous" />
+        <link rel="dns-prefetch" href="https://images.unsplash.com" />
+        <link rel="llms-txt" href="/llms.txt" />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteSchema) }}
+        />
+      </head>
       <body className={`${inter.className} min-h-screen flex flex-col bg-slate-50 text-slate-900 dark:bg-[#070b14] dark:text-slate-100 bg-mesh-pattern selection:bg-amber-500 selection:text-black transition-colors duration-200`}>
         <ThemeProvider>
           <Navbar />

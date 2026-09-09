@@ -1,0 +1,27 @@
+# The ARC Raiders Hub
+> The premier community database, guides, loadout builder, and news intelligence hub for ARC Raiders by Embark Studios (PS5, PC, Xbox Series X|S).
+
+## Core Tactical Guides & Field Dossiers
+- [Weapons & Loadout Guide](https://www.thearc-raiders.com/arc-raiders-best-weapons-gadgets-loadout-guide): Complete weapon tier lists, gadget synergies, and DPS meta.
+- [Speranza Colony Contracts](https://www.thearc-raiders.com/speranza-colony-arc-raiders-extraction-contracts-guide): Extraction mechanics, underground trader rep, and mission blueprints.
+- [Titan Boss Weakpoints](https://www.thearc-raiders.com/arc-raiders-titan-boss-fight-weakpoints-loot-guide): Machine boss strategies, core component drops, and combat tactics.
+- [PS5 Gameplay & Settings](https://www.thearc-raiders.com/arc-raiders-ps5-gameplay-release-date-guide): 4K 60FPS performance, DualSense haptics, and console controls.
+- [PC Unreal Engine 5 FPS Guide](https://www.thearc-raiders.com/arc-raiders-pc-settings-unreal-engine-5-fps-guide): Lumen, Nanite, DLSS/FSR optimization for competitive framerates.
+- [Crossplay & Cross-Progression](https://www.thearc-raiders.com/is-arc-raiders-crossplay-cross-platform-guide): Cross-platform matchmaking and account linking details.
+- [Sentinel Firing Core Farm](https://www.thearc-raiders.com/where-to-find-sentinel-firing-core-in-arc-raiders-farm-guide): High-tier crafting material locations and Sentinel spawns.
+- [Mushroom Farming Locations](https://www.thearc-raiders.com/where-to-find-mushrooms-in-arc-raiders-ultimate-farming-guide): Underground flora spots and Speranza medical craft recipes.
+- [Olives Scavenging Guide](https://www.thearc-raiders.com/where-to-find-olives-in-arc-raiders-ultimate-loot-guide): Surface grocery cache locations and food provisioning.
+- [Ultimate Scavenging Guide](https://www.thearc-raiders.com/what-we-left-behind-arc-raiders-ultimate-scavenging-guide): Loot route optimization and safe extraction corridors.
+
+## Database Sectors & Categories
+- [ARC Raiders News](https://www.thearc-raiders.com/category/arc-raiders-news)
+- [PS5 & Console Gaming](https://www.thearc-raiders.com/category/ps5-and-console-gaming)
+- [Guides & Walkthroughs](https://www.thearc-raiders.com/category/guides-and-walkthroughs)
+- [Weapons & Loadouts](https://www.thearc-raiders.com/category/weapons-and-loadouts)
+- [Extraction Shooters](https://www.thearc-raiders.com/category/extraction-shooters)
+- [PC Specs & Performance](https://www.thearc-raiders.com/category/pc-specs-and-performance)
+
+## Machine & AI Ingestion Feeds
+- [Full Text LLM Manifest](https://www.thearc-raiders.com/llms-full.txt): Comprehensive, full-length content dossiers for AI ingestion.
+- [XML Sitemap](https://www.thearc-raiders.com/sitemap.xml): Complete machine-readable URL hierarchy.
+- [RSS 2.0 Feed](https://www.thearc-raiders.com/rss.xml): Real-time news dispatch feed for automated systems.
