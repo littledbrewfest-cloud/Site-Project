@@ -65,6 +65,41 @@ const nextConfig = {
         destination: '/:slug',
         permanent: true,
       },
+      {
+        source: '/where-to-find-mushrooms-in-arc-raiders-the-ultimate-tactical-foraging-guide',
+        destination: '/where-to-find-mushrooms-in-arc-raiders-ultimate-farming-guide',
+        permanent: true,
+      },
+      {
+        source: '/where-to-find-mushrooms-in-arc-raiders-tactical-foraging-guide',
+        destination: '/where-to-find-mushrooms-in-arc-raiders-ultimate-farming-guide',
+        permanent: true,
+      },
+      {
+        source: '/arc-raiders-mushroom-guide-best-locations-farming-routes',
+        destination: '/where-to-find-mushrooms-in-arc-raiders-ultimate-farming-guide',
+        permanent: true,
+      },
+      {
+        source: '/where-to-find-mushrooms-in-arc-raiders-fungal-farming-guide',
+        destination: '/where-to-find-mushrooms-in-arc-raiders-ultimate-farming-guide',
+        permanent: true,
+      },
+      {
+        source: '/where-to-find-mushrooms-in-arc-raiders-tactical-guide',
+        destination: '/where-to-find-mushrooms-in-arc-raiders-ultimate-farming-guide',
+        permanent: true,
+      },
+      {
+        source: '/where-to-find-mushrooms-in-arc-raiders-complete-guide',
+        destination: '/where-to-find-mushrooms-in-arc-raiders-ultimate-farming-guide',
+        permanent: true,
+      },
+      {
+        source: '/arc-raiders-mushroom-location-guide-where-to-find-them',
+        destination: '/where-to-find-mushrooms-in-arc-raiders-ultimate-farming-guide',
+        permanent: true,
+      },
     ];
   },
 };

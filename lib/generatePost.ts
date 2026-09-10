@@ -3,7 +3,7 @@ import { Post } from "@prisma/client";
 import prisma from "./prisma";
 import { getTopicImage } from "./unsplash";
 import { createUniqueSlug } from "./slugify";
-import { getNextKeywordToPublish } from "./keyword-queue";
+import { getNextKeywordToPublish, isTopicCovered, markKeywordAsPublished } from "./keyword-queue";
 import { autoInterlinkContent } from "./interlinker";
 
 export interface GeneratedArticle {
@@ -17,7 +17,7 @@ export interface GeneratedArticle {
 
 /**
  * Generates an SEO-optimized, engaging, 100% unique blog post using Google Gemini API.
- * Pulls from the prioritized low-competition keyword queue automatically.
+ * Pulls from the prioritized low-competition keyword queue automatically and ensures zero duplicate content.
  */
 export async function generateBlogPost(customKeywordOrCategory?: string): Promise<{
   success: boolean;
@@ -36,11 +36,19 @@ export async function generateBlogPost(customKeywordOrCategory?: string): Promis
     let targetKeyword = "";
     let targetCategory = "ARC Raiders News";
 
+    // Fetch all existing published posts from DB for strict anti-duplication
+    const existingPosts = await prisma.post.findMany({
+      select: { title: true, slug: true, category: true },
+      orderBy: { createdAt: "desc" },
+    });
+
+    const coveredTopicsList = existingPosts.map((p) => `"${p.title}"`).slice(0, 15).join(", ");
+
     if (customKeywordOrCategory) {
       targetKeyword = customKeywordOrCategory;
       targetCategory = "ARC Raiders News";
     } else {
-      // Pick next prioritized keyword from the 1000-keyword queue (KD: 0 first!)
+      // Pick next prioritized keyword from the 1000-keyword queue (100% unique, not covered)
       const nextItem = await getNextKeywordToPublish();
       if (nextItem) {
         targetKeyword = nextItem.keyword;
@@ -57,6 +65,11 @@ export async function generateBlogPost(customKeywordOrCategory?: string): Promis
 
 Your mission is to write a MASTERCLASS, DEFINITIVE, IN-DEPTH 1200–1800 WORD GAMING GUIDE specifically targeting the high-priority search query:
 "${targetKeyword}" (Category: "${targetCategory}").
+
+CRITICAL ANTI-DUPLICATION RULE:
+- Our database ALREADY HAS comprehensive published guides covering these exact topics: [${coveredTopicsList}].
+- You MUST NOT write about or re-hash any of those already covered topics (e.g. if Mushrooms, Olives, Sentinel Firing Core, or Crossplay already exist, do NOT write another article about them).
+- Your article MUST FOCUS 100% UNIQUELY AND EXCLUSIVELY ON: "${targetKeyword}".
 
 CRITICAL LENGTH & QUALITY REQUIREMENT:
 - The article MUST BE AT LEAST 1200 TO 1800 WORDS.
@@ -194,6 +207,16 @@ Return the response STRICTLY as valid JSON matching this schema:
       throw lastError || new Error("Failed to generate article content with available models.");
     }
 
+    // Safety check: ensure generated title does not duplicate existing posts
+    const isDuplicate = isTopicCovered(parsed.title, existingPosts);
+    if (isDuplicate && !customKeywordOrCategory) {
+      console.warn(`Generated article title "${parsed.title}" collides with existing topic. Skipping duplicate.`);
+      return {
+        success: false,
+        error: `Generated article title "${parsed.title}" collides with an existing topic.`,
+      };
+    }
+
     // Fetch relevant cover image
     const searchQuery = parsed.imageKeywords || `futuristic robot gaming ${targetKeyword}`;
     const coverImageUrl = await getTopicImage(searchQuery, parsed.category || targetCategory);
@@ -221,6 +244,10 @@ Return the response STRICTLY as valid JSON matching this schema:
         publishedAt: new Date(),
       },
     });
+
+    // Mark keywords as published in queue
+    markKeywordAsPublished(targetKeyword);
+    markKeywordAsPublished(parsed.title);
 
     return {
       success: true,
