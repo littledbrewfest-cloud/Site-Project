@@ -158,9 +158,8 @@ export default function PostCard({ post, featured = false }: PostCardProps) {
         </div>
 
         <div className="pt-4 border-t border-slate-200 dark:border-slate-800/80 flex items-center justify-between">
-          <span className="text-xs text-slate-600 dark:text-slate-400 font-medium flex items-center gap-1">
-            <Crosshair className="w-3 h-3 text-amber-600 dark:text-amber-500" aria-hidden="true" />
-            <span>Field Dossier</span>
+          <span className="text-xs font-bold text-amber-700 dark:text-amber-400">
+            {post.category}
           </span>
           <Link
             href={`/${post.slug}`}
