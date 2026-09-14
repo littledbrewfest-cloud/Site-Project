@@ -22,11 +22,11 @@ export const metadata: Metadata = {
   metadataBase: getMetadataBase(),
   manifest: "/manifest.webmanifest",
   title: {
-    default: "The ARC Raiders Hub — Guides, News & Database (PS5, PC, Xbox)",
-    template: "%s | The ARC Raiders Hub",
+    default: "ARC Raiders Hub — Guides, Weapons & Database (PS5, PC, Xbox)",
+    template: "%s | ARC Raiders Hub",
   },
   description:
-    "The ultimate community database, guides, and news hub for ARC Raiders by Embark Studios. In-depth weapon tier lists, Speranza colony mechanics, Titan boss fight strategies, and PS5/PC performance guides.",
+    "The ultimate community database, guides, and news hub for ARC Raiders by Embark Studios. Weapon tier lists, Speranza colony mechanics, Titan boss strategies, and PS5/PC guides.",
   keywords: [
     "ARC Raiders",
     "ARC Raiders PS5",

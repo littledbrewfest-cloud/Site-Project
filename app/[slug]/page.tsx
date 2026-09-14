@@ -32,8 +32,23 @@ export async function generateMetadata({ params }: PostPageProps): Promise<Metad
     const postUrl = `${siteUrl}/${post.slug}`;
     const imageUrl = post.coverImageUrl || DEFAULT_FALLBACK_IMAGE;
 
+    // Concise, high-CTR title under 60 characters for Google & Semrush
+    let seoTitle = post.title.trim();
+    if (seoTitle.length > 45 && seoTitle.includes(":")) {
+      const parts = seoTitle.split(":");
+      if (parts[0].trim().length >= 25) {
+        seoTitle = parts[0].trim();
+      }
+    }
+    if (seoTitle.length > 46) {
+      seoTitle = seoTitle.slice(0, 43).trim() + "...";
+    }
+    const formattedTitle = `${seoTitle} | ARC Raiders`;
+
     return {
-      title: post.title,
+      title: {
+        absolute: formattedTitle,
+      },
       description: post.excerpt,
       keywords: post.tags ? post.tags.split(",").map((t) => t.trim()) : [],
       authors: [{ name: "The ARC Raiders Editorial Staff" }],
@@ -67,7 +82,7 @@ export async function generateMetadata({ params }: PostPageProps): Promise<Metad
     };
   } catch {
     return {
-      title: "Tactical Intel Article | The ARC Raiders Hub",
+      title: "Tactical Intel Article | ARC Raiders",
     };
   }
 }

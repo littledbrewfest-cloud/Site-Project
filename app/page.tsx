@@ -229,6 +229,72 @@ export default async function HomePage() {
 
       {/* Main Interactive Blog Explorer */}
       <BlogExplorer initialPosts={serializedPosts} categories={categories} />
+
+      {/* Deep-Dive Database Overview & Raider FAQs (High Text-to-HTML Ratio & Rich Semantic Indexing) */}
+      <section className="bg-white dark:bg-[#0c1222] p-8 sm:p-12 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-md space-y-8">
+        <div className="border-b border-slate-200 dark:border-slate-800 pb-4">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-amber-500/10 border border-amber-500/30 text-amber-600 dark:text-amber-400 text-xs font-mono font-bold mb-3">
+            <Sparkles className="w-3.5 h-3.5" />
+            <span>COMMUNITY INTEL NETWORK</span>
+          </div>
+          <h2 className="text-2xl sm:text-3xl font-black text-slate-900 dark:text-white uppercase tracking-tight">
+            The Definitive ARC Raiders Surface Database
+          </h2>
+          <p className="text-slate-600 dark:text-slate-300 text-sm sm:text-base mt-2 max-w-3xl leading-relaxed">
+            Welcome to <strong className="text-slate-900 dark:text-white">The ARC Raiders Hub</strong> — the central intelligence command and tactical wiki for Embark Studios&apos; third-person PvPvE extraction shooter. Built from the ground up for competitive raiders on PlayStation 5, PC (Steam &amp; Epic Games Store), and Xbox Series X|S.
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-xs sm:text-sm text-slate-600 dark:text-slate-300">
+          <div className="p-5 rounded-2xl bg-slate-50 dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800 space-y-2">
+            <h3 className="font-extrabold text-slate-900 dark:text-white text-sm uppercase font-mono text-amber-600 dark:text-amber-400">
+              01. Weapon &amp; Armor Meta
+            </h3>
+            <p>
+              In-depth weapon breakdowns analyzing TTK, bullet velocity, shield penetration, and gadget synergies. Detailed loadouts optimized for solo extraction survival or high-tempo trio squad coordination.
+            </p>
+          </div>
+
+          <div className="p-5 rounded-2xl bg-slate-50 dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800 space-y-2">
+            <h3 className="font-extrabold text-slate-900 dark:text-white text-sm uppercase font-mono text-orange-600 dark:text-orange-400">
+              02. Machine Threat Intelligence
+            </h3>
+            <p>
+              Comprehensive combat manuals for neutralizing hostile ARC mechanized invaders. Pinpoint sensory weakpoints on Titans, Sentinels, Shredders, and Drone swarms across every surface wasteland sector.
+            </p>
+          </div>
+
+          <div className="p-5 rounded-2xl bg-slate-50 dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800 space-y-2">
+            <h3 className="font-extrabold text-slate-900 dark:text-white text-sm uppercase font-mono text-emerald-600 dark:text-emerald-400">
+              03. Speranza Economy &amp; Quests
+            </h3>
+            <p>
+              Complete crafting blueprints, trader reputation trees, and interactive loot tables. Locate essential quest items including Sentinel Firing Cores, Industrial Batteries, Rusted Gears, and vital colony medical supplies.
+            </p>
+          </div>
+        </div>
+
+        {/* Surface Raider FAQs */}
+        <div className="space-y-4 pt-4 border-t border-slate-200 dark:border-slate-800">
+          <h3 className="text-lg font-black uppercase text-slate-900 dark:text-white tracking-tight">
+            Frequently Asked Surface Intel
+          </h3>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs sm:text-sm">
+            <div className="p-4 rounded-xl bg-slate-50 dark:bg-slate-900/40 border border-slate-200 dark:border-slate-800/80">
+              <h4 className="font-bold text-slate-900 dark:text-white mb-1">Is ARC Raiders Cross-Platform?</h4>
+              <p className="text-slate-600 dark:text-slate-300 leading-relaxed">
+                Yes, ARC Raiders features full cross-platform multiplayer and cross-progression across PS5, Xbox Series X|S, and PC, allowing players on all platforms to squad up together.
+              </p>
+            </div>
+            <div className="p-4 rounded-xl bg-slate-50 dark:bg-slate-900/40 border border-slate-200 dark:border-slate-800/80">
+              <h4 className="font-bold text-slate-900 dark:text-white mb-1">How do surface extractions work?</h4>
+              <p className="text-slate-600 dark:text-slate-300 leading-relaxed">
+                Players deploy from the subterranean colony of Speranza to the Earth&apos;s surface to gather high-value loot and survive against both ARC machines and rival squads before extracting safely.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
     </div>
   );
 }

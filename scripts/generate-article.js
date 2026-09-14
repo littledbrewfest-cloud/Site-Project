@@ -248,18 +248,62 @@ function autoInterlinkContent(content, currentSlug) {
   return resultLines.join('\n');
 }
 
-async function generateSingleArticle(apiKey, keywordItem, usedImages) {
+const STOP_WORDS = new Set([
+  'in', 'the', 'a', 'an', 'for', 'to', 'of', 'and', 'on', 'at', 'with', 'is', 'are', 'was', 'were',
+  'how', 'what', 'where', 'why', 'when', 'who', 'which', 'guide', 'ultimate', 'best', '2026',
+  'arc', 'raider', 'raiders', 'find', 'location', 'locations', 'farming', 'farm', 'complete', 'tactical',
+  'routes', 'walkthrough', 'news', 'update', 'tips', 'tricks', 'top', 'gaming', 'edition', 'ps5', 'pc', 'xbox',
+  'get', 'all', 'everything', 'you', 'need', 'know', 'about'
+]);
+
+function stemWord(w) {
+  return w.toLowerCase().replace(/[^a-z0-9]/g, '').replace(/(?:ing|es|s|ed|er|est)$/, '');
+}
+
+function extractCoreTokens(str) {
+  const words = str.toLowerCase().replace(/[^a-z0-9\s]/g, ' ').split(/\s+/).filter(Boolean);
+  return words.map(stemWord).filter(w => w.length > 1 && !STOP_WORDS.has(w));
+}
+
+function isTopicCovered(keywordOrTitle, existingPosts) {
+  const kwTokens = extractCoreTokens(keywordOrTitle);
+  if (kwTokens.length === 0) return false;
+
+  for (const post of existingPosts) {
+    const postTokens = new Set([
+      ...extractCoreTokens(post.title || ''),
+      ...extractCoreTokens(post.slug || '')
+    ]);
+
+    const matchedCount = kwTokens.filter(t => postTokens.has(t)).length;
+    const ratio = matchedCount / kwTokens.length;
+
+    if (kwTokens.length === 1 && matchedCount === 1) return true;
+    if (kwTokens.length === 2 && matchedCount >= 2) return true;
+    if (kwTokens.length >= 3 && ratio >= 0.60) return true;
+  }
+  return false;
+}
+
+async function generateSingleArticle(apiKey, keywordItem, usedImages, existingPosts) {
   console.log(`\n🎯 Generating article for Keyword: "${keywordItem.keyword}" (Category: ${keywordItem.category})`);
 
   const genAI = new GoogleGenerativeAI(apiKey);
+  const coveredTopicsList = existingPosts.map(p => `"${p.title}"`).slice(0, 15).join(', ');
 
   const prompt = `You are the senior editor and lead gaming strategist for "The ARC Raiders Hub" (thearc-raiders.com) — the premier tactical database for Embark Studios' extraction shooter, ARC Raiders.
 
 Write a MASTERCLASS, DEFINITIVE, IN-DEPTH 1200–1800 WORD GAMING GUIDE targeting the search query:
 "${keywordItem.keyword}" (Category: "${keywordItem.category}").
 
+CRITICAL ANTI-DUPLICATION RULE:
+- Our database ALREADY HAS guides covering: [${coveredTopicsList}].
+- You MUST NOT write about or re-hash any of those already covered topics (e.g. if Mushrooms, Olives, Sentinel Firing Core, or Crossplay already exist, do NOT write about them).
+- Focus 100% uniquely on: "${keywordItem.keyword}".
+
 CRITICAL REQUIREMENTS:
 - Minimum 1200 to 1800 words.
+- Title length MUST be 45-60 characters (Concise, punchy SEO title).
 - In-depth tactical advice, map callouts, weapon stats, loot spawn probabilities, comparison tables, and FAQs.
 - IMPORTANT: Do NOT include numbers (like "1.", "2.", "3.") in any headings. Use clean, natural, human-written editorial titles for all headings.
 - Markdown structure:
@@ -276,7 +320,7 @@ CRITICAL REQUIREMENTS:
 
 Return strictly as JSON:
 {
-  "title": "Title (50-65 chars)",
+  "title": "Title (45-60 chars)",
   "category": "${keywordItem.category}",
   "excerpt": "Compelling 140-160 char summary",
   "tags": ["ARC Raiders", "${keywordItem.category}", "Gaming Guide", "PS5", "PC Gaming"],
@@ -284,6 +328,12 @@ Return strictly as JSON:
 }`;
 
   const parsed = await generateWithModelFallback(genAI, prompt);
+
+  // Uniqueness check
+  if (isTopicCovered(parsed.title, existingPosts)) {
+    console.warn(`Generated title "${parsed.title}" collides with existing topics. Skipping.`);
+    throw new Error(`Duplicate topic collision for "${parsed.title}"`);
+  }
 
   let baseSlug = slugify(parsed.title || keywordItem.keyword);
   let slug = baseSlug;
@@ -374,26 +424,24 @@ async function main() {
   });
 
   const usedImages = new Set(existingPosts.map(p => p.coverImageUrl).filter(Boolean));
-  const existingTitles = existingPosts.map(p => p.title.toLowerCase());
-  const existingSlugs = existingPosts.map(p => p.slug.toLowerCase());
 
   let generated = 0;
   const newSlugs = [];
   for (const item of keywords) {
     if (generated >= count) break;
-    const kwLower = item.keyword.toLowerCase();
-    const isAlreadyPublished =
-      existingTitles.some(t => t.includes(kwLower) || kwLower.includes(t)) ||
-      existingSlugs.some(s => s.includes(kwLower.replace(/\s+/g, '-')));
+    if (item.status === 'published') continue;
+
+    const isAlreadyPublished = isTopicCovered(item.keyword, existingPosts);
 
     if (!isAlreadyPublished) {
       try {
-        const post = await generateSingleArticle(apiKey, item, usedImages);
+        const post = await generateSingleArticle(apiKey, item, usedImages, existingPosts);
         item.status = 'published';
         newSlugs.push(post.slug);
+        existingPosts.push({ title: post.title, slug: post.slug, coverImageUrl: post.coverImageUrl });
         generated++;
       } catch (err) {
-        console.error('Failed to generate for keyword:', item.keyword, err);
+        console.error('Failed to generate for keyword:', item.keyword, err.message);
       }
     }
   }
@@ -409,3 +457,4 @@ async function main() {
 }
 
 main();
+

@@ -8,6 +8,7 @@ import PostCard from "@/components/PostCard";
 import CategoryBadge from "@/components/CategoryBadge";
 import NewsletterCard from "@/components/NewsletterCard";
 import { BookOpen, Layers, ChevronRight } from "lucide-react";
+import { getSiteUrl } from "@/lib/site-url";
 
 interface CategoryPageProps {
   params: {
@@ -20,10 +21,17 @@ export const revalidate = 60;
 export async function generateMetadata({ params }: CategoryPageProps): Promise<Metadata> {
   const allCategories = await getActiveCategories();
   const matchedCategory = slugToCategory(params.category, allCategories);
+  const siteUrl = getSiteUrl();
+  const categorySlug = categoryToSlug(matchedCategory);
 
   return {
-    title: `${matchedCategory} Guides, Meta & News | The ARC Raiders Hub`,
-    description: `Browse tactical guides, loadout meta, patch notes, and news in ${matchedCategory} for ARC Raiders on PS5, PC, and Xbox.`,
+    title: {
+      absolute: `${matchedCategory} Guides & Database | ARC Raiders`,
+    },
+    description: `Comprehensive tactical guides, meta loadouts, and survival strategies for ${matchedCategory} in ARC Raiders on PS5, PC, and Xbox Series X|S.`,
+    alternates: {
+      canonical: `${siteUrl}/category/${categorySlug}`,
+    },
   };
 }
 
@@ -72,7 +80,7 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
           </h1>
 
           <p className="text-slate-300 text-sm sm:text-base leading-relaxed">
-            Surface reconnaissance, equipment blueprints, combat mechanics, and verified intel for {matchedCategory.toLowerCase()}.
+            Surface reconnaissance, equipment blueprints, combat mechanics, and verified field intel for {matchedCategory.toLowerCase()} in Embark Studios&apos; high-stakes extraction shooter.
           </p>
 
           {/* Quick Category Jump Pills */}
@@ -122,6 +130,44 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
           </Link>
         </div>
       )}
+
+      {/* Sector Strategic Overview & Tactical Lore (High Word Count & SEO Value) */}
+      <section className="bg-white dark:bg-[#0c1222] p-8 sm:p-12 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-md space-y-6">
+        <div className="border-b border-slate-200 dark:border-slate-800 pb-4">
+          <h2 className="text-xl sm:text-2xl font-black text-slate-900 dark:text-white uppercase tracking-tight flex items-center gap-2">
+            <span className="w-2 h-6 bg-gradient-to-b from-amber-500 to-orange-500 rounded-full inline-block" />
+            <span>Sector Intel Briefing: {matchedCategory}</span>
+          </h2>
+          <p className="text-slate-500 dark:text-slate-400 text-xs sm:text-sm mt-1">
+            Essential tactical background, combat mechanics, and surface survival protocols for Speranza Raiders.
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 text-sm sm:text-base text-slate-700 dark:text-slate-300 leading-relaxed font-normal">
+          <div className="space-y-4">
+            <h3 className="font-bold text-slate-900 dark:text-white text-base sm:text-lg">
+              Tactical Objective &amp; Progression Focus
+            </h3>
+            <p>
+              In ARC Raiders, mastering the {matchedCategory.toLowerCase()} sector requires balancing aggressive extraction mechanics with careful resource preservation. Whether scavenging for critical quest items in top-tier machine complexes or optimizing weapon DPS multipliers, understanding how surface systems interact is vital for long-term progression.
+            </p>
+            <p>
+              All dossiers published under this sector are peer-reviewed by our editorial team and cross-referenced with official patch notes from Embark Studios to guarantee maximum factual accuracy for PlayStation 5, PC Steam, and Xbox Series X|S players.
+            </p>
+          </div>
+
+          <div className="space-y-4">
+            <h3 className="font-bold text-slate-900 dark:text-white text-base sm:text-lg">
+              Key Survival Directives &amp; Squad Protocols
+            </h3>
+            <ul className="space-y-2.5 list-disc list-inside text-slate-600 dark:text-slate-300">
+              <li><strong>Threat Mitigation:</strong> Prioritize acoustic stealth and sensor dampeners when navigating through high-density ARC Titan patrol corridors.</li>
+              <li><strong>Extract Timing:</strong> Call extractions during secondary machine cycles to minimize enemy squad ambushes at drop zones.</li>
+              <li><strong>Resource Routing:</strong> Store essential crafting components in secured stash containers before pushing into hazardous wasteland ruins.</li>
+            </ul>
+          </div>
+        </div>
+      </section>
 
       {/* Newsletter */}
       <NewsletterCard />
