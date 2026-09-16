@@ -141,6 +141,21 @@ const nextConfig = {
         permanent: true,
       },
       {
+        source: '/where-to-find-mushrooms-in-arc-raiders-ultimate-guide',
+        destination: '/where-to-find-mushrooms-in-arc-raiders-ultimate-farming-guide',
+        permanent: true,
+      },
+      {
+        source: '/where-to-find-mushrooms-arc-raiders-the-complete-farming-guide',
+        destination: '/where-to-find-mushrooms-in-arc-raiders-ultimate-farming-guide',
+        permanent: true,
+      },
+      {
+        source: '/where-to-find-olives-in-arc-raiders-the-ultimate-loot-guide',
+        destination: '/where-to-find-olives-in-arc-raiders-ultimate-loot-guide',
+        permanent: true,
+      },
+      {
         source: '/where-to-find-olives-in-arc-raiders-the-ultimate-guide',
         destination: '/where-to-find-olives-in-arc-raiders-ultimate-loot-guide',
         permanent: true,
