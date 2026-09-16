@@ -86,7 +86,8 @@ export async function getTopicImage(query: string, category: string): Promise<st
     return availableGlobalImages[index];
   }
 
-  // 5. If everything has been exhausted, pick a deterministic hash item from full pool
+  // 5. If everything has been exhausted, pick a deterministic hash item with unique seed token
   const hash = hashString(query || category);
-  return allImages[hash % allImages.length] || DEFAULT_FALLBACK_IMAGE;
+  const baseImage = allImages[hash % allImages.length] || DEFAULT_FALLBACK_IMAGE;
+  return `${baseImage}&seed=${hash}_${Date.now()}`;
 }
