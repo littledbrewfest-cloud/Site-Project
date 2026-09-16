@@ -100,6 +100,51 @@ const nextConfig = {
         destination: '/where-to-find-mushrooms-in-arc-raiders-ultimate-farming-guide',
         permanent: true,
       },
+      {
+        source: '/where-to-find-olives-in-arc-raiders-the-ultimate-speranza-looting-guide',
+        destination: '/where-to-find-olives-in-arc-raiders-ultimate-loot-guide',
+        permanent: true,
+      },
+      {
+        source: '/where-to-find-olives-in-arc-raiders-the-ultimate-salvage-guide',
+        destination: '/where-to-find-olives-in-arc-raiders-ultimate-loot-guide',
+        permanent: true,
+      },
+      {
+        source: '/where-to-find-olives-in-arc-raiders-the-farming-guide',
+        destination: '/where-to-find-olives-in-arc-raiders-ultimate-loot-guide',
+        permanent: true,
+      },
+      {
+        source: '/where-to-find-olives-in-arc-raiders-the-definitive-loot-guide',
+        destination: '/where-to-find-olives-in-arc-raiders-ultimate-loot-guide',
+        permanent: true,
+      },
+      {
+        source: '/where-to-find-olives-in-arc-raiders-the-ultimate-loot-guide-1',
+        destination: '/where-to-find-olives-in-arc-raiders-ultimate-loot-guide',
+        permanent: true,
+      },
+      {
+        source: '/where-to-find-olives-in-arc-raiders-the-ultimate-scavenger-guide-1',
+        destination: '/where-to-find-olives-in-arc-raiders-ultimate-loot-guide',
+        permanent: true,
+      },
+      {
+        source: '/where-to-find-olives-in-arc-raiders-the-ultimate-scavenging-guide',
+        destination: '/where-to-find-olives-in-arc-raiders-ultimate-loot-guide',
+        permanent: true,
+      },
+      {
+        source: '/where-to-find-olives-in-arc-raiders-the-ultimate-scavenger-guide',
+        destination: '/where-to-find-olives-in-arc-raiders-ultimate-loot-guide',
+        permanent: true,
+      },
+      {
+        source: '/where-to-find-olives-in-arc-raiders-the-ultimate-guide',
+        destination: '/where-to-find-olives-in-arc-raiders-ultimate-loot-guide',
+        permanent: true,
+      },
     ];
   },
 };

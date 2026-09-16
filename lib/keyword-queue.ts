@@ -101,20 +101,37 @@ export function markKeywordAsPublished(keywordText: string): void {
 
 /**
  * Gets the next high-priority pending keyword (Lowest KD first, highest volume first)
- * that is 100% UNIQUE and NOT already covered by any published article on the site.
+ * that is 100% UNIQUE, NOT already covered by any published article, and dynamically
+ * rotates across different categories (Weapons, Bosses, Consoles, PC, Quests, Lore).
  */
-export async function getNextKeywordToPublish(): Promise<QueuedKeyword | null> {
+export async function getNextKeywordToPublish(preferredCategory?: string): Promise<QueuedKeyword | null> {
   const allKeywords = getAllQueuedKeywords();
   if (allKeywords.length === 0) return null;
 
-  // Fetch all existing published post titles and slugs from DB
+  // Fetch recent posts to check which categories were published recently
   const existingPosts = await prisma.post.findMany({
-    select: { title: true, slug: true },
+    select: { title: true, slug: true, category: true, createdAt: true },
+    orderBy: { createdAt: "desc" },
+    take: 30,
   });
 
-  // Find first keyword that isn't already covered by existing posts
+  const recentCategories = existingPosts.slice(0, 2).map((p) => p.category);
+
+  // 1. If preferred category requested, try that first
+  if (preferredCategory) {
+    for (const item of allKeywords) {
+      if (item.status === "published") continue;
+      if (item.category.toLowerCase() === preferredCategory.toLowerCase()) {
+        const isCovered = isTopicCovered(item.keyword, existingPosts);
+        if (!isCovered) return item;
+      }
+    }
+  }
+
+  // 2. Round-Robin: find a pending keyword from a DIFFERENT category than the last 2 posts
   for (const item of allKeywords) {
     if (item.status === "published") continue;
+    if (recentCategories.includes(item.category)) continue;
 
     const isCovered = isTopicCovered(item.keyword, existingPosts);
     if (!isCovered) {
@@ -122,8 +139,10 @@ export async function getNextKeywordToPublish(): Promise<QueuedKeyword | null> {
     }
   }
 
-  // If all filtered, look for any non-covered keyword
+  // 3. Fallback: find any pending, non-covered keyword
   for (const item of allKeywords) {
+    if (item.status === "published") continue;
+
     const isCovered = isTopicCovered(item.keyword, existingPosts);
     if (!isCovered) {
       return item;

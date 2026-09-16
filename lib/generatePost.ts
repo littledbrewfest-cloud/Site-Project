@@ -71,6 +71,19 @@ CRITICAL ANTI-DUPLICATION RULE:
 - You MUST NOT write about or re-hash any of those already covered topics (e.g. if Mushrooms, Olives, Sentinel Firing Core, or Crossplay already exist, do NOT write another article about them).
 - Your article MUST FOCUS 100% UNIQUELY AND EXCLUSIVELY ON: "${targetKeyword}".
 
+CRITICAL TITLE VARIETY & ANTI-CLICHÉ RULES:
+- NEVER use repetitive formulaic titles like "Where to Find [X] in ARC Raiders: Farm Guide" or "Where to Find [X] in ARC Raiders: Complete Guide".
+- Craft an AUTHENTIC, HUMAN, HIGH-CLICK-THROUGH GAMING HEADLINE in the style of IGN, PC Gamer, Eurogamer, or Dexerto.
+- Title length MUST be strictly between 45 and 60 characters for optimal Google SERP display (no cutoffs).
+- Rotate and vary title styles based on the topic:
+  * Tactical Farming Hook: "ARC Raiders [Topic]: Best Farm Spots & Drop Rates"
+  * Natural Search Question: "Where Do [Topic] Spawn in ARC Raiders? Route Guide"
+  * Blueprint & Stats Guide: "ARC Raiders [Topic] Breakdown: Stats, Spawns & Tips"
+  * Combat & Boss Manual: "How to Defeat [Topic] in ARC Raiders: Weakpoints & Loadouts"
+  * Meta & Tier Ranking: "Best [Topic] in ARC Raiders: Meta Tier List & Loadouts"
+  * System & Settings: "ARC Raiders [Topic]: Settings, FPS Boost & Config"
+- NEVER include numbers (like "1.", "2.", "3.") in any headings or titles. Use clean, professional editorial heading titles.
+
 CRITICAL LENGTH & QUALITY REQUIREMENT:
 - The article MUST BE AT LEAST 1200 TO 1800 WORDS.
 - Do NOT write brief surface-level summaries. Every section must have deep, granular analysis, exact stats, gameplay mechanics, map callouts, tactical advice, and actionable strategies.
@@ -78,7 +91,7 @@ CRITICAL LENGTH & QUALITY REQUIREMENT:
 
 STRUCTURE & MARKDOWN FORMATTING (MANDATORY SECTIONS):
 
-# [Target Keyword Catchy SEO Title (50-65 chars)]
+# [Target Keyword Catchy SEO Title (45-60 chars)]
 
 > **Quick Takeaways / At-A-Glance:** (A high-impact 3-4 bullet callout box directly answering "${targetKeyword}" for quick reader scanning and Google AI overviews).
 
@@ -126,7 +139,7 @@ STRUCTURE & MARKDOWN FORMATTING (MANDATORY SECTIONS):
 
 Return the response STRICTLY as valid JSON matching this schema:
 {
-  "title": "Exact Compelling Title (50-65 chars) Targeting ${targetKeyword}",
+  "title": "Exact Compelling Title (45-60 chars) Targeting ${targetKeyword}",
   "category": "${targetCategory}",
   "excerpt": "A concise and engaging summary between 140 and 160 characters designed for Google meta descriptions.",
   "tags": ["ARC Raiders", "Gaming Guide", "${targetCategory}", "PS5", "PC Gaming", "Xbox"],

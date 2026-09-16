@@ -301,13 +301,24 @@ CRITICAL ANTI-DUPLICATION RULE:
 - You MUST NOT write about or re-hash any of those already covered topics (e.g. if Mushrooms, Olives, Sentinel Firing Core, or Crossplay already exist, do NOT write about them).
 - Focus 100% uniquely on: "${keywordItem.keyword}".
 
+CRITICAL TITLE VARIETY & ANTI-CLICHÉ RULES:
+- NEVER use repetitive formulaic titles like "Where to Find [X] in ARC Raiders: Farm Guide" or "Where to Find [X] in ARC Raiders: Complete Guide".
+- Craft an AUTHENTIC, HUMAN, HIGH-CLICK-THROUGH GAMING HEADLINE in the style of IGN, PC Gamer, Eurogamer, or Dexerto.
+- Title length MUST be strictly between 45 and 60 characters for optimal Google SERP display (no cutoffs).
+- Rotate and vary title styles based on the topic:
+  * Tactical Farming Hook: "ARC Raiders [Topic]: Best Farm Spots & Drop Rates"
+  * Natural Search Question: "Where Do [Topic] Spawn in ARC Raiders? Route Guide"
+  * Blueprint & Stats Guide: "ARC Raiders [Topic] Breakdown: Stats, Spawns & Tips"
+  * Combat & Boss Manual: "How to Defeat [Topic] in ARC Raiders: Weakpoints & Loadouts"
+  * Meta & Tier Ranking: "Best [Topic] in ARC Raiders: Meta Tier List & Loadouts"
+  * System & Settings: "ARC Raiders [Topic]: Settings, FPS Boost & Config"
+- NEVER include numbers (like "1.", "2.", "3.") in any headings or titles. Use clean, professional editorial heading titles.
+
 CRITICAL REQUIREMENTS:
 - Minimum 1200 to 1800 words.
-- Title length MUST be 45-60 characters (Concise, punchy SEO title).
 - In-depth tactical advice, map callouts, weapon stats, loot spawn probabilities, comparison tables, and FAQs.
-- IMPORTANT: Do NOT include numbers (like "1.", "2.", "3.") in any headings. Use clean, natural, human-written editorial titles for all headings.
 - Markdown structure:
-  # Catchy SEO Title targeting ${keywordItem.keyword}
+  # Catchy SEO Title targeting ${keywordItem.keyword} (45-60 chars)
   > Quick Takeaways / At-A-Glance: (Callout box answering the query directly)
   ## Complete Overview & Search Intent
   ## Deep Dive Mechanics & Technical Specs
@@ -420,31 +431,53 @@ async function main() {
 
   const keywords = JSON.parse(fs.readFileSync(KEYWORDS_FILE, 'utf-8'));
   const existingPosts = await prisma.post.findMany({
-    select: { title: true, slug: true, coverImageUrl: true }
+    select: { title: true, slug: true, coverImageUrl: true, category: true, createdAt: true },
+    orderBy: { createdAt: 'desc' },
   });
 
   const usedImages = new Set(existingPosts.map(p => p.coverImageUrl).filter(Boolean));
 
   let generated = 0;
   const newSlugs = [];
-  for (const item of keywords) {
-    if (generated >= count) break;
-    if (item.status === 'published') continue;
 
-    const isAlreadyPublished = isTopicCovered(item.keyword, existingPosts);
+  while (generated < count) {
+    // Determine recent categories to avoid duplicate consecutive categories
+    const recentCategories = existingPosts.slice(0, 2).map(p => p.category);
 
-    if (!isAlreadyPublished) {
-      try {
-        const post = await generateSingleArticle(apiKey, item, usedImages, existingPosts);
-        item.status = 'published';
-        newSlugs.push(post.slug);
-        existingPosts.push({ title: post.title, slug: post.slug, coverImageUrl: post.coverImageUrl });
-        generated++;
-      } catch (err) {
-        console.error('Failed to generate for keyword:', item.keyword, err.message);
-      }
+    // 1. First pass: Pick pending keyword from a DIFFERENT category than recent posts
+    let candidate = keywords.find(k => k.status !== 'published' && !recentCategories.includes(k.category) && !isTopicCovered(k.keyword, existingPosts));
+
+    // 2. Fallback: Any pending, non-covered keyword
+    if (!candidate) {
+      candidate = keywords.find(k => k.status !== 'published' && !isTopicCovered(k.keyword, existingPosts));
+    }
+
+    if (!candidate) {
+      console.log('No more unique pending keywords available in queue.');
+      break;
+    }
+
+    try {
+      const post = await generateSingleArticle(apiKey, candidate, usedImages, existingPosts);
+      candidate.status = 'published';
+      newSlugs.push(post.slug);
+      existingPosts.unshift({
+        title: post.title,
+        slug: post.slug,
+        coverImageUrl: post.coverImageUrl,
+        category: post.category,
+        createdAt: new Date()
+      });
+      generated++;
+    } catch (err) {
+      console.error('Failed to generate for keyword:', candidate.keyword, err.message);
+      // Mark candidate temporarily or skip to avoid infinite loop
+      candidate.status = 'error';
     }
   }
+
+  // Restore any temporary error status back to pending if needed
+  keywords.forEach(k => { if (k.status === 'error') k.status = 'pending'; });
 
   fs.writeFileSync(KEYWORDS_FILE, JSON.stringify(keywords, null, 2));
   console.log(`\n🎉 Total Articles Published in this run: ${generated}`);
