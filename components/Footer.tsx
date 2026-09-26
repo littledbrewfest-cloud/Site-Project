@@ -1,6 +1,6 @@
 import React from "react";
 import Link from "next/link";
-import { Crosshair, Rss, Globe, Shield, ArrowUpRight, Cpu, Layers } from "lucide-react";
+import { Crosshair, Rss, Globe, Shield, ArrowUpRight, Cpu, Layers, BookOpen, Mail, FileCheck } from "lucide-react";
 import { DEFAULT_CATEGORIES, categoryToSlug } from "@/lib/constants";
 
 export default function Footer() {
@@ -23,7 +23,7 @@ export default function Footer() {
               The premier unofficial community database, loadout builder, and news intelligence hub for ARC Raiders by Embark Studios. Covering PS5, PC, and Xbox Series X|S.
             </p>
 
-            <div className="flex items-center gap-3 pt-2">
+            <div className="flex flex-wrap items-center gap-2.5 pt-2">
               <Link
                 href="/rss.xml"
                 target="_blank"
@@ -77,31 +77,36 @@ export default function Footer() {
             </ul>
           </div>
 
-          {/* Platform Links */}
+          {/* E-E-A-T & Editorial Transparency */}
           <div>
             <h3 className="text-xs font-bold text-slate-900 dark:text-white uppercase tracking-wider mb-4 flex items-center gap-1.5">
-              <Cpu className="w-3.5 h-3.5 text-orange-500 dark:text-orange-400" aria-hidden="true" />
-              <span>Platforms &amp; Specs</span>
+              <BookOpen className="w-3.5 h-3.5 text-orange-500 dark:text-orange-400" aria-hidden="true" />
+              <span>Editorial &amp; Trust</span>
             </h3>
             <ul className="space-y-2.5 text-sm">
               <li>
-                <Link href={`/category/${categoryToSlug("PS5 & Console Gaming")}`} className="text-slate-700 dark:text-slate-300 hover:text-amber-700 dark:hover:text-amber-400 transition-colors">
-                  PlayStation 5 Hub
+                <Link href="/about" className="text-slate-700 dark:text-slate-300 hover:text-amber-700 dark:hover:text-amber-400 transition-colors">
+                  About Editorial Team
                 </Link>
               </li>
               <li>
-                <Link href={`/category/${categoryToSlug("PC Specs & Performance")}`} className="text-slate-700 dark:text-slate-300 hover:text-amber-700 dark:hover:text-amber-400 transition-colors">
-                  PC System Requirements
+                <Link href="/editorial-policy" className="text-slate-700 dark:text-slate-300 hover:text-amber-700 dark:hover:text-amber-400 transition-colors">
+                  Editorial &amp; Fact-Checking
                 </Link>
               </li>
               <li>
-                <Link href={`/category/${categoryToSlug("Weapons & Loadouts")}`} className="text-slate-700 dark:text-slate-300 hover:text-amber-700 dark:hover:text-amber-400 transition-colors">
-                  Weapons &amp; Armory
+                <Link href="/contact" className="text-slate-700 dark:text-slate-300 hover:text-amber-700 dark:hover:text-amber-400 transition-colors">
+                  Contact &amp; Tips Desk
                 </Link>
               </li>
               <li>
-                <Link href="/robots.txt" target="_blank" rel="noopener noreferrer" className="text-slate-700 dark:text-slate-300 hover:text-amber-700 dark:hover:text-amber-400 transition-colors">
-                  Robots Index
+                <Link href="/privacy" className="text-slate-700 dark:text-slate-300 hover:text-amber-700 dark:hover:text-amber-400 transition-colors">
+                  Privacy Policy
+                </Link>
+              </li>
+              <li>
+                <Link href="/terms" className="text-slate-700 dark:text-slate-300 hover:text-amber-700 dark:hover:text-amber-400 transition-colors">
+                  Terms of Service
                 </Link>
               </li>
             </ul>
@@ -127,7 +132,7 @@ export default function Footer() {
         </div>
 
         <div className="mt-12 pt-8 border-t border-slate-200 dark:border-slate-900 flex flex-col sm:flex-row items-center justify-between text-xs text-slate-600 dark:text-slate-400">
-          <p>© {new Date().getFullYear()} The ARC Raiders Hub (thearc-raiders.com). Fan community &amp; media portal.</p>
+          <p>© {new Date().getFullYear()} The ARC Raiders Hub (thearc-raiders.com). Independent fan community &amp; strategy portal.</p>
           <p className="mt-2 sm:mt-0">ARC Raiders is a registered trademark of Embark Studios AB.</p>
         </div>
       </div>

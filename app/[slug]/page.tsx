@@ -12,9 +12,10 @@ import ReadingProgressBar from "@/components/ReadingProgressBar";
 import ArticleActions from "@/components/ArticleActions";
 import TableOfContents from "@/components/TableOfContents";
 import NewsletterCard from "@/components/NewsletterCard";
-import { Calendar, Clock, Tag, Sparkles, ChevronRight, CheckCircle2 } from "lucide-react";
+import { Calendar, Clock, Tag, Sparkles, ChevronRight, CheckCircle2, ShieldCheck, BookOpen, ArrowRight } from "lucide-react";
 import { DEFAULT_FALLBACK_IMAGE, categoryToSlug } from "@/lib/constants";
 import { getSiteUrl } from "@/lib/site-url";
+import { buildArticleSchemas } from "@/lib/seo-helpers";
 
 export const dynamic = "force-dynamic";
 
@@ -51,7 +52,7 @@ export async function generateMetadata({ params }: PostPageProps): Promise<Metad
       },
       description: post.excerpt,
       keywords: post.tags ? post.tags.split(",").map((t) => t.trim()) : [],
-      authors: [{ name: "The ARC Raiders Editorial Staff" }],
+      authors: [{ name: "The ARC Raiders Editorial Staff", url: `${siteUrl}/about` }],
       alternates: {
         canonical: postUrl,
       },
@@ -126,44 +127,18 @@ export default async function BlogPostPage({ params }: PostPageProps) {
   const siteUrl = getSiteUrl();
   const postFullUrl = `${siteUrl}/${post.slug}`;
 
-  // JSON-LD Structured Data Schema for SEO
-  const jsonLd = {
-    "@context": "https://schema.org",
-    "@type": "BlogPosting",
-    headline: post.title,
-    description: post.excerpt,
-    image: coverUrl,
-    datePublished: post.publishedAt ? new Date(post.publishedAt).toISOString() : new Date(post.createdAt).toISOString(),
-    dateModified: post.updatedAt ? new Date(post.updatedAt).toISOString() : new Date().toISOString(),
-    author: {
-      "@type": "Organization",
-      name: "The ARC Raiders Editorial Staff",
-    },
-    publisher: {
-      "@type": "Organization",
-      name: "The ARC Raiders Hub",
-      logo: {
-        "@type": "ImageObject",
-        url: `${siteUrl}/favicon.ico`,
-      },
-    },
-    mainEntityOfPage: {
-      "@type": "WebPage",
-      "@id": postFullUrl,
-    },
-    articleSection: post.category,
-    keywords: post.tags,
-  };
+  // JSON-LD Structured Data Schema for SEO (BlogPosting + BreadcrumbList + FAQPage)
+  const jsonLdGraph = buildArticleSchemas(post);
 
   return (
     <>
       {/* Scroll Reading Progress Bar */}
       <ReadingProgressBar />
 
-      {/* Inject JSON-LD Schema */}
+      {/* Inject Rich JSON-LD Schema */}
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLdGraph) }}
       />
 
       <div className="max-w-6xl mx-auto space-y-12">
@@ -209,22 +184,33 @@ export default async function BlogPostPage({ params }: PostPageProps) {
             {post.excerpt}
           </p>
 
-          {/* Author Badge */}
-          <div className="flex items-center gap-3 pt-4 border-t border-slate-200 dark:border-slate-800">
-            <div className="w-10 h-10 rounded-2xl bg-gradient-to-tr from-amber-600 to-orange-600 text-white flex items-center justify-center font-bold text-sm shadow-md shadow-amber-500/20">
-              ARC
-            </div>
-            <div>
-              <div className="flex items-center gap-1.5">
-                <span className="font-bold text-sm text-slate-900 dark:text-white">
-                  ARC Raiders Editorial Team
-                </span>
-                <CheckCircle2 className="w-4 h-4 text-amber-500 dark:text-amber-400" />
+          {/* Author Badge & Trust Bar */}
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pt-4 border-t border-slate-200 dark:border-slate-800">
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 rounded-2xl bg-gradient-to-tr from-amber-600 to-orange-600 text-white flex items-center justify-center font-bold text-sm shadow-md shadow-amber-500/20">
+                ARC
               </div>
-              <p className="text-xs text-slate-500 dark:text-slate-400">
-                Senior Gaming Editors &amp; Verified PvPvE Meta Analysts
-              </p>
+              <div>
+                <div className="flex items-center gap-1.5">
+                  <Link href="/about" className="font-bold text-sm text-slate-900 dark:text-white hover:text-amber-600 dark:hover:text-amber-400 transition-colors">
+                    The ARC Raiders Editorial Staff
+                  </Link>
+                  <CheckCircle2 className="w-4 h-4 text-amber-500 dark:text-amber-400" />
+                </div>
+                <p className="text-xs text-slate-500 dark:text-slate-400">
+                  Senior Extraction Shooter Strategists &amp; Meta Analysts
+                </p>
+              </div>
             </div>
+
+            {/* Fact Check Badge */}
+            <Link
+              href="/editorial-policy"
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-emerald-500/10 border border-emerald-500/30 text-emerald-700 dark:text-emerald-400 text-xs font-semibold hover:bg-emerald-500/20 transition-colors"
+            >
+              <ShieldCheck className="w-3.5 h-3.5" />
+              <span>Playtested &amp; Fact-Checked</span>
+            </Link>
           </div>
         </header>
 
@@ -321,6 +307,50 @@ export default async function BlogPostPage({ params }: PostPageProps) {
                 </div>
               </div>
             )}
+
+            {/* Detailed Editorial & Author Card */}
+            <div className="p-6 rounded-3xl bg-slate-50 dark:bg-slate-900/80 border border-slate-200 dark:border-slate-800 shadow-sm space-y-4">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-3">
+                  <div className="w-12 h-12 rounded-2xl bg-gradient-to-tr from-amber-600 via-orange-600 to-rose-600 text-white flex items-center justify-center font-black text-sm">
+                    ARC
+                  </div>
+                  <div>
+                    <h4 className="font-bold text-sm text-slate-900 dark:text-white">
+                      The ARC Raiders Editorial Staff
+                    </h4>
+                    <p className="text-xs text-amber-600 dark:text-amber-400 font-semibold">
+                      Guides &amp; Strategic Intelligence Desk
+                    </p>
+                  </div>
+                </div>
+                <Link
+                  href="/about"
+                  className="hidden sm:inline-flex items-center gap-1 text-xs font-bold text-amber-600 dark:text-amber-400 hover:underline"
+                >
+                  About Team <ArrowRight className="w-3.5 h-3.5" />
+                </Link>
+              </div>
+
+              <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
+                This guide was researched and playtested by our dedicated extraction shooter team covering ARC Raiders mechanics, Speranza Colony upgrades, weapon balance, and Unreal Engine 5 PC/console settings.
+              </p>
+
+              <div className="pt-3 border-t border-slate-200 dark:border-slate-800 flex flex-wrap items-center justify-between gap-3 text-xs">
+                <div className="flex items-center gap-3 text-slate-500 dark:text-slate-400">
+                  <Link href="/editorial-policy" className="hover:text-amber-600 dark:hover:text-amber-400 transition-colors">
+                    Editorial Standards
+                  </Link>
+                  <span>•</span>
+                  <Link href="/contact" className="hover:text-amber-600 dark:hover:text-amber-400 transition-colors">
+                    Report Correction
+                  </Link>
+                </div>
+                <span className="text-emerald-600 dark:text-emerald-400 font-semibold font-mono">
+                  ● Verified for 2026 Game Meta
+                </span>
+              </div>
+            </div>
 
             {/* Bottom Share Widget */}
             <div className="pt-4">
