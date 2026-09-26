@@ -1,7 +1,7 @@
 import React from "react";
 import type { Metadata } from "next";
 import Link from "next/link";
-import { Crosshair, ShieldCheck, Gamepad2, Award, Users, FileCheck, ArrowRight } from "lucide-react";
+import { Crosshair, ShieldCheck, Gamepad2, Award, ArrowRight } from "lucide-react";
 import { getSiteUrl } from "@/lib/site-url";
 
 export const metadata: Metadata = {

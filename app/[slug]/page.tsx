@@ -12,7 +12,7 @@ import ReadingProgressBar from "@/components/ReadingProgressBar";
 import ArticleActions from "@/components/ArticleActions";
 import TableOfContents from "@/components/TableOfContents";
 import NewsletterCard from "@/components/NewsletterCard";
-import { Calendar, Clock, Tag, Sparkles, ChevronRight, CheckCircle2, ShieldCheck, BookOpen, ArrowRight } from "lucide-react";
+import { Calendar, Clock, Tag, Sparkles, ChevronRight, CheckCircle2, ShieldCheck, ArrowRight } from "lucide-react";
 import { DEFAULT_FALLBACK_IMAGE, categoryToSlug } from "@/lib/constants";
 import { getSiteUrl } from "@/lib/site-url";
 import { buildArticleSchemas } from "@/lib/seo-helpers";

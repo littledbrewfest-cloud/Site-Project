@@ -1,6 +1,6 @@
 import React from "react";
 import type { Metadata } from "next";
-import { FileText, ShieldAlert } from "lucide-react";
+import { FileText } from "lucide-react";
 import { getSiteUrl } from "@/lib/site-url";
 
 export const metadata: Metadata = {

@@ -14,8 +14,6 @@ export const metadata: Metadata = {
 };
 
 export default function EditorialPolicyPage() {
-  const siteUrl = getSiteUrl();
-
   return (
     <div className="max-w-4xl mx-auto space-y-12 py-6">
       {/* Header */}

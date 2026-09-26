@@ -1,6 +1,6 @@
 import React from "react";
 import Link from "next/link";
-import { Crosshair, Rss, Globe, Shield, ArrowUpRight, Cpu, Layers, BookOpen, Mail, FileCheck } from "lucide-react";
+import { Crosshair, Rss, Globe, Shield, ArrowUpRight, Layers, BookOpen } from "lucide-react";
 import { DEFAULT_CATEGORIES, categoryToSlug } from "@/lib/constants";
 
 export default function Footer() {

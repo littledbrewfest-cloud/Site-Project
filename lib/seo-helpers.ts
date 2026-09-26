@@ -114,7 +114,7 @@ export function buildArticleSchemas(post: {
     ],
   };
 
-  const graph: any[] = [blogPostingSchema, breadcrumbSchema];
+  const graph: Record<string, unknown>[] = [blogPostingSchema, breadcrumbSchema];
 
   if (faqs.length > 0) {
     const faqSchema = {

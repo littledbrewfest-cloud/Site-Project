@@ -1,6 +1,6 @@
 import React from "react";
 import type { Metadata } from "next";
-import { Mail, MessageSquare, ShieldCheck, MapPin, Send } from "lucide-react";
+import { Mail, MessageSquare, ShieldCheck, Send } from "lucide-react";
 import { getSiteUrl } from "@/lib/site-url";
 
 export const metadata: Metadata = {
