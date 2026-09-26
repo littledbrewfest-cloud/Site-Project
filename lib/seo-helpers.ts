@@ -13,9 +13,10 @@ export function extractFaqsFromMarkdown(markdown: string): FAQItem[] {
   if (!faqSectionMatch) return [];
 
   const faqText = faqSectionMatch[0];
-  const qMatches = [...faqText.matchAll(/###\s*(?:Q\d*[:.]?\s*)?(.*?)\n([\s\S]*?)(?=\n###|\n##|$)/gi)];
+  const qRegex = /###\s*(?:Q\d*[:.]?\s*)?(.*?)\n([\s\S]*?)(?=\n###|\n##|$)/gi;
+  let match: RegExpExecArray | null;
 
-  for (const match of qMatches) {
+  while ((match = qRegex.exec(faqText)) !== null) {
     const rawQ = match[1] || "";
     const rawA = match[2] || "";
 
