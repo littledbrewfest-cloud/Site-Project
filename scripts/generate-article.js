@@ -91,30 +91,54 @@ function slugify(text) {
     .replace(/^-+|-+$/g, '');
 }
 
+const CURATED_IMAGES_FILE = path.join(__dirname, '..', 'data', 'curated-images.json');
+
 async function getUniqueImage(category, query, usedImages) {
-  // 1. Check in same category for never-before-used image
+  // Extract all base photo IDs currently in use
+  const usedBases = new Set();
+  usedImages.forEach(img => {
+    if (img) usedBases.add(img.split('?')[0].toLowerCase());
+  });
+
+  // Load curated 360+ unique Unsplash gaming/sci-fi photos
+  let curatedPool = [];
+  try {
+    if (fs.existsSync(CURATED_IMAGES_FILE)) {
+      curatedPool = JSON.parse(fs.readFileSync(CURATED_IMAGES_FILE, 'utf-8'));
+    }
+  } catch (e) {}
+
   const categoryImages = FALLBACK_IMAGES[category] || [];
-  const availableCat = categoryImages.filter(img => !usedImages.has(img));
+  
+  // 1. Try category images first if never used
+  const availableCat = categoryImages.filter(img => !usedBases.has(img.split('?')[0].toLowerCase()));
   if (availableCat.length > 0) {
     const pick = availableCat[Math.floor(Math.random() * availableCat.length)];
     usedImages.add(pick);
     return pick;
   }
 
-  // 2. Check across all categories for never-before-used image
+  // 2. Try curated 360+ photo pool
+  const availableCurated = curatedPool.filter(img => !usedBases.has(img.split('?')[0].toLowerCase()));
+  if (availableCurated.length > 0) {
+    const pick = availableCurated[Math.floor(Math.random() * availableCurated.length)];
+    usedImages.add(pick);
+    return pick;
+  }
+
+  // 3. Fallback across all categories
   const allImages = Object.values(FALLBACK_IMAGES).flat();
-  const availableGlobal = allImages.filter(img => !usedImages.has(img));
+  const availableGlobal = allImages.filter(img => !usedBases.has(img.split('?')[0].toLowerCase()));
   if (availableGlobal.length > 0) {
     const pick = availableGlobal[Math.floor(Math.random() * availableGlobal.length)];
     usedImages.add(pick);
     return pick;
   }
 
-  // 3. Guaranteed Unique Tokenized fallback if all curated images are exhausted
-  const randomBase = allImages[Math.floor(Math.random() * allImages.length)];
-  const uniqueUrl = `${randomBase}&seed=${Date.now()}_${Math.floor(Math.random() * 10000)}`;
-  usedImages.add(uniqueUrl);
-  return uniqueUrl;
+  // Safe fallback if ever completely exhausted
+  const randomPick = curatedPool[Math.floor(Math.random() * curatedPool.length)] || allImages[0];
+  usedImages.add(randomPick);
+  return randomPick;
 }
 
 const CANDIDATE_MODELS = [
