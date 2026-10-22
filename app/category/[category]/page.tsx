@@ -4,7 +4,7 @@ import type { Metadata } from "next";
 import { getSafePublishedPosts } from "@/lib/db-helper";
 import { getActiveCategories } from "@/lib/settings";
 import { categoryToSlug, slugToCategory } from "@/lib/constants";
-import PostCard from "@/components/PostCard";
+import CategoryPostsGrid from "@/components/CategoryPostsGrid";
 import CategoryBadge from "@/components/CategoryBadge";
 import NewsletterCard from "@/components/NewsletterCard";
 import { BookOpen, Layers, ChevronRight } from "lucide-react";
@@ -41,9 +41,24 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
 
   // Query posts matching this category safely
   const allPublished = await getSafePublishedPosts();
-  const posts = allPublished.filter(
-    (p) => p.category.toLowerCase() === matchedCategory.toLowerCase()
-  );
+  const posts = allPublished
+    .filter((p) => p.category.toLowerCase() === matchedCategory.toLowerCase())
+    .map((p) => {
+      const wordCount = (p.content || "").split(/\s+/).length;
+      const readTime = Math.max(1, Math.ceil(wordCount / 200));
+      return {
+        id: p.id,
+        title: p.title,
+        slug: p.slug,
+        excerpt: p.excerpt,
+        readTime,
+        coverImageUrl: p.coverImageUrl,
+        category: p.category,
+        tags: p.tags,
+        publishedAt: p.publishedAt ? (typeof p.publishedAt === "string" ? p.publishedAt : p.publishedAt.toISOString()) : null,
+        createdAt: typeof p.createdAt === "string" ? p.createdAt : p.createdAt.toISOString(),
+      };
+    });
 
   return (
     <div className="space-y-12 max-w-7xl mx-auto">
@@ -104,13 +119,9 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
         </div>
       </section>
 
-      {/* Posts Grid */}
+      {/* Paginated Posts Grid (12 per page) */}
       {posts.length > 0 ? (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {posts.map((post) => (
-            <PostCard key={post.id} post={post} />
-          ))}
-        </div>
+        <CategoryPostsGrid posts={posts} categoryName={matchedCategory} />
       ) : (
         <div className="text-center py-20 bg-white dark:bg-slate-900/90 border border-slate-200 dark:border-slate-800 rounded-[2rem] p-8 space-y-4 shadow-md dark:shadow-xl">
           <div className="w-16 h-16 rounded-3xl bg-amber-500/10 text-amber-500 dark:text-amber-400 border border-amber-500/30 mx-auto flex items-center justify-center">
