@@ -58,7 +58,10 @@ export default function BlogExplorer({ initialPosts, categories }: BlogExplorerP
   }, [initialPosts, searchQuery, selectedCategory, sortBy]);
 
   const featuredPost = filteredPosts.length > 0 ? filteredPosts[0] : null;
-  const standardPosts = filteredPosts.length > 1 ? filteredPosts.slice(1) : [];
+  const standardPosts = useMemo(
+    () => (filteredPosts.length > 1 ? filteredPosts.slice(1) : []),
+    [filteredPosts]
+  );
 
   const totalPages = Math.max(1, Math.ceil(standardPosts.length / POSTS_PER_PAGE));
   const safeCurrentPage = Math.min(currentPage, totalPages);
