@@ -424,7 +424,7 @@ Return strictly as JSON:
       title: parsed.title.trim(),
       slug,
       content: interlinkedContent.trim(),
-      excerpt: (parsed.excerpt || parsed.content.slice(0, 150)).trim(),
+      excerpt: (parsed.excerpt || parsed.content.slice(0, 150)).trim().slice(0, 155),
       coverImageUrl,
       category: parsed.category || keywordItem.category,
       tags: Array.isArray(parsed.tags) ? parsed.tags.join(', ') : (parsed.tags || ''),

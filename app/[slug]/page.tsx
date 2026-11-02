@@ -33,24 +33,24 @@ export async function generateMetadata({ params }: PostPageProps): Promise<Metad
     const postUrl = `${siteUrl}/${post.slug}`;
     const imageUrl = post.coverImageUrl || DEFAULT_FALLBACK_IMAGE;
 
-    // Concise, high-CTR title under 60 characters for Google & Semrush
+    // Unique, high-CTR title under 65 characters (preserving subtitle after ':' to prevent duplicate titles)
     let seoTitle = post.title.trim();
-    if (seoTitle.length > 45 && seoTitle.includes(":")) {
-      const parts = seoTitle.split(":");
-      if (parts[0].trim().length >= 25) {
-        seoTitle = parts[0].trim();
-      }
-    }
-    if (seoTitle.length > 46) {
-      seoTitle = seoTitle.slice(0, 43).trim() + "...";
+    if (seoTitle.length > 52) {
+      seoTitle = seoTitle.slice(0, 50).trim() + "...";
     }
     const formattedTitle = `${seoTitle} | ARC Raiders`;
+
+    // Safe meta description length (between 70 and 156 characters)
+    let metaDescription = (post.excerpt || "").trim();
+    if (metaDescription.length > 156) {
+      metaDescription = metaDescription.slice(0, 153).trim() + "...";
+    }
 
     return {
       title: {
         absolute: formattedTitle,
       },
-      description: post.excerpt,
+      description: metaDescription,
       keywords: post.tags ? post.tags.split(",").map((t) => t.trim()) : [],
       authors: [{ name: "The ARC Raiders Editorial Staff", url: `${siteUrl}/about` }],
       alternates: {
@@ -96,11 +96,43 @@ export default async function BlogPostPage({ params }: PostPageProps) {
     notFound();
   }
 
-  // Fetch all published posts for related section
+  // Fetch all published posts for circular related section (guarantees every post gets 6+ incoming internal links)
   const allPublished = await getSafePublishedPosts();
-  const relatedPosts = allPublished
-    .filter((p) => p.category.toLowerCase() === post.category.toLowerCase() && p.slug !== post.slug)
-    .slice(0, 3);
+  const sameCategoryPosts = allPublished.filter(
+    (p) => p.category.toLowerCase() === post.category.toLowerCase()
+  );
+  const currentCatIdx = Math.max(
+    0,
+    sameCategoryPosts.findIndex((p) => p.slug === post.slug)
+  );
+  const circularCategoryRelated: typeof allPublished = [];
+  if (sameCategoryPosts.length > 1) {
+    for (let offset = 1; offset <= Math.min(3, sameCategoryPosts.length - 1); offset++) {
+      const candidate = sameCategoryPosts[(currentCatIdx + offset) % sameCategoryPosts.length];
+      if (candidate && candidate.slug !== post.slug) {
+        circularCategoryRelated.push(candidate);
+      }
+    }
+  }
+
+  const otherCategoryPosts = allPublished.filter(
+    (p) => p.category.toLowerCase() !== post.category.toLowerCase() && p.slug !== post.slug
+  );
+  const globalIdx = Math.max(
+    0,
+    allPublished.findIndex((p) => p.slug === post.slug)
+  );
+  const crossCategoryRelated: typeof allPublished = [];
+  if (otherCategoryPosts.length > 0) {
+    for (let offset = 1; offset <= Math.min(3, otherCategoryPosts.length); offset++) {
+      const candidate = otherCategoryPosts[(globalIdx + offset) % otherCategoryPosts.length];
+      if (candidate && !crossCategoryRelated.some((x) => x.slug === candidate.slug)) {
+        crossCategoryRelated.push(candidate);
+      }
+    }
+  }
+
+  const relatedPosts = [...circularCategoryRelated, ...crossCategoryRelated].slice(0, 6);
 
   const formattedDate = post.publishedAt
     ? new Date(post.publishedAt).toLocaleDateString("en-US", {
@@ -238,6 +270,26 @@ export default async function BlogPostPage({ params }: PostPageProps) {
               <ReactMarkdown
                 remarkPlugins={[remarkGfm]}
                 components={{
+                  h1: ({ children }) => {
+                    const rawText = String(children).trim();
+                    if (
+                      rawText.toLowerCase() === post.title.trim().toLowerCase() ||
+                      post.title.toLowerCase().includes(rawText.toLowerCase().slice(0, 20))
+                    ) {
+                      return null;
+                    }
+                    const cleanText = rawText.replace(/^\d+[\.\)]\s*/, "");
+                    const id = cleanText
+                      .toLowerCase()
+                      .replace(/[^\w\s-]/g, "")
+                      .replace(/\s+/g, "-");
+                    return (
+                      <h2 id={id} className="scroll-mt-24 text-2xl sm:text-3xl font-black text-amber-700 dark:text-amber-400 mt-10 mb-5 pb-3 border-b border-slate-200 dark:border-slate-800/80 flex items-center gap-2">
+                        <span className="w-1.5 h-6 bg-gradient-to-b from-amber-500 to-orange-500 rounded-full inline-block" />
+                        <span>{cleanText}</span>
+                      </h2>
+                    );
+                  },
                   h2: ({ children }) => {
                     const rawText = String(children);
                     const cleanText = rawText.replace(/^\d+[\.\)]\s*/, "");

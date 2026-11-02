@@ -75,6 +75,7 @@ export const metadata: Metadata = {
     ],
   },
   alternates: {
+    canonical: "https://www.thearc-raiders.com",
     types: {
       "application/rss+xml": "/rss.xml",
       "text/plain": "/llms.txt",

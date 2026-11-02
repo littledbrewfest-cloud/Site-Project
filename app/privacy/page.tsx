@@ -1,5 +1,6 @@
 import React from "react";
 import type { Metadata } from "next";
+import Link from "next/link";
 import { Shield } from "lucide-react";
 import { getSiteUrl } from "@/lib/site-url";
 
@@ -30,7 +31,7 @@ export default function PrivacyPage() {
 
       <div className="prose prose-slate lg:prose-lg dark:prose-invert max-w-none space-y-6 leading-relaxed">
         <p>
-          Welcome to <strong>The ARC Raiders Hub</strong> (accessible from <a href="https://thearc-raiders.com">thearc-raiders.com</a>). Your privacy is important to us. This Privacy Policy outlines the types of information collected and how it is used.
+          Welcome to <strong>The ARC Raiders Hub</strong> (accessible from <Link href="/">www.thearc-raiders.com</Link>). Your privacy is important to us. This Privacy Policy outlines the types of information collected and how it is used.
         </p>
 
         <h2 className="text-2xl font-black text-slate-900 dark:text-white mt-8 mb-4">1. Information We Collect</h2>

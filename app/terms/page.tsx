@@ -1,5 +1,6 @@
 import React from "react";
 import type { Metadata } from "next";
+import Link from "next/link";
 import { FileText } from "lucide-react";
 import { getSiteUrl } from "@/lib/site-url";
 
@@ -30,7 +31,7 @@ export default function TermsPage() {
 
       <div className="prose prose-slate lg:prose-lg dark:prose-invert max-w-none space-y-6 leading-relaxed">
         <p>
-          By accessing and using <strong>The ARC Raiders Hub</strong> (<a href="https://thearc-raiders.com">thearc-raiders.com</a>), you agree to comply with and be bound by the following Terms of Service.
+          By accessing and using <strong>The ARC Raiders Hub</strong> (<Link href="/">www.thearc-raiders.com</Link>), you agree to comply with and be bound by the following Terms of Service.
         </p>
 
         <h2 className="text-2xl font-black text-slate-900 dark:text-white mt-8 mb-4">1. Intellectual Property &amp; Fair Use</h2>

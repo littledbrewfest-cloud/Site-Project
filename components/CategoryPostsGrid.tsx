@@ -1,7 +1,8 @@
 "use client";
 
 import React, { useState, useMemo, useRef } from "react";
-import { ChevronLeft, ChevronRight, Layers } from "lucide-react";
+import Link from "next/link";
+import { ChevronLeft, ChevronRight, Layers, BookOpen } from "lucide-react";
 import PostCard from "./PostCard";
 
 interface CategoryPost {
@@ -145,6 +146,32 @@ export default function CategoryPostsGrid({ posts, categoryName }: CategoryPosts
             </button>
           </div>
         </nav>
+      )}
+
+      {/* Complete Category Archive Index (Collapsed by default for clean UX, 100% crawlable by Search & Ahrefs bots) */}
+      {posts.length > POSTS_PER_PAGE && (
+        <details className="group rounded-2xl bg-slate-50/80 dark:bg-slate-900/50 border border-slate-200/80 dark:border-slate-800/80 px-5 py-3.5 transition-all">
+          <summary className="flex items-center justify-between cursor-pointer list-none text-xs font-bold text-slate-600 dark:text-slate-400 hover:text-amber-600 dark:hover:text-amber-400">
+            <span className="flex items-center gap-2 font-mono uppercase tracking-wider">
+              <BookOpen className="w-3.5 h-3.5 text-amber-500" />
+              <span>Complete {categoryName} Sector Index (All {posts.length} Guides)</span>
+            </span>
+            <span className="text-[11px] font-mono text-amber-600 dark:text-amber-400 group-open:rotate-180 transition-transform">
+              ▼
+            </span>
+          </summary>
+          <div className="mt-4 pt-4 border-t border-slate-200 dark:border-slate-800 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-2 text-xs">
+            {posts.map((post) => (
+              <Link
+                key={`cat-dir-${post.id}`}
+                href={`/${post.slug}`}
+                className="text-slate-600 dark:text-slate-400 hover:text-amber-600 dark:hover:text-amber-400 truncate py-0.5 transition-colors"
+              >
+                • {post.title}
+              </Link>
+            ))}
+          </div>
+        </details>
       )}
     </div>
   );
