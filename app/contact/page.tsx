@@ -4,11 +4,19 @@ import { Mail, MessageSquare, ShieldCheck, Send } from "lucide-react";
 import { getSiteUrl } from "@/lib/site-url";
 
 export const metadata: Metadata = {
-  title: "Contact Us & Raider Tips Desk — The ARC Raiders Hub",
+  title: "Contact Us & Raider Tips Desk",
   description:
-    "Get in touch with The ARC Raiders Hub editorial team. Submit game tips, report corrections, send press releases, or inquire about business partnerships.",
+    "Get in touch with The ARC Raiders Hub editorial team. Submit game tips, report guide corrections, send press releases, or inquire about partnerships.",
   alternates: {
     canonical: `${getSiteUrl()}/contact`,
+  },
+  openGraph: {
+    type: "website",
+    url: `${getSiteUrl()}/contact`,
+    title: "Contact Us & Raider Tips Desk | ARC Raiders Hub",
+    description:
+      "Get in touch with The ARC Raiders Hub editorial team. Submit game tips, report guide corrections, send press releases, or inquire about partnerships.",
+    siteName: "The ARC Raiders Hub",
   },
 };
 

@@ -5,11 +5,19 @@ import { ShieldCheck, CheckCircle2, RefreshCw, Sparkles, BookOpen, AlertCircle }
 import { getSiteUrl } from "@/lib/site-url";
 
 export const metadata: Metadata = {
-  title: "Editorial Policy & Fact-Checking Standards — The ARC Raiders Hub",
+  title: "Editorial & Fact-Checking Policy",
   description:
-    "Read our comprehensive editorial guidelines, fact-checking methodology, playtest verification standards, and transparent AI-assisted research policy.",
+    "Read our editorial guidelines, fact-checking methodology, playtest verification standards, and transparent research policy for ARC Raiders guides.",
   alternates: {
     canonical: `${getSiteUrl()}/editorial-policy`,
+  },
+  openGraph: {
+    type: "website",
+    url: `${getSiteUrl()}/editorial-policy`,
+    title: "Editorial & Fact-Checking Policy | ARC Raiders Hub",
+    description:
+      "Read our editorial guidelines, fact-checking methodology, playtest verification standards, and transparent research policy for ARC Raiders guides.",
+    siteName: "The ARC Raiders Hub",
   },
 };
 

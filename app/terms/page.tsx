@@ -5,11 +5,19 @@ import { FileText } from "lucide-react";
 import { getSiteUrl } from "@/lib/site-url";
 
 export const metadata: Metadata = {
-  title: "Terms of Service — The ARC Raiders Hub",
+  title: "Terms of Service",
   description:
-    "Terms of Service and Conditions for using The ARC Raiders Hub fan community website and tactical database.",
+    "Terms of Service and Conditions for using The ARC Raiders Hub fan community website, loadout guides, and tactical database.",
   alternates: {
     canonical: `${getSiteUrl()}/terms`,
+  },
+  openGraph: {
+    type: "website",
+    url: `${getSiteUrl()}/terms`,
+    title: "Terms of Service | ARC Raiders Hub",
+    description:
+      "Terms of Service and Conditions for using The ARC Raiders Hub fan community website, loadout guides, and tactical database.",
+    siteName: "The ARC Raiders Hub",
   },
 };
 

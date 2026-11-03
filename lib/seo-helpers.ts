@@ -1,4 +1,5 @@
 import { getSiteUrl } from "./site-url";
+import { categoryToSlug } from "./constants";
 
 export interface FAQItem {
   question: string;
@@ -9,7 +10,9 @@ export function extractFaqsFromMarkdown(markdown: string): FAQItem[] {
   if (!markdown) return [];
   const faqs: FAQItem[] = [];
 
-  const faqSectionMatch = markdown.match(/##\s*Frequently Asked Questions[\s\S]*?(?=\n##\s*|$)/i);
+  const faqSectionMatch = markdown.match(
+    /##\s*[^\n]*(?:Frequently Asked Questions|FAQs?|Common Questions)[^\n]*[\s\S]*?(?=\n##(?!#)|$)/i
+  );
   if (!faqSectionMatch) return [];
 
   const faqText = faqSectionMatch[0];
@@ -20,7 +23,7 @@ export function extractFaqsFromMarkdown(markdown: string): FAQItem[] {
     const rawQ = match[1] || "";
     const rawA = match[2] || "";
 
-    const question = rawQ.replace(/^\d+[\.\)]\s*/, "").trim();
+    const question = rawQ.replace(/^\d+[\.\)]\s*/, "").replace(/[*_`]/g, "").trim();
     const answer = rawA
       .replace(/\[([^\]]+)\]\([^)]+\)/g, "$1")
       .replace(/[*_`#]/g, "")
@@ -103,7 +106,7 @@ export function buildArticleSchemas(post: {
         "@type": "ListItem",
         position: 2,
         name: post.category,
-        item: `${siteUrl}/category/${post.category.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "")}`,
+        item: `${siteUrl}/category/${categoryToSlug(post.category)}`,
       },
       {
         "@type": "ListItem",

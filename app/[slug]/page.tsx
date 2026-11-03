@@ -33,12 +33,15 @@ export async function generateMetadata({ params }: PostPageProps): Promise<Metad
     const postUrl = `${siteUrl}/${post.slug}`;
     const imageUrl = post.coverImageUrl || DEFAULT_FALLBACK_IMAGE;
 
-    // Unique, high-CTR title under 65 characters (preserving subtitle after ':' to prevent duplicate titles)
+    // Exact, high-CTR title matching H1 & OpenGraph (strictly <= 58 chars, no duplicate brand suffix)
     let seoTitle = post.title.trim();
-    if (seoTitle.length > 52) {
-      seoTitle = seoTitle.slice(0, 50).trim() + "...";
+    if (!seoTitle.toLowerCase().includes("arc raiders") && seoTitle.length <= 42) {
+      seoTitle = `${seoTitle} | ARC Raiders`;
     }
-    const formattedTitle = `${seoTitle} | ARC Raiders`;
+    if (seoTitle.length > 58) {
+      seoTitle = seoTitle.slice(0, 55).trim() + "...";
+    }
+    const formattedTitle = seoTitle;
 
     // Safe meta description length (between 70 and 156 characters)
     let metaDescription = (post.excerpt || "").trim();

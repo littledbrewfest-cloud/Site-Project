@@ -26,7 +26,7 @@ export const metadata: Metadata = {
     template: "%s | ARC Raiders Hub",
   },
   description:
-    "The ultimate community database, guides, and news hub for ARC Raiders by Embark Studios. Weapon tier lists, Speranza colony mechanics, Titan boss strategies, and PS5/PC guides.",
+    "The premier community database, guides, and news hub for ARC Raiders by Embark Studios. Weapon tier lists, Speranza mechanics, and PS5/PC guides.",
   keywords: [
     "ARC Raiders",
     "ARC Raiders PS5",
@@ -45,9 +45,9 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     locale: "en_US",
-    url: "/",
+    url: "https://www.thearc-raiders.com",
     siteName: "The ARC Raiders Hub",
-    title: "The ARC Raiders Hub — Guides, News & Database (PS5, PC, Xbox)",
+    title: "ARC Raiders Hub — Guides, Weapons & Database (PS5, PC, Xbox)",
     description:
       "The premier community database, news, and guides for ARC Raiders by Embark Studios. In-depth loadout guides, extraction routes, and PS5/PC optimization.",
     images: [

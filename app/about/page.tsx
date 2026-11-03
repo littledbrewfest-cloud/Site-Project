@@ -5,11 +5,19 @@ import { Crosshair, ShieldCheck, Gamepad2, Award, ArrowRight } from "lucide-reac
 import { getSiteUrl } from "@/lib/site-url";
 
 export const metadata: Metadata = {
-  title: "About Us — The ARC Raiders Hub Editorial Team & Mission",
+  title: "About Our Editorial Team & Mission",
   description:
-    "Learn about The ARC Raiders Hub: our editorial standards, extraction shooter experts, playtesting methodology, and dedicated coverage of Embark Studios' ARC Raiders.",
+    "Meet The ARC Raiders Hub editorial team: our playtesting methodology, extraction shooter strategists, and coverage of Embark Studios' ARC Raiders.",
   alternates: {
     canonical: `${getSiteUrl()}/about`,
+  },
+  openGraph: {
+    type: "website",
+    url: `${getSiteUrl()}/about`,
+    title: "About Our Editorial Team & Mission | ARC Raiders Hub",
+    description:
+      "Meet The ARC Raiders Hub editorial team: our playtesting methodology, extraction shooter strategists, and coverage of Embark Studios' ARC Raiders.",
+    siteName: "The ARC Raiders Hub",
   },
 };
 

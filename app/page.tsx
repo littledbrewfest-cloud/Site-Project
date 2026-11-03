@@ -35,19 +35,46 @@ export default async function HomePage() {
 
   const homeJsonLd = {
     "@context": "https://schema.org",
-    "@type": "CollectionPage",
-    name: "The ARC Raiders Hub — Guides, News & Database",
-    description: "The premier community database, tactical loadout guides, and news intelligence network for ARC Raiders on PS5, PC, and Xbox.",
-    url: "https://www.thearc-raiders.com",
-    mainEntity: {
-      "@type": "ItemList",
-      itemListElement: posts.slice(0, 10).map((post, idx) => ({
-        "@type": "ListItem",
-        position: idx + 1,
-        url: `https://www.thearc-raiders.com/${post.slug}`,
-        name: post.title,
-      })),
-    },
+    "@graph": [
+      {
+        "@type": "CollectionPage",
+        "@id": "https://www.thearc-raiders.com/#collection",
+        name: "ARC Raiders Hub — Guides, Weapons & Database (PS5, PC, Xbox)",
+        description: "The premier community database, tactical loadout guides, and news intelligence network for ARC Raiders on PS5, PC, and Xbox.",
+        url: "https://www.thearc-raiders.com",
+        mainEntity: {
+          "@type": "ItemList",
+          itemListElement: posts.slice(0, 15).map((post, idx) => ({
+            "@type": "ListItem",
+            position: idx + 1,
+            url: `https://www.thearc-raiders.com/${post.slug}`,
+            name: post.title,
+          })),
+        },
+      },
+      {
+        "@type": "FAQPage",
+        "@id": "https://www.thearc-raiders.com/#faq",
+        mainEntity: [
+          {
+            "@type": "Question",
+            name: "Is ARC Raiders Cross-Platform?",
+            acceptedAnswer: {
+              "@type": "Answer",
+              text: "Yes, ARC Raiders features full cross-platform multiplayer and cross-progression across PS5, Xbox Series X|S, and PC, allowing players on all platforms to squad up together.",
+            },
+          },
+          {
+            "@type": "Question",
+            name: "How do surface extractions work in ARC Raiders?",
+            acceptedAnswer: {
+              "@type": "Answer",
+              text: "Players deploy from the subterranean colony of Speranza to the Earth's surface to gather high-value loot and survive against both ARC machines and rival squads before extracting safely.",
+            },
+          },
+        ],
+      },
+    ],
   };
 
   return (

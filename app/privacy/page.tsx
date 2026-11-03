@@ -5,11 +5,19 @@ import { Shield } from "lucide-react";
 import { getSiteUrl } from "@/lib/site-url";
 
 export const metadata: Metadata = {
-  title: "Privacy Policy — The ARC Raiders Hub",
+  title: "Privacy Policy",
   description:
-    "Privacy Policy for The ARC Raiders Hub (thearc-raiders.com). Explaining how we collect, protect, and handle data in compliance with GDPR and CCPA.",
+    "Privacy Policy for The ARC Raiders Hub (www.thearc-raiders.com). Explaining how we collect, protect, and handle data in compliance with GDPR and CCPA.",
   alternates: {
     canonical: `${getSiteUrl()}/privacy`,
+  },
+  openGraph: {
+    type: "website",
+    url: `${getSiteUrl()}/privacy`,
+    title: "Privacy Policy | ARC Raiders Hub",
+    description:
+      "Privacy Policy for The ARC Raiders Hub (www.thearc-raiders.com). Explaining how we collect, protect, and handle data in compliance with GDPR and CCPA.",
+    siteName: "The ARC Raiders Hub",
   },
 };
 

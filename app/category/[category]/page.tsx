@@ -23,14 +23,24 @@ export async function generateMetadata({ params }: CategoryPageProps): Promise<M
   const matchedCategory = slugToCategory(params.category, allCategories);
   const siteUrl = getSiteUrl();
   const categorySlug = categoryToSlug(matchedCategory);
+  const canonicalUrl = `${siteUrl}/category/${categorySlug}`;
+  const pageTitle = `${matchedCategory} Guides & Meta | ARC Raiders`;
+  const pageDesc = `Verified tactical guides, meta loadouts, and survival strategies for ${matchedCategory} in ARC Raiders on PS5, PC, and Xbox.`.slice(0, 155);
 
   return {
     title: {
-      absolute: `${matchedCategory} Guides & Database | ARC Raiders`,
+      absolute: pageTitle,
     },
-    description: `Comprehensive tactical guides, meta loadouts, and survival strategies for ${matchedCategory} in ARC Raiders on PS5, PC, and Xbox Series X|S.`,
+    description: pageDesc,
     alternates: {
-      canonical: `${siteUrl}/category/${categorySlug}`,
+      canonical: canonicalUrl,
+    },
+    openGraph: {
+      type: "website",
+      url: canonicalUrl,
+      title: pageTitle,
+      description: pageDesc,
+      siteName: "The ARC Raiders Hub",
     },
   };
 }
@@ -38,6 +48,9 @@ export async function generateMetadata({ params }: CategoryPageProps): Promise<M
 export default async function CategoryPage({ params }: CategoryPageProps) {
   const allCategories = await getActiveCategories();
   const matchedCategory = slugToCategory(params.category, allCategories);
+  const siteUrl = getSiteUrl();
+  const categorySlug = categoryToSlug(matchedCategory);
+  const canonicalUrl = `${siteUrl}/category/${categorySlug}`;
 
   // Query posts matching this category safely
   const allPublished = await getSafePublishedPosts();
@@ -60,8 +73,53 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
       };
     });
 
+  const categoryJsonLd = {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "CollectionPage",
+        "@id": `${canonicalUrl}#collection`,
+        name: `${matchedCategory} Guides & Database — The ARC Raiders Hub`,
+        description: `Surface reconnaissance, equipment blueprints, and verified field intel for ${matchedCategory} in ARC Raiders.`,
+        url: canonicalUrl,
+        mainEntity: {
+          "@type": "ItemList",
+          itemListElement: posts.slice(0, 20).map((post, idx) => ({
+            "@type": "ListItem",
+            position: idx + 1,
+            url: `${siteUrl}/${post.slug}`,
+            name: post.title,
+          })),
+        },
+      },
+      {
+        "@type": "BreadcrumbList",
+        "@id": `${canonicalUrl}#breadcrumb`,
+        itemListElement: [
+          {
+            "@type": "ListItem",
+            position: 1,
+            name: "Home",
+            item: siteUrl,
+          },
+          {
+            "@type": "ListItem",
+            position: 2,
+            name: matchedCategory,
+            item: canonicalUrl,
+          },
+        ],
+      },
+    ],
+  };
+
   return (
     <div className="space-y-12 max-w-7xl mx-auto">
+      {/* Inject CollectionPage + ItemList + BreadcrumbList JSON-LD */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(categoryJsonLd) }}
+      />
       {/* Breadcrumb Navigation */}
       <nav className="flex items-center gap-2 text-xs font-semibold text-slate-500 dark:text-slate-400">
         <Link href="/" className="hover:text-amber-600 dark:hover:text-amber-400 transition-colors">
