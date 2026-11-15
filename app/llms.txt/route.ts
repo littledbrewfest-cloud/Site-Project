@@ -3,7 +3,7 @@ import { getSafePublishedPosts } from "@/lib/db-helper";
 import { getSiteUrl } from "@/lib/site-url";
 import { DEFAULT_CATEGORIES, categoryToSlug } from "@/lib/constants";
 
-export const dynamic = "force-dynamic";
+export const revalidate = 86400;
 
 export async function GET() {
   const siteUrl = getSiteUrl();

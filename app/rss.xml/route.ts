@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { getSafePublishedPosts } from "@/lib/db-helper";
 import { getSiteUrl } from "@/lib/site-url";
 
-export const dynamic = "force-dynamic";
+export const revalidate = 3600;
 
 export async function GET() {
   const siteUrl = getSiteUrl();

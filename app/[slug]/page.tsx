@@ -17,7 +17,14 @@ import { DEFAULT_FALLBACK_IMAGE, categoryToSlug } from "@/lib/constants";
 import { getSiteUrl } from "@/lib/site-url";
 import { buildArticleSchemas } from "@/lib/seo-helpers";
 
-export const dynamic = "force-dynamic";
+export const revalidate = 86400;
+
+export async function generateStaticParams() {
+  const posts = await getSafePublishedPosts();
+  return posts.map((post) => ({
+    slug: post.slug,
+  }));
+}
 
 interface PostPageProps {
   params: {

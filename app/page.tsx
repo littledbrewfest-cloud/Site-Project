@@ -7,7 +7,7 @@ import { categoryToSlug } from "@/lib/constants";
 import BlogExplorer from "@/components/BlogExplorer";
 import { Crosshair, ShieldCheck, Gamepad2, Sparkles, ArrowRight, Zap, Flame, Trophy } from "lucide-react";
 
-export const revalidate = 60; // ISR revalidate every 60s
+export const revalidate = 3600; // ISR cache on CDN for 1 hour
 
 export default async function HomePage() {
   const [posts, categories] = await Promise.all([

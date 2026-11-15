@@ -16,7 +16,14 @@ interface CategoryPageProps {
   };
 }
 
-export const revalidate = 60;
+export const revalidate = 3600;
+
+export async function generateStaticParams() {
+  const allCategories = await getActiveCategories();
+  return allCategories.map((cat) => ({
+    category: categoryToSlug(cat),
+  }));
+}
 
 export async function generateMetadata({ params }: CategoryPageProps): Promise<Metadata> {
   const allCategories = await getActiveCategories();
